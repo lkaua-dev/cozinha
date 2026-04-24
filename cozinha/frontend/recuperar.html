@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recuperar conta — AuthSystem</title>
+  <link rel="stylesheet" href="/cozinha/frontend/css/style_geral.css" />
+</head>
+
+<body data-page="recuperar">
+
+  <div class="auth-wrapper">
+    <div class="auth-card">
+
+      <!-- Logo -->
+      <div class="auth-logo">
+        <div class="auth-logo-icon">🔐</div>
+        <span class="auth-logo-text">AuthSystem</span>
+      </div>
+
+      <!-- Título -->
+      <h1 class="auth-title">Recuperar conta</h1>
+      <p class="auth-subtitle">
+        Informe o email cadastrado e enviaremos as instruções de recuperação.
+      </p>
+
+      <!-- Alerta global -->
+      <div id="alertGlobal" class="auth-alert" role="alert" aria-live="polite"></div>
+
+      <!-- Formulário de recuperação -->
+      <form id="formRecuperar" novalidate autocomplete="off">
+
+        <!-- Email -->
+        <div class="form-group">
+          <label class="form-label" for="email">Email cadastrado</label>
+          <input
+            id="email"
+            type="email"
+            class="form-input"
+            placeholder="seu@email.com"
+            autocomplete="email"
+            aria-describedby="emailError"
+          />
+          <span id="emailError" class="field-error" role="alert"></span>
+        </div>
+
+        <!-- Botão recuperar -->
+        <button id="btnRecuperar" type="submit" class="btn-primary">
+          Enviar instruções
+        </button>
+
+      </form>
+
+      <!-- Links de navegação -->
+      <div class="auth-links-center">
+        Lembrou a senha?
+        <a href="/cozinha/frontend/login.html">Voltar ao login</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="/cozinha/frontend/js/login_geral.js"></script>
+</body>
+</html>
