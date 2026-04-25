@@ -1,65 +1,271 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Recuperar conta — AuthSystem</title>
+  <title>Recuperar Acesso — Mercado da Cozinha</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="/cozinha/frontend/css/style_geral.css" />
+  <style>
+    .recuperar-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .recuperar-page::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--terracotta), var(--herb));
+    }
+
+    /* Fundo decorativo */
+    .recuperar-page::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 15% 50%, rgba(200, 96, 58, 0.06) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 50%, rgba(92, 122, 78, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: calc(var(--radius) + 4px);
+      box-shadow: var(--shadow-card);
+      padding: clamp(32px, 6vw, 56px);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    /* Ícone ilustrativo */
+    .icon-wrap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFF3EE, #FFE8DF);
+      border: 2px solid rgba(200, 96, 58, 0.15);
+      margin-bottom: 24px;
+    }
+
+    .card h1 {
+      font-size: clamp(1.4rem, 3vw, 1.8rem);
+      color: var(--brown);
+      margin-bottom: 12px;
+    }
+
+    .card .subtitle {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+
+    /* Bloco de aviso principal */
+    .aviso {
+      background: linear-gradient(135deg, #FFF8F5, #FFF3EE);
+      border: 1.5px solid rgba(200, 96, 58, 0.20);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 28px;
+      text-align: left;
+    }
+
+    .aviso-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .aviso-header svg {
+      color: var(--terracotta);
+      flex-shrink: 0;
+    }
+
+    .aviso-header strong {
+      font-size: 0.95rem;
+      color: var(--brown);
+      font-weight: 700;
+    }
+
+    .aviso p {
+      font-size: 0.88rem;
+      color: var(--brown-mid);
+      line-height: 1.7;
+    }
+
+    /* Passos */
+    .passos {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 28px;
+      text-align: left;
+    }
+
+    .passo {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .passo-num {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      min-width: 30px;
+      background: var(--terracotta);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-top: 1px;
+    }
+
+    .passo-text {
+      font-size: 0.88rem;
+      color: var(--brown-mid);
+      line-height: 1.6;
+      padding-top: 5px;
+    }
+
+    .passo-text strong {
+      color: var(--brown);
+    }
+
+    /* Separador */
+    .sep {
+      height: 1px;
+      background: var(--cream-deep);
+      margin: 24px 0;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color var(--transition), gap var(--transition);
+    }
+
+    .back-link:hover {
+      color: var(--terracotta);
+      gap: 12px;
+    }
+
+    .back-link svg {
+      transition: transform var(--transition);
+    }
+
+    .back-link:hover svg {
+      transform: translateX(-3px);
+    }
+  </style>
 </head>
 
-<body data-page="recuperar">
+<body>
 
-  <div class="auth-wrapper">
-    <div class="auth-card">
+  <div class="recuperar-page bg-pattern">
+    <div class="card">
 
-      <!-- Logo -->
-      <div class="auth-logo">
-        <div class="auth-logo-icon">🔐</div>
-        <span class="auth-logo-text">AuthSystem</span>
+      <!-- Ícone -->
+      <div class="icon-wrap" aria-hidden="true">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C8603A" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3" />
+          <line x1="8" y1="12" x2="16" y2="12" />
+        </svg>
       </div>
 
-      <!-- Título -->
-      <h1 class="auth-title">Recuperar conta</h1>
-      <p class="auth-subtitle">
-        Informe o email cadastrado e enviaremos as instruções de recuperação.
+      <h1 class="serif">Recuperar Acesso</h1>
+      <p class="subtitle">
+        Não é possível redefinir sua senha diretamente por aqui.
+        Veja como proceder para recuperar sua conta.
       </p>
 
-      <!-- Alerta global -->
-      <div id="alertGlobal" class="auth-alert" role="alert" aria-live="polite"></div>
-
-      <!-- Formulário de recuperação -->
-      <form id="formRecuperar" novalidate autocomplete="off">
-
-        <!-- Email -->
-        <div class="form-group">
-          <label class="form-label" for="email">Email cadastrado</label>
-          <input
-            id="email"
-            type="email"
-            class="form-input"
-            placeholder="seu@email.com"
-            autocomplete="email"
-            aria-describedby="emailError"
-          />
-          <span id="emailError" class="field-error" role="alert"></span>
+      <!-- Aviso principal -->
+      <div class="aviso">
+        <div class="aviso-header">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+          <strong>Atenção — recuperação manual necessária</strong>
         </div>
-
-        <!-- Botão recuperar -->
-        <button id="btnRecuperar" type="submit" class="btn-primary">
-          Enviar instruções
-        </button>
-
-      </form>
-
-      <!-- Links de navegação -->
-      <div class="auth-links-center">
-        Lembrou a senha?
-        <a href="/cozinha/frontend/login.html">Voltar ao login</a>
+        <p>
+          Por razões de segurança, a recuperação de senha é feita
+          exclusivamente por um <strong>administrador</strong> ou
+          <strong>responsável de nível superior</strong> do sistema.
+          Nenhum e-mail automático é enviado.
+        </p>
       </div>
+
+      <!-- Passos -->
+      <div class="passos">
+        <div class="passo">
+          <span class="passo-num">1</span>
+          <p class="passo-text">
+            <strong>Identifique o administrador</strong> responsável pelo
+            sistema na sua unidade ou estabelecimento.
+          </p>
+        </div>
+        <div class="passo">
+          <span class="passo-num">2</span>
+          <p class="passo-text">
+            <strong>Entre em contato</strong> pessoalmente, por telefone
+            ou pelo canal interno utilizado pela equipe.
+          </p>
+        </div>
+        <div class="passo">
+          <span class="passo-num">3</span>
+          <p class="passo-text">
+            Informe seu <strong>usuário ou e-mail cadastrado</strong>
+            para que o administrador possa identificar sua conta e
+            redefinir o acesso.
+          </p>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <!-- Voltar -->
+      <a href="login.html" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="19" y1="12" x2="5" y2="12" />
+          <polyline points="12 19 5 12 12 5" />
+        </svg>
+        Voltar para o login
+      </a>
 
     </div>
   </div>
 
-  <script src="/cozinha/frontend/js/login_geral.js"></script>
 </body>
+
 </html>

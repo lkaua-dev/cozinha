@@ -1,86 +1,447 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login — AuthSystem</title>
+  <title>Entrar — Mercado da Cozinha</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="/cozinha/frontend/css/style_geral.css" />
+  <style>
+    /* ── Layout de tela cheia ─────────────────────────────────── */
+    .login-page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* ── Painel esquerdo (ilustrativo) ────────────────────────── */
+    .panel-visual {
+      background: var(--brown);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 48px;
+    }
+
+    /* Gradiente quente no painel */
+    .panel-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(200, 96, 58, 0.45) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 80%, rgba(92, 122, 78, 0.30) 0%, transparent 50%),
+        linear-gradient(160deg, #3D1E10 0%, #2C1810 60%, #1A0F09 100%);
+    }
+
+    /* Padrão textural decorativo */
+    .panel-visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+
+    /* Ícone decorativo centralizado */
+    .panel-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      opacity: 0.08;
+      pointer-events: none;
+    }
+
+    .panel-content {
+      position: relative;
+      z-index: 1;
+      color: var(--white);
+    }
+
+    .panel-tag {
+      display: inline-block;
+      background: rgba(200, 96, 58, 0.25);
+      border: 1px solid rgba(200, 96, 58, 0.5);
+      color: var(--terra-light);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+
+    .panel-content h2 {
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+      line-height: 1.25;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .panel-content h2 em {
+      color: var(--terra-light);
+      font-style: normal;
+    }
+
+    .panel-content p {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      max-width: 300px;
+    }
+
+    /* Badges decorativos */
+    .panel-badges {
+      display: flex;
+      gap: 10px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 0.76rem;
+      color: rgba(255, 255, 255, 0.65);
+      font-weight: 500;
+    }
+
+    .badge svg {
+      color: var(--terra-light);
+      flex-shrink: 0;
+    }
+
+    /* ── Painel direito (formulário) ──────────────────────────── */
+    .panel-form {
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+
+    .form-card {
+      width: 100%;
+      max-width: 420px;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    /* Logo / cabeçalho */
+    .form-header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .logo-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      background: var(--terracotta);
+      border-radius: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 24px rgba(200, 96, 58, 0.30);
+    }
+
+    .form-header h1 {
+      font-size: 1.8rem;
+      color: var(--brown);
+      margin-bottom: 6px;
+    }
+
+    .form-header h1 span {
+      color: var(--terracotta);
+    }
+
+    .form-header p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    /* Formulário */
+    #form-login {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    #form-login.shake {
+      animation: shake 0.45s ease;
+    }
+
+    .form-footer {
+      text-align: center;
+      margin-top: 8px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      margin: 4px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--cream-deep);
+    }
+
+    /* Hint de demo */
+    .demo-hint {
+      background: var(--cream-deep);
+      border: 1px dashed rgba(92, 122, 78, 0.35);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      color: var(--herb);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.55;
+    }
+
+    .demo-hint svg {
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── Responsividade ───────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .login-page {
+        grid-template-columns: 1fr;
+      }
+
+      .panel-visual {
+        display: none;
+      }
+
+      .panel-form {
+        padding: 32px 20px;
+        align-items: flex-start;
+        padding-top: 48px;
+      }
+
+      .panel-form::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--terracotta), var(--herb));
+      }
+    }
+
+    @media (max-width: 400px) {
+      .form-card {
+        max-width: 100%;
+      }
+    }
+
+    /* Animação shake */
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      20% {
+        transform: translateX(-8px);
+      }
+
+      40% {
+        transform: translateX(8px);
+      }
+
+      60% {
+        transform: translateX(-5px);
+      }
+
+      80% {
+        transform: translateX(5px);
+      }
+    }
+  </style>
 </head>
 
-<!-- data-page identifica qual lógica o JS deve inicializar -->
-<body data-page="login">
+<body>
 
-  <div class="auth-wrapper">
-    <div class="auth-card">
+  <div class="login-page">
 
-      <!-- Logo -->
-      <div class="auth-logo">
-        <div class="auth-logo-icon">🔐</div>
-        <span class="auth-logo-text">AuthSystem</span>
+    <!-- ── Painel Visual ────────────────────────────────────────── -->
+    <aside class="panel-visual" aria-hidden="true">
+
+      <!-- Ícone decorativo grande -->
+      <div class="panel-icon">
+        <svg width="320" height="320" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="0.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
+          <path d="M7 2v20" />
+          <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
+        </svg>
       </div>
 
-      <!-- Título -->
-      <h1 class="auth-title">Bem-vindo de volta</h1>
-      <p class="auth-subtitle">Entre com suas credenciais para acessar o sistema.</p>
+      <div class="panel-content">
+        <span class="panel-tag">🍴 Gestão de Cozinha</span>
 
-      <!-- Alerta global -->
-      <div id="alertGlobal" class="auth-alert" role="alert" aria-live="polite"></div>
+        <h2>
+          Bem-vindo ao seu<br />
+          <em>painel de controle</em>
+        </h2>
 
-      <!-- Formulário de login -->
-      <form id="formLogin" novalidate autocomplete="off">
+        <p>
+          Gerencie cardápios, pedidos, estoque
+          e muito mais — tudo em um só lugar,
+          feito para quem vive na cozinha.
+        </p>
 
-        <!-- Email -->
-        <div class="form-group">
-          <label class="form-label" for="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            class="form-input"
-            placeholder="seu@email.com"
-            autocomplete="email"
-            aria-describedby="emailError"
-          />
-          <span id="emailError" class="field-error" role="alert"></span>
+        <div class="panel-badges">
+          <span class="badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            Pedidos em tempo real
+          </span>
+          <span class="badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            Controle de estoque
+          </span>
+          <span class="badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            Relatórios completos
+          </span>
         </div>
+      </div>
+    </aside>
 
-        <!-- Senha -->
-        <div class="form-group">
-          <label class="form-label" for="senha">Senha</label>
-          <div class="password-wrapper">
-            <input
-              id="senha"
-              type="password"
-              class="form-input"
-              placeholder="Mínimo 6 caracteres"
-              autocomplete="current-password"
-              aria-describedby="senhaError"
-            />
-            <button type="button" class="password-toggle" aria-label="Mostrar senha" data-target="senha">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M1 12C1 12 5 4 12 4s11 8 11 8-4 8-11 8S1 12 1 12Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.8"/>
-              </svg>
-            </button>
+    <!-- ── Painel Formulário ─────────────────────────────────────── -->
+    <main class="panel-form">
+      <div class="form-card">
+
+        <!-- Cabeçalho -->
+        <div class="form-header">
+          <div class="logo-mark" aria-hidden="true">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
+              <path d="M7 2v20" />
+              <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
+            </svg>
           </div>
-          <span id="senhaError" class="field-error" role="alert"></span>
+          <h1 class="serif">Mer<span>cado</span></h1>
+          <p>Entre com sua conta para continuar</p>
         </div>
 
-        <!-- Botão entrar -->
-        <button id="btnEntrar" type="submit" class="btn-primary">
-          Entrar
-        </button>
+        <!-- Alerta global -->
+        <div id="alert-global" class="alert" role="alert" aria-live="polite"></div>
 
-      </form>
+        <!-- Formulário -->
+        <form id="form-login" novalidate autocomplete="on">
 
-      <!-- Links de navegação -->
-      <div class="auth-links">
-        <a href="/cozinha/frontend/recuperar.html" class="auth-link">Esqueci minha senha</a>
-        <a href="/cozinha/frontend/cadastro.html" class="auth-link">Criar conta</a>
+          <!-- Campo: Usuário -->
+          <div class="field-group" id="field-user">
+            <label for="input-user">Usuário ou E-mail</label>
+            <div class="input-wrapper">
+              <span class="icon" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </span>
+              <input type="text" id="input-user" name="usuario" placeholder="Ex.: admin ou email@exemplo.com"
+                autocomplete="username" aria-required="true" aria-describedby="err-user" />
+            </div>
+            <span class="field-error" id="err-user" role="alert"></span>
+          </div>
+
+          <!-- Campo: Senha -->
+          <div class="field-group" id="field-pass">
+            <label for="input-pass">Senha</label>
+            <div class="input-wrapper">
+              <span class="icon" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+              </span>
+              <input type="password" id="input-pass" name="senha" placeholder="Sua senha"
+                autocomplete="current-password" aria-required="true" aria-describedby="err-pass" />
+              <button type="button" id="toggle-pwd" class="btn-toggle-pwd" aria-label="Mostrar senha">
+                <!-- Ícone "olho aberto" inicial -->
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </button>
+            </div>
+            <span class="field-error" id="err-pass" role="alert"></span>
+          </div>
+
+          <!-- Link recuperação -->
+          <div style="text-align:right; margin-top:-8px;">
+            <a href="recuperar.html" class="link" style="font-size:0.82rem;">
+              Esqueci minha senha
+            </a>
+          </div>
+
+          <!-- Botão -->
+          <button type="submit" id="btn-login" class="btn-primary">
+            Entrar
+          </button>
+
+        </form>
+
+        <!-- Dica de demonstração -->
+        <div class="divider" style="margin-top:24px;">acesso demo</div>
+        <div class="demo-hint" style="margin-top:12px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          <span>
+            <strong>Demonstração:</strong> use <code>admin</code> ou
+            <code>cozinha@teste.com</code> com a senha <code>123456</code>.
+          </span>
+        </div>
+
       </div>
+    </main>
 
-    </div>
   </div>
 
   <script src="/cozinha/frontend/js/login_geral.js"></script>
 </body>
+
 </html>
