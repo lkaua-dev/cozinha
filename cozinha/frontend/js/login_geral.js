@@ -5,11 +5,6 @@
 
 'use strict';
 
-// ── Credenciais simuladas ──────────────────────────────────────
-const FAKE_USERS = [
-  { user: 'admin', password: '123456' },
-  { user: 'cozinha@teste.com', password: '123456' },
-];
 
 // ── Seletores ──────────────────────────────────────────────────
 const form = document.getElementById('form-login');
@@ -101,11 +96,20 @@ function validateFields() {
   return valid;
 }
 
-// ── Autenticação simulada ──────────────────────────────────────
-function authenticate(user, password) {
-  return FAKE_USERS.some(
-    (u) => u.user.toLowerCase() === user.toLowerCase() && u.password === password
-  );
+// ── Autenticação ──────────────────────────────────────
+async function authenticate(user, password) {
+  const response = await fetch('http://localhost:5000/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      usuario: user,
+      senha: password
+    })
+  });
+
+  return response.ok;
 }
 
 // ── Submit ─────────────────────────────────────────────────────
@@ -120,14 +124,14 @@ form.addEventListener('submit', function (e) {
   setLoading(true);
 
   // Simula delay de rede (650ms)
-  setTimeout(function () {
+  setTimeout(async function () {
     setLoading(false);
 
-    if (authenticate(userVal, passVal)) {
+    if (await authenticate(userVal, passVal)) {
       showAlert('Login realizado com sucesso! Redirecionando...', 'success');
       // Redireciona após breve feedback
       setTimeout(function () {
-        window.location.href = '/cozinha/frontend/deshboard.html';
+        window.location.href = '../dashboard.html';
       }, 1200);
     } else {
       showAlert('Usuário ou senha incorretos. Verifique e tente novamente.');
