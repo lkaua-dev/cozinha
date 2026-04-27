@@ -104,7 +104,7 @@ async function authenticate(user, password) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      usuario: user,
+      email: user,
       senha: password
     })
   });
