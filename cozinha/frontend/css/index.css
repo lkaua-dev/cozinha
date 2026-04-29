@@ -1139,7 +1139,7 @@ main {
   #home .split-container {
     min-height: calc(100dvh - var(--header-h));
     align-content: start;
-    padding-bottom: 160px;
+    padding-bottom: 72px;
   }
 
   .split-reverse {
@@ -1251,7 +1251,7 @@ main {
   }
 
   #home .split-container {
-    padding-bottom: 180px;
+    padding-bottom: 76px;
   }
 
   .split-text h2 {
