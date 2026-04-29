@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const navOverlay     = document.getElementById('nav-overlay');
   const scrollProgress = document.getElementById('scroll-progress');
   const header         = document.getElementById('header');
+  const desktopQuery   = window.matchMedia('(min-width: 901px)');
 
   // ── Navegação entre páginas ────────────────────────────────
   function mostrarPagina(targetId) {
@@ -40,8 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
       link.classList.toggle('ativo', link.getAttribute('data-target') === targetId);
     });
 
-    // Travar scroll na seção de metas para manter o conteúdo estável
-    document.body.classList.toggle('no-scroll', targetId === 'solucoes');
+    // Travar scroll na seção de metas apenas no desktop.
+    document.body.classList.toggle('no-scroll', targetId === 'solucoes' && desktopQuery.matches);
 
     // Fechar menu mobile
     fecharMenuMobile();
@@ -212,9 +213,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ── Fechar menu ao redimensionar para desktop ──────────────
-  const mediaQuery = window.matchMedia('(min-width: 769px)');
-  mediaQuery.addEventListener('change', (e) => {
+  desktopQuery.addEventListener('change', (e) => {
     if (e.matches) fecharMenuMobile();
+
+    const paginaAtiva = document.querySelector('.pagina.animando')?.id;
+    document.body.classList.toggle('no-scroll', paginaAtiva === 'solucoes' && e.matches);
   });
 
   // ── Inicialização ──────────────────────────────────────────
