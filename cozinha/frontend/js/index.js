@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const scrollProgress = document.getElementById('scroll-progress');
   const header         = document.getElementById('header');
   const desktopQuery   = window.matchMedia('(min-width: 901px)');
+  let scrollTicking    = false;
 
   // ── Navegação entre páginas ────────────────────────────────
   function mostrarPagina(targetId) {
@@ -47,8 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fechar menu mobile
     fecharMenuMobile();
 
-    // Scroll para o topo
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // No mobile, rolagem instantânea evita briga com o gesto do dedo.
+    window.scrollTo({ top: 0, behavior: desktopQuery.matches ? 'smooth' : 'auto' });
   }
 
   // Event listeners de navegação
@@ -112,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const progress     = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
 
     if (scrollProgress) {
-      scrollProgress.style.width = `${Math.min(progress, 100)}%`;
+      scrollProgress.style.transform = `scaleX(${Math.min(progress, 100) / 100})`;
       scrollProgress.setAttribute('aria-valuenow', Math.round(progress));
     }
 
@@ -122,7 +123,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  window.addEventListener('scroll', atualizarScrollProgress, { passive: true });
+  function solicitarScrollProgress() {
+    if (scrollTicking) return;
+
+    scrollTicking = true;
+    window.requestAnimationFrame(() => {
+      atualizarScrollProgress();
+      scrollTicking = false;
+    });
+  }
+
+  window.addEventListener('scroll', solicitarScrollProgress, { passive: true });
 
   // ── Scroll Reveal (IntersectionObserver) ──────────────────
   const revealObserver = new IntersectionObserver((entries) => {
@@ -150,6 +161,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const elementos = paginaAtiva.querySelectorAll(
       '.meta-card, .team-member, .feature-card, .stat-item, .split-text, .split-image'
     );
+
+    if (!desktopQuery.matches) {
+      elementos.forEach(el => {
+        el.classList.add('reveal', 'visible');
+        el.style.transitionDelay = '0ms';
+      });
+      return;
+    }
 
     elementos.forEach((el, idx) => {
       if (!el.classList.contains('reveal')) {
