@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CatiraX - Plataforma de Negócios</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Nunito:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="./js/index.js" defer></script>
+</head>
+
+<body>
+
+    <!-- Barra de progresso de scroll -->
+    <div id="scroll-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+    <!-- ==========================================
+       CABEÇALHO
+       ========================================== -->
+    <header id="header">
+        <div class="logo nav-trigger" data-target="home" role="button" tabindex="0" aria-label="Ir para início">
+            Cozinha<span>.</span>
+        </div>
+
+        <nav id="nav-menu" role="navigation" aria-label="Menu principal">
+            <button class="nav-link nav-trigger ativo" data-target="home">Início</button>
+            <button class="nav-link nav-trigger" data-target="solucoes">Nossas metas</button>
+            <button class="nav-link nav-trigger" data-target="sede">Colaboradores</button>
+        </nav>
+
+        <div class="header-right">
+            <a href="login.html" class="btn-entrar">
+                <i class='bx bx-log-in-circle'></i>
+                <span>Entrar</span>
+            </a>
+
+            <!-- Hamburguer mobile -->
+            <button class="hamburger" id="hamburger-btn" aria-label="Abrir menu" aria-expanded="false"
+                aria-controls="nav-menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Overlay para fechar menu mobile -->
+    <div class="nav-overlay" id="nav-overlay"></div>
+
+    <!-- ==========================================
+       CONTEÚDO PRINCIPAL
+       ========================================== -->
+    <main>
+
+        <!-- SEÇÃO: INÍCIO -->
+        <section id="home" class="pagina animando">
+            <div class="split-container">
+                <div class="split-text">
+                    <span class="badge animate-badge">
+                        <i class='bx bx-trending-up'></i> Inovação 2026
+                    </span>
+                    <h2>Transforme sua <em>Produtividade</em></h2>
+                    <p>Nossa plataforma foi desenvolvida para modernizar o modelo tradicional de marketplace, ampliando
+                        os mecanismos de geração de valor dentro do ambiente digital. Ao incorporar múltiplas
+                        modalidades de pagamento, criamos um ecossistema transacional mais flexível.</p>
+
+                    <div class="hero-actions">
+                        <button class="btn-acao1 nav-trigger" data-target="solucoes">
+                            Entenda como funciona
+                            <i class='bx bx-right-arrow-alt'></i>
+                        </button>
+                        <button class="btn-ghost nav-trigger" data-target="sede">
+                            Conheça o time
+                        </button>
+                    </div>
+
+                    <div class="hero-stats">
+                        <div class="stat-pill">
+                            <strong>Multi</strong>
+                            <span>Pagamentos</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-pill">
+                            <strong>100%</strong>
+                            <span>Seguro</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-pill">
+                            <strong>Alta</strong>
+                            <span>Conversão</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="split-image">
+                    <img src="./assets/img/time.jpeg" alt="Equipe CatiraX trabalhando">
+                    <div class="image-badge">
+                        <i class='bx bx-check-shield'></i>
+                        <span>Plataforma verificada</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: NOSSAS METAS -->
+        <section id="solucoes" class="pagina">
+            <div class="metas-container">
+                <div class="section-header">
+                    <span class="badge">
+                        <i class='bx bx-compass'></i> Visão de Futuro
+                    </span>
+                    <h2>Nossas Metas</h2>
+                    <p>Estamos construindo o maior ecossistema de negociações flexíveis do Brasil. Conheça os pilares do
+                        nosso crescimento.</p>
+                </div>
+
+                <div class="metas-grid">
+                    <article class="meta-card">
+                        <div class="meta-icone">🚀</div>
+                        <h3>Expansão Nacional</h3>
+                        <p>Alcançar todos os estados brasileiros com infraestrutura de ponta e suporte local
+                            especializado para negociações de alto valor.</p>
+                        <div class="card-progress">
+                            <div class="progress-bar" data-progress="65"></div>
+                            <span>65% concluído</span>
+                        </div>
+                    </article>
+
+                    <article class="meta-card">
+                        <div class="meta-icone">💰</div>
+                        <h3>Liquidez Contínua</h3>
+                        <p>Nosso site traz inovações em métodos de pagamentos, onde você se sente mais livre para
+                            decidir como quer pagar ou trocar.</p>
+                        <div class="card-progress">
+                            <div class="progress-bar" data-progress="80"></div>
+                            <span>80% concluído</span>
+                        </div>
+                    </article>
+
+                    <article class="meta-card">
+                        <div class="meta-icone">🔒</div>
+                        <h3>Segurança Máxima</h3>
+                        <p>Implementar rastreabilidade ponta a ponta e contratos inteligentes, garantindo governança
+                            estruturada em 100% das suas compras.</p>
+                        <div class="card-progress">
+                            <div class="progress-bar" data-progress="90"></div>
+                            <span>90% concluído</span>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="section-footer">
+                    <button class="btn-voltar nav-trigger" data-target="home">
+                        <i class='bx bx-left-arrow-alt'></i> Voltar para o Início
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: NOSSA EQUIPE -->
+        <section id="sede" class="pagina">
+
+            <div class="split-container split-reverse">
+                <div class="split-text">
+                    <span class="badge">
+                        <i class='bx bx-code-alt'></i> Nosso Time Dev
+                    </span>
+                    <h2>As Mentes por Trás da <em>Inovação</em></h2>
+                    <p>Contamos com um time de engenheiros e desenvolvedores apaixonados por criar soluções eficientes.
+                        Nossa equipe trabalha incansavelmente nos bastidores da <strong>CatiraX</strong> para garantir
+                        uma plataforma rápida, segura e altamente escalável.</p>
+
+                    <div class="team-stats">
+                        <div class="stat-item">
+                            <strong>7</strong>
+                            <span>Especialistas</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>100%</strong>
+                            <span>Segurança</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>Alta</strong>
+                            <span>Conversão</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="split-image">
+                    <img src="./assets/img/time.jpeg" alt="Desenvolvedores CatiraX">
+                    <div class="image-badge">
+                        <i class='bx bx-award'></i>
+                        <span>Time premiado</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-section">
+                <div class="section-header">
+                    <h2>Nossos Especialistas</h2>
+                    <p>Conheça os talentos que constroem a tecnologia da nossa plataforma.</p>
+                </div>
+
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-photo-wrap">
+                            <img src="./assets/img/alexandre_henrich.jpeg" class="member-avatar"
+                                alt="Alexandre Henrich">
+                            <div class="member-role-badge">BD</div>
+                        </div>
+                        <h4>Alexandre Henrich</h4>
+                        <span class="role">Banco de Dados</span>
+                        <p>Responsável por modelar e otimizar nossas estruturas de dados com máxima performance e
+                            integridade.</p>
+                    </div>
+
+                    <div class="team-member">
+                        <div class="member-photo-wrap">
+                            <img src="./assets/img/eduardo_henrique.jpeg" class="member-avatar" alt="Eduardo Henrique">
+                            <div class="member-role-badge">FS</div>
+                        </div>
+                        <h4>Eduardo Henrique</h4>
+                        <span class="role">Full Stack</span>
+                        <p>Especialista em conectar interfaces dinâmicas com lógicas complexas de servidor para o
+                            usuário.</p>
+                    </div>
+
+                    <div class="team-member">
+                        <div class="member-photo-wrap">
+                            <img src="./assets/img/felipe_augusto.jpeg" class="member-avatar" alt="Felipe Augusto">
+                            <div class="member-role-badge">BD</div>
+                        </div>
+                        <h4>Felipe Augusto</h4>
+                        <span class="role">Banco de Dados</span>
+                        <p>Garante a segurança, estabilidade e a rápida recuperação das informações essenciais do
+                            ecossistema.</p>
+                    </div>
+
+                    <div class="team-member">
+                        <div class="member-photo-wrap">
+                            <img src="./assets/img/gabriel_oliveira.jpeg" class="member-avatar" alt="Gabriel Oliveira">
+                            <div class="member-role-badge">FS</div>
+                        </div>
+                        <h4>Gabriel Oliveira</h4>
+                        <span class="role">Full Stack</span>
+                        <p>Desenvolvedor versátil, construindo desde componentes visuais até APIs de alta performance.
+                        </p>
+                    </div>
+
+                    <div class="team-member">
+                        <div class="member-photo-wrap">
+                            <img src="./assets/img/gustavo_prates.jpeg" class="member-avatar" alt="Gustavo Prates">
+                            <div class="member-role-badge">FE</div>
+                        </div>
+                        <h4>Gustavo Prates</h4>
+                        <span class="role">Front-end</span>
+                        <p>Cria interfaces modernas, fluidas e totalmente focadas na melhor experiência visual do
+                            usuário.</p>
+                    </div>
+
+                    <div class="team-member">
+                        <div class="member-photo-wrap">
+                            <img src="./assets/img/kaua_lucas.jpeg" class="member-avatar" alt="Kauã Lucas">
+                            <div class="member-role-badge">FS</div>
+                        </div>
+                        <h4>Kauã Lucas</h4>
+                        <span class="role">Full Stack</span>
+                        <p>Engenheiro multifuncional que garante a estabilidade de ponta a ponta de toda a aplicação.
+                        </p>
+                    </div>
+
+                    <div class="team-member chefe-card">
+                        <div class="member-photo-wrap">
+                            <img src="./assets/img/rafael_martins.jpeg" class="member-avatar" alt="Rafael Martins">
+                            <div class="member-role-badge chefe-badge">👑</div>
+                        </div>
+                        <h4>Rafael Martins</h4>
+                        <span class="role role-chefe">Back-end / Líder</span>
+                        <p>Líder técnico da equipe. Arquiteta o sistema e coordena as principais engrenagens do
+                            servidor.</p>
+                    </div>
+                </div>
+
+                <div class="section-footer">
+                    <button class="btn-voltar nav-trigger" data-target="home">
+                        <i class='bx bx-left-arrow-alt'></i> Voltar para o Início
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+</body>
+
+</html>
