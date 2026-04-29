@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let scrollTicking    = false;
   let headerScrolled   = false;
   let pageTransitionTimeout;
+  const touchNavigation = new WeakMap();
+  const scrollGestureLimit = 10;
 
   // ── Navegação entre páginas ────────────────────────────────
   function ativarPagina(targetId) {
@@ -77,7 +79,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Event listeners de navegação
   navTriggers.forEach(trigger => {
+    trigger.addEventListener('touchstart', (e) => {
+      const touch = e.touches[0];
+      if (!touch) return;
+
+      touchNavigation.set(trigger, {
+        moved: false,
+        x: touch.clientX,
+        y: touch.clientY,
+      });
+    }, { passive: true });
+
+    trigger.addEventListener('touchmove', (e) => {
+      const touch = e.touches[0];
+      const state = touchNavigation.get(trigger);
+      if (!touch || !state) return;
+
+      const movedX = Math.abs(touch.clientX - state.x);
+      const movedY = Math.abs(touch.clientY - state.y);
+
+      if (movedX > scrollGestureLimit || movedY > scrollGestureLimit) {
+        state.moved = true;
+      }
+    }, { passive: true });
+
+    trigger.addEventListener('touchend', () => {
+      setTimeout(() => touchNavigation.delete(trigger), 350);
+    }, { passive: true });
+
     trigger.addEventListener('click', (e) => {
+      const touchState = touchNavigation.get(trigger);
+      if (touchState?.moved) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        touchNavigation.delete(trigger);
+        return;
+      }
+
       e.preventDefault();
       const targetId = trigger.getAttribute('data-target');
       if (targetId) mostrarPagina(targetId);
