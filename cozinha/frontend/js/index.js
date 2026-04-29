@@ -15,16 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const header         = document.getElementById('header');
   const desktopQuery   = window.matchMedia('(min-width: 901px)');
   let scrollTicking    = false;
+  let headerScrolled   = false;
+  let pageTransitionTimeout;
 
   // ── Navegação entre páginas ────────────────────────────────
-  function mostrarPagina(targetId) {
-    // Esconder todas
-    paginas.forEach(p => p.classList.remove('animando'));
-
-    // Mostrar a selecionada
+  function ativarPagina(targetId) {
     const alvo = document.getElementById(targetId);
     if (alvo) {
-      // Forçar reflow para reiniciar a animação
+      paginas.forEach(p => p.classList.remove('animando', 'saindo'));
       void alvo.offsetWidth;
       alvo.classList.add('animando');
 
@@ -36,7 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(animarProgressBars, 300);
       }
     }
+  }
 
+  function atualizarNavegacao(targetId) {
     // Atualizar nav ativo
     navLinks.forEach(link => {
       link.classList.toggle('ativo', link.getAttribute('data-target') === targetId);
@@ -44,12 +44,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Travar scroll na seção de metas apenas no desktop.
     document.body.classList.toggle('no-scroll', targetId === 'solucoes' && desktopQuery.matches);
+  }
 
+  function mostrarPagina(targetId, instantaneo = false) {
     // Fechar menu mobile
     fecharMenuMobile();
 
-    // No mobile, rolagem instantânea evita briga com o gesto do dedo.
-    window.scrollTo({ top: 0, behavior: desktopQuery.matches ? 'smooth' : 'auto' });
+    const paginaAtual = document.querySelector('.pagina.animando');
+    const mesmaPagina = paginaAtual?.id === targetId;
+
+    if (mesmaPagina) {
+      window.scrollTo({ top: 0, behavior: desktopQuery.matches ? 'smooth' : 'auto' });
+      return;
+    }
+
+    clearTimeout(pageTransitionTimeout);
+    atualizarNavegacao(targetId);
+
+    const finalizarTroca = () => {
+      ativarPagina(targetId);
+      window.scrollTo({ top: 0, behavior: desktopQuery.matches ? 'smooth' : 'auto' });
+    };
+
+    if (instantaneo || !paginaAtual) {
+      finalizarTroca();
+      return;
+    }
+
+    paginaAtual.classList.add('saindo');
+    pageTransitionTimeout = setTimeout(finalizarTroca, desktopQuery.matches ? 180 : 130);
   }
 
   // Event listeners de navegação
@@ -63,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Mostrar página inicial
   const primeiraPagina = paginas[0];
-  if (primeiraPagina) mostrarPagina(primeiraPagina.id);
+  if (primeiraPagina) mostrarPagina(primeiraPagina.id, true);
 
   // ── Menu Mobile (Hamburger) ────────────────────────────────
   function abrirMenuMobile() {
@@ -112,14 +135,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const docHeight    = document.documentElement.scrollHeight - window.innerHeight;
     const progress     = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
 
-    if (scrollProgress) {
+    if (scrollProgress && desktopQuery.matches) {
       scrollProgress.style.transform = `scaleX(${Math.min(progress, 100) / 100})`;
       scrollProgress.setAttribute('aria-valuenow', Math.round(progress));
     }
 
-    // Header sombra ao rolar
-    if (header) {
-      header.classList.toggle('scrolled', scrollTop > 20);
+    const shouldBeScrolled = scrollTop > 20;
+    if (header && shouldBeScrolled !== headerScrolled) {
+      headerScrolled = shouldBeScrolled;
+      header.classList.toggle('scrolled', headerScrolled);
     }
   }
 

@@ -66,6 +66,8 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 
 body.no-scroll {
@@ -298,13 +300,49 @@ main {
 
 .pagina.animando {
   display: block;
-  animation: pageFadeIn 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation: pageEnter 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-@keyframes pageFadeIn {
+.pagina.saindo {
+  display: block;
+  animation: pageExit 0.22s cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+@keyframes pageEnter {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    filter: blur(6px);
+    transform: translateY(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes pageExit {
+  from {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(-10px) scale(0.99);
+  }
+}
+
+@keyframes pageFadeInMobile {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes pageMobileEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -312,9 +350,15 @@ main {
   }
 }
 
-@keyframes pageFadeInMobile {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+@keyframes pageMobileExit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
 }
 
 /* ── Badge ────────────────────────────────────────────────── */
@@ -1036,20 +1080,25 @@ main {
 
   html {
     scroll-behavior: auto;
-    overscroll-behavior-y: none;
+    overscroll-behavior-y: auto;
   }
 
   body {
-    overscroll-behavior-y: none;
+    overscroll-behavior-y: auto;
     -webkit-overflow-scrolling: touch;
   }
 
   #scroll-progress {
+    display: none;
     transition: none;
   }
 
   .pagina.animando {
-    animation: pageFadeInMobile 0.2s ease both;
+    animation: pageMobileEnter 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .pagina.saindo {
+    animation: pageMobileExit 0.16s ease both;
   }
 
   .reveal,
@@ -1070,6 +1119,44 @@ main {
   /* Mostrar hamburger */
   .hamburger {
     display: flex;
+    position: relative;
+    width: 44px;
+    height: 44px;
+    gap: 4px;
+    background: var(--white);
+    border-color: rgba(200, 96, 58, 0.18);
+    box-shadow: 0 8px 22px rgba(59, 42, 26, 0.10);
+    overflow: hidden;
+  }
+
+  .hamburger::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    background: var(--terra-faint);
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(0.6);
+    transition: opacity var(--transition), transform var(--transition-spring);
+  }
+
+  .hamburger.open::before {
+    opacity: 1;
+    transform: scale(1.35);
+  }
+
+  .hamburger-line {
+    position: relative;
+    width: 20px;
+    z-index: 1;
+  }
+
+  .hamburger-line:nth-child(2) {
+    width: 15px;
+  }
+
+  .hamburger-line:nth-child(3) {
+    width: 11px;
   }
 
   /* Nav mobile */
@@ -1080,15 +1167,33 @@ main {
     position: fixed;
     top: var(--header-h);
     right: 0;
-    width: min(82vw, 280px);
-    height: calc(100vh - var(--header-h));
-    background: var(--white);
-    box-shadow: -8px 0 32px rgba(59, 42, 26, 0.15);
-    padding: 20px 16px;
+    width: min(86vw, 320px);
+    height: calc(100dvh - var(--header-h) - 18px);
+    margin-top: 10px;
+    background:
+      linear-gradient(160deg, rgba(200, 96, 58, 0.08), transparent 46%),
+      var(--white);
+    border: 1px solid rgba(200, 96, 58, 0.12);
+    border-right: 0;
+    border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+    box-shadow: -18px 20px 48px rgba(59, 42, 26, 0.18);
+    padding: 18px 16px;
     z-index: 499;
-    transform: translateX(100%);
-    transition: transform var(--transition-slow);
+    transform: translateX(calc(100% + 24px));
+    transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
     overflow-y: auto;
+  }
+
+  nav::before {
+    content: 'Cozinha.';
+    display: block;
+    margin: 2px 4px 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--cream-deep);
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--brown);
   }
 
   nav.mobile-open {
@@ -1103,17 +1208,37 @@ main {
   .nav-link {
     width: 100%;
     text-align: left;
-    padding: 14px 16px;
+    padding: 14px 16px 14px 42px;
     font-size: 1rem;
     border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid transparent;
+    box-shadow: 0 1px 0 rgba(59, 42, 26, 0.03);
   }
 
   .nav-link::after {
-    display: none;
+    display: block;
+    bottom: auto;
+    left: 18px;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--cream-deep);
+    transform: translateY(-50%) scale(1);
+    transition: background var(--transition), transform var(--transition-spring);
   }
 
   .nav-link.ativo {
     background: var(--terra-faint);
+    border-color: rgba(200, 96, 58, 0.18);
+    color: var(--terracotta);
+  }
+
+  .nav-link.ativo::after,
+  .nav-link:hover::after {
+    background: var(--terracotta);
+    transform: translateY(-50%) scale(1.15);
   }
 
   /* Esconder texto do botão entrar */

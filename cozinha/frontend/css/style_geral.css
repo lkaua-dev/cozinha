@@ -50,6 +50,9 @@ body {
   min-height: 100vh;
   line-height: 1.5;
   overflow-x: hidden;
+  overscroll-behavior-y: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -319,5 +322,11 @@ a.link:hover { color: var(--terra-dark); text-decoration: underline; }
 
   .alert {
     font-size: 0.84rem;
+  }
+}
+
+@media (max-width: 900px) {
+  html {
+    scroll-behavior: auto;
   }
 }
