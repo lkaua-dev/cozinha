@@ -1036,10 +1036,11 @@ main {
 
   html {
     scroll-behavior: auto;
+    overscroll-behavior-y: none;
   }
 
   body {
-    overscroll-behavior-y: contain;
+    overscroll-behavior-y: none;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -1133,6 +1134,12 @@ main {
     grid-template-columns: 1fr;
     gap: 36px;
     padding: 48px 0;
+  }
+
+  #home .split-container {
+    min-height: calc(100dvh - var(--header-h));
+    align-content: start;
+    padding-bottom: 160px;
   }
 
   .split-reverse {
@@ -1241,6 +1248,10 @@ main {
   .split-container {
     gap: 28px;
     padding: 36px 0;
+  }
+
+  #home .split-container {
+    padding-bottom: 180px;
   }
 
   .split-text h2 {
