@@ -67,6 +67,11 @@ body {
   overflow-x: hidden;
 }
 
+body.no-scroll,
+html.no-scroll {
+  overflow: hidden !important;
+}
+
 img {
   display: block;
   max-width: 100%;
@@ -318,11 +323,11 @@ main {
 /* ── Section Header ───────────────────────────────────────── */
 .section-header {
   text-align: center;
-  margin-bottom: 56px;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .section-header h2 {
@@ -663,7 +668,13 @@ main {
 /* Section footer */
 .section-footer {
   text-align: center;
-  margin-top: 56px;
+  margin-top: 48px;
+}
+
+/* Footer da seção de sede: espaço generoso no rodapé */
+.sede-footer {
+  margin-top: 48px;
+  padding-bottom: 72px;
 }
 
 /* Botão voltar */
@@ -692,13 +703,10 @@ main {
   transition: transform var(--transition-spring);
 }
 
-.btn-voltar:hover i {
-  transform: translateX(-4px);
-}
-
 /* ── Team Section ──────────────────────────────────────────── */
 .team-section {
-  padding: 40px 0 80px;
+  /* Reduzido de 40px 0 80px — o respiro final vem do sede-footer */
+  padding: 32px 0 0;
 }
 
 .team-stats {
@@ -728,25 +736,82 @@ main {
   letter-spacing: 0.04em;
 }
 
-/* Team grid */
-.team-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+/* ── Separador entre líder e equipe ─────────────────────────── */
+.team-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 28px auto;
+  max-width: 600px;
 }
 
-/* Team member card */
+.team-divider::before,
+.team-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--cream-deep);
+}
+
+.team-divider span {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ── Card do líder — destaque central ──────────────────────── */
+.chefe-card {
+  /* Centralizado e mais largo que os cards normais */
+  max-width: 340px;
+  margin: 0 auto;
+  padding: 36px 28px 32px;
+
+  /* Bordas e fundo com leve gradiente terracotta */
+  border: 1.5px solid rgba(200, 96, 58, 0.25);
+  background: linear-gradient(160deg, rgba(200, 96, 58, 0.05) 0%, var(--white) 55%);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.chefe-card .member-avatar {
+  width: 108px;
+  height: 108px;
+  border-color: var(--terracotta);
+  box-shadow: 0 0 0 4px rgba(200, 96, 58, 0.15);
+}
+
+.chefe-card h4 {
+  font-size: 1.15rem;
+}
+
+.chefe-card p {
+  font-size: 0.88rem;
+}
+
+/* ── Team grid — compacto ──────────────────────────────────── */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+/* Team member card — versão compacta (não-líder) */
 .team-member {
   background: var(--white);
   border: 1.5px solid rgba(200, 96, 58, 0.08);
   border-radius: var(--radius);
-  padding: 28px 20px 24px;
+  padding: 22px 16px 20px;
   text-align: center;
   transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition-spring);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   position: relative;
   overflow: hidden;
 }
@@ -761,9 +826,9 @@ main {
 }
 
 .team-member:hover {
-  border-color: rgba(200, 96, 58, 0.25);
-  box-shadow: var(--shadow-card);
-  transform: translateY(-6px);
+  border-color: rgba(200, 96, 58, 0.22);
+  box-shadow: var(--shadow-soft);
+  transform: translateY(-4px);
 }
 
 .team-member:hover::before {
@@ -777,9 +842,10 @@ main {
   margin-bottom: 4px;
 }
 
+/* Avatar base — levemente menor para os não-líderes */
 .member-avatar {
-  width: 88px;
-  height: 88px;
+  width: 76px;
+  height: 76px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--cream-deep);
@@ -788,19 +854,19 @@ main {
 
 .team-member:hover .member-avatar {
   border-color: var(--terracotta);
-  transform: scale(1.06);
+  transform: scale(1.05);
 }
 
 .member-role-badge {
   position: absolute;
   bottom: 0;
   right: -4px;
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   background: var(--terracotta);
   color: var(--white);
   border-radius: 50%;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 800;
   display: flex;
   align-items: center;
@@ -810,24 +876,26 @@ main {
 }
 
 .chefe-badge {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+  width: 28px;
+  height: 28px;
   background: var(--brown);
 }
 
 .team-member h4 {
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--brown);
   line-height: 1.3;
 }
 
 .role {
   display: inline-block;
-  padding: 4px 12px;
+  padding: 3px 10px;
   background: var(--terra-faint);
   color: var(--terracotta);
   border-radius: var(--radius-full);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -836,25 +904,15 @@ main {
 .role-chefe {
   background: var(--terracotta);
   color: var(--white);
+  padding: 4px 14px;
+  font-size: 0.72rem;
 }
 
 .team-member p {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   color: var(--brown-mid);
-  line-height: 1.6;
+  line-height: 1.55;
   text-align: center;
-}
-
-/* Card do chefe com destaque */
-.chefe-card {
-  border-color: rgba(200, 96, 58, 0.2);
-  background: linear-gradient(135deg, rgba(200, 96, 58, 0.04) 0%, var(--white) 50%);
-}
-
-.chefe-card .member-avatar {
-  width: 96px;
-  height: 96px;
-  border-color: var(--terracotta);
 }
 
 /* ── Scroll Reveal ────────────────────────────────────────── */
@@ -1010,7 +1068,7 @@ main {
 
   .team-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    gap: 14px;
   }
 
   .team-stats {
@@ -1018,7 +1076,11 @@ main {
   }
 
   .section-header {
-    margin-bottom: 40px;
+    margin-bottom: 32px;
+  }
+
+  .sede-footer {
+    padding-bottom: 56px;
   }
 }
 
@@ -1054,27 +1116,11 @@ main {
   }
 
   .team-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
   }
 
-  .team-member {
-    flex-direction: row;
-    text-align: left;
-    align-items: flex-start;
-    gap: 16px;
-    padding: 20px;
-  }
-
-  .member-photo-wrap {
-    flex-shrink: 0;
-  }
-
-  .team-member h4,
-  .team-member p {
-    text-align: left;
-  }
-
-  .team-member > *:not(.member-photo-wrap) {
-    align-self: flex-start;
+  .sede-footer {
+    padding-bottom: 48px;
   }
 }

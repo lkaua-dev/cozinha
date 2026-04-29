@@ -40,6 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
       link.classList.toggle('ativo', link.getAttribute('data-target') === targetId);
     });
 
+    // Travar scroll na seção de metas para manter o conteúdo estável
+    document.body.classList.toggle('no-scroll', targetId === 'solucoes');
+
     // Fechar menu mobile
     fecharMenuMobile();
 
