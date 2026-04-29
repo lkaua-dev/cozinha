@@ -67,7 +67,6 @@ body {
   overflow-x: hidden;
 }
 
-body.no-scroll,
 html.no-scroll {
   overflow: hidden !important;
 }
