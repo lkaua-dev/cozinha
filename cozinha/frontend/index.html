@@ -14,12 +14,8 @@
 
 <body>
 
-  <!-- Barra de progresso de scroll -->
   <div id="scroll-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
 
-  <!-- ==========================================
-       CABEÇALHO
-       ========================================== -->
   <header id="header">
     <div class="logo nav-trigger" data-target="home" role="button" tabindex="0" aria-label="Ir para início">
       Cozinha<span>.</span>
@@ -37,7 +33,6 @@
         <span>Entrar</span>
       </a>
 
-      <!-- Hamburguer mobile -->
       <button class="hamburger" id="hamburger-btn" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-menu">
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
@@ -46,15 +41,10 @@
     </div>
   </header>
 
-  <!-- Overlay para fechar menu mobile -->
   <div class="nav-overlay" id="nav-overlay"></div>
 
-  <!-- ==========================================
-       CONTEÚDO PRINCIPAL
-       ========================================== -->
   <main>
 
-    <!-- SEÇÃO: INÍCIO -->
     <section id="home" class="pagina animando">
       <div class="split-container">
         <div class="split-text">
@@ -102,7 +92,6 @@
       </div>
     </section>
 
-    <!-- SEÇÃO: NOSSAS METAS -->
     <section id="solucoes" class="pagina">
       <div class="metas-container">
         <div class="section-header">
@@ -153,7 +142,6 @@
       </div>
     </section>
 
-    <!-- SEÇÃO: NOSSA EQUIPE -->
     <section id="sede" class="pagina">
 
       <div class="split-container split-reverse">
@@ -189,31 +177,28 @@
         </div>
       </div>
 
-      <!-- ── BLOCO DA EQUIPE: estrutura corrigida ── -->
+      <!-- ── BLOCO DA EQUIPE CORRIGIDO: todos uniformes, sem destaque de Scrum Master ── -->
       <div class="team-section">
         <div class="section-header">
           <h2>Nossos Especialistas</h2>
           <p>Conheça os talentos que constroem a tecnologia da nossa plataforma.</p>
         </div>
 
-        <!-- Líder em destaque — card largo e centralizado -->
-        <div class="team-member chefe-card">
-          <div class="member-photo-wrap">
-            <img src="./assets/img/davi_angelo.jpeg" class="member-avatar" alt="Davi Ângelo">
-            <div class="member-role-badge chefe-badge">👑</div>
+        <!-- Grid com 4 membros — layout 2×2 em mobile, 4 colunas em desktop -->
+        <div class="team-grid" style="grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 100%;">
+
+          <!-- Davi Ângelo — sem destaque especial, integrado à grid -->
+          <div class="team-member">
+            <div class="member-photo-wrap">
+              <img src="./assets/img/davi_angelo.jpeg" class="member-avatar" alt="Davi Ângelo">
+              <div class="member-role-badge">BK</div>
+            </div>
+            <h4>Davi Ângelo</h4>
+            <span class="role">Back-end · SM</span>
+            <p>Facilitador ágil que organiza o time, remove impedimentos e garante entregas contínuas com eficiência.</p>
           </div>
-          <h4>Davi Ângelo</h4>
-          <span class="role role-chefe">Back-end / Scrum Master</span>
-          <p>Facilitador ágil que organiza o time, remove impedimentos e garante entregas contínuas com eficiência.</p>
-        </div>
 
-        <!-- Separador sutil entre líder e equipe -->
-        <div class="team-divider">
-          <span>Equipe</span>
-        </div>
-
-        <!-- Grid dos demais colaboradores — compacto e sem excesso -->
-        <div class="team-grid">
+          <!-- Gabriel Avelino -->
           <div class="team-member">
             <div class="member-photo-wrap">
               <img src="./assets/img/gabriel_avelino.jpeg" class="member-avatar" alt="Gabriel Avelino">
@@ -221,9 +206,10 @@
             </div>
             <h4>Gabriel Avelino</h4>
             <span class="role">Back-end</span>
-            <p>Desenvolvedor focado em lógica e arquitetura, criando APIs seguras, escaláveis e com alto desempenho</p>
+            <p>Desenvolvedor focado em lógica e arquitetura, criando APIs seguras, escaláveis e com alto desempenho.</p>
           </div>
 
+          <!-- Gabriel Felipe -->
           <div class="team-member">
             <div class="member-photo-wrap">
               <img src="./assets/img/gabriel_felipe.jpeg" class="member-avatar" alt="Gabriel Felipe">
@@ -234,6 +220,7 @@
             <p>Especialista em sistemas e dados, garantindo integração eficiente, estabilidade e processamento confiável.</p>
           </div>
 
+          <!-- Kauã Lucas -->
           <div class="team-member">
             <div class="member-photo-wrap">
               <img src="./assets/img/kaua_lucas.jpeg" class="member-avatar" alt="Kauã Lucas">
@@ -241,10 +228,10 @@
             </div>
             <h4>Kauã Lucas</h4>
             <span class="role">Front-end</span>
-            <p>Desenvolvedor focado em interfaces modernas, criando componentes responsivos, interativos e com ótima experiência do usuário.</p>
+            <p>Desenvolvedor focado em interfaces modernas, criando componentes responsivos, interativos e com ótima UX.</p>
           </div>
-        </div>
 
+        </div>
       </div>
       <!-- ── FIM DO BLOCO DA EQUIPE ── -->
 
