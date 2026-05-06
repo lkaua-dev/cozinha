@@ -1,9 +1,50 @@
-# Ignore .vscode settings folder
-.vscode
+# ========================
+# VSCode / IDE
+# ========================
+.vscode/
+.idea/
 
-# Ignore node_modules
-node_modules/
-
-# Ignore Python cache files
+# ========================
+# Python
+# ========================
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+*.sqlite3
+
+# Ambiente virtual
+venv/
+.env/
+.venv/
+
+# ========================
+# Arquivos de ambiente
+# ========================
+.env
+.env.local
+.env.*.local
+
+# ========================
+# Logs
+# ========================
+*.log
+
+# ========================
+# Build / Distribuição
+# ========================
+dist/
+build/
+out/
+
+# ========================
+# Sistema operacional
+# ========================
+.DS_Store
+Thumbs.db
+
+# ========================
+# Arquivos temporários
+# ========================
+*.tmp
+*.temp

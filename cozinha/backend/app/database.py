@@ -1,6 +1,8 @@
 import mysql.connector
 
-#conexão com banco de dados
+# Database helper para conexão e execução de queries MySQL.
+# Retorna dados como dicionário para facilitar o uso no backend.
+
 def conectar():
     return mysql.connector.connect(
         host="localhost",
@@ -9,7 +11,7 @@ def conectar():
         database="cozinha"
     )
 
-#executa queries
+# executa queries
 def executar(query, valores=None, fetchone=False, fetchall=False):
     conn = conectar()
     cursor = conn.cursor(dictionary=True)

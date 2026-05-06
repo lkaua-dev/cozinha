@@ -5,17 +5,17 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   // ── Referências ────────────────────────────────────────────
-  const navTriggers    = document.querySelectorAll('.nav-trigger');
-  const paginas        = document.querySelectorAll('.pagina');
-  const navLinks       = document.querySelectorAll('.nav-link');
-  const hamburgerBtn   = document.getElementById('hamburger-btn');
-  const navMenu        = document.getElementById('nav-menu');
-  const navOverlay     = document.getElementById('nav-overlay');
+  const navTriggers = document.querySelectorAll('.nav-trigger');
+  const paginas = document.querySelectorAll('.pagina');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const navMenu = document.getElementById('nav-menu');
+  const navOverlay = document.getElementById('nav-overlay');
   const scrollProgress = document.getElementById('scroll-progress');
-  const header         = document.getElementById('header');
-  const desktopQuery   = window.matchMedia('(min-width: 901px)');
-  let scrollTicking    = false;
-  let headerScrolled   = false;
+  const header = document.getElementById('header');
+  const desktopQuery = window.matchMedia('(min-width: 901px)');
+  let scrollTicking = false;
+  let headerScrolled = false;
   let pageTransitionTimeout;
   const touchNavigation = new WeakMap();
   const scrollGestureLimit = 10;
@@ -169,9 +169,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Scroll Progress Bar ────────────────────────────────────
   function atualizarScrollProgress() {
-    const scrollTop    = window.scrollY;
-    const docHeight    = document.documentElement.scrollHeight - window.innerHeight;
-    const progress     = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
 
     if (scrollProgress && desktopQuery.matches) {
       scrollProgress.style.transform = `scaleX(${Math.min(progress, 100) / 100})`;
@@ -259,19 +259,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Efeito Ripple nos Botões ───────────────────────────────
   function adicionarRipple(e) {
-    const btn  = e.currentTarget;
+    const btn = e.currentTarget;
     const rect = btn.getBoundingClientRect();
     const size = Math.max(rect.width, rect.height);
-    const x    = e.clientX - rect.left - size / 2;
-    const y    = e.clientY - rect.top  - size / 2;
+    const x = e.clientX - rect.left - size / 2;
+    const y = e.clientY - rect.top - size / 2;
 
     const ripple = document.createElement('span');
     ripple.classList.add('ripple');
     Object.assign(ripple.style, {
-      width:  `${size}px`,
+      width: `${size}px`,
       height: `${size}px`,
-      left:   `${x}px`,
-      top:    `${y}px`,
+      left: `${x}px`,
+      top: `${y}px`,
     });
 
     btn.style.position = 'relative';
