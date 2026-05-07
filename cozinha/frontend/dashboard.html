@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Nunito:wght@400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap"
     rel="stylesheet" />
 
   <!-- ── Boxicons ──────────────────────────────────────────── -->
@@ -56,8 +56,8 @@
       --topbar-h: 68px;
 
       /* Tipografia */
-      --font-display: 'Playfair Display', Georgia, serif;
-      --font-body: 'Nunito', system-ui, sans-serif;
+      --font-display: 'Libre Baskerville', Georgia, serif;
+      --font-body: 'Source Serif 4', Georgia, serif;
 
       /* Bordas / Raios */
       --radius-sm: 10px;
@@ -88,6 +88,7 @@
     html {
       scroll-behavior: smooth;
       -webkit-text-size-adjust: 100%;
+      text-rendering: optimizeLegibility;
     }
 
     body {
@@ -97,6 +98,9 @@
       min-height: 100vh;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: auto;
+      touch-action: pan-y;
       transition: background 0.3s ease, color 0.3s ease;
     }
 
@@ -216,6 +220,12 @@
     button {
       font-family: var(--font-body);
       cursor: pointer;
+    }
+
+    input,
+    textarea,
+    select {
+      font-family: var(--font-body);
     }
 
     a {
@@ -496,14 +506,28 @@
 
     .app.sidebar-collapsed .nav-item {
       justify-content: center;
-      padding: 11px;
+      width: 48px;
+      height: 44px;
+      margin: 0 auto;
+      padding: 0;
       gap: 0;
+      text-align: center;
     }
 
     .app.sidebar-collapsed .nav-item i {
       margin: 0;
+      width: 22px;
       min-width: 22px;
+      height: 22px;
       flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .app.sidebar-collapsed .nav-label,
+    .app.sidebar-collapsed .nav-badge {
+      display: none;
+      padding: 0;
+      margin: 0;
     }
 
     .app.sidebar-collapsed .user-card {
@@ -540,7 +564,7 @@
        ============================================================ */
     .topbar {
       grid-column: 2;
-      height: var(--topbar-h);
+      min-height: var(--topbar-h);
       background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -561,6 +585,7 @@
       align-items: center;
       gap: 16px;
       min-width: 0;
+      flex: 1 1 auto;
     }
 
     /* Botão toggle sidebar */
@@ -619,7 +644,8 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      flex-shrink: 0;
+      flex: 0 1 auto;
+      min-width: 0;
     }
 
     /* Campo de busca */
@@ -632,6 +658,7 @@
       border: 1.5px solid var(--cream-deep);
       border-radius: var(--radius-full);
       transition: border-color var(--t), box-shadow var(--t);
+      min-width: 0;
     }
 
     .search-bar:focus-within {
@@ -651,7 +678,8 @@
       font-family: var(--font-body);
       font-size: 0.85rem;
       color: var(--brown);
-      width: 160px;
+      width: clamp(150px, 18vw, 240px);
+      min-width: 0;
     }
 
     .search-bar input::placeholder {
@@ -720,7 +748,8 @@
     .main-content {
       grid-column: 2;
       padding: clamp(24px, 3vw, 40px);
-      overflow-y: auto;
+      overflow: visible;
+      min-width: 0;
       animation: contentEnter 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
@@ -1722,10 +1751,16 @@
       /* Conteúdo ocupa tudo */
       .app {
         grid-template-columns: 1fr !important;
+        grid-template-rows: auto 1fr;
       }
 
       .topbar {
         grid-column: 1;
+        height: auto;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 10px 12px;
+        padding: 10px 16px;
       }
 
       .main-content {
@@ -1757,8 +1792,28 @@
         grid-template-columns: 1fr;
       }
 
+      .topbar-left {
+        flex: 1 1 calc(100% - 56px);
+      }
+
+      .topbar-right {
+        width: 100%;
+        flex: 1 1 100%;
+        align-items: stretch;
+      }
+
+      .search-wrapper {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+
       .search-bar {
-        display: none;
+        width: 100%;
+        min-height: 42px;
+      }
+
+      .search-bar input {
+        width: 100%;
       }
     }
 
@@ -1769,11 +1824,21 @@
       }
 
       .topbar {
-        padding: 0 16px;
+        padding: 10px 14px;
       }
 
       .page-title {
         font-size: 1rem;
+      }
+
+      .breadcrumb {
+        display: none;
+      }
+
+      .search-results {
+        left: 0;
+        right: 0;
+        max-height: min(280px, 55vh);
       }
 
       .panels-grid {
@@ -2053,30 +2118,60 @@
       max-height: 280px;
       overflow-y: auto;
       display: none;
+      transform-origin: top center;
     }
 
     .search-results.open {
       display: block;
+      animation: searchDrop 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes searchDrop {
+      from {
+        opacity: 0;
+        transform: translateY(-6px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     .search-result-item {
       display: flex;
       align-items: center;
       gap: 10px;
+      width: 100%;
       padding: 10px 14px;
       cursor: pointer;
-      transition: background var(--t);
+      background: transparent;
+      border: 0;
       border-bottom: 1px solid var(--cream);
+      text-align: left;
+      transition: background var(--t), color var(--t), transform var(--t);
       font-size: 0.83rem;
       color: var(--brown);
+    }
+
+    body.modal-open {
+      overflow: hidden;
     }
 
     .search-result-item:last-child {
       border-bottom: none;
     }
 
-    .search-result-item:hover {
+    .search-result-item:hover,
+    .search-result-item:focus-visible,
+    .search-result-item.best-match {
       background: var(--cream);
+      color: var(--terracotta);
+      outline: none;
+    }
+
+    .search-result-item:active {
+      transform: scale(0.99);
     }
 
     .search-result-item i {
@@ -2090,6 +2185,8 @@
       font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
+      margin-left: auto;
+      white-space: nowrap;
     }
 
     .search-wrapper {
@@ -2205,8 +2302,9 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(4px);
+      background: rgba(44, 24, 16, 0.48);
+      backdrop-filter: blur(8px) saturate(120%);
+      -webkit-backdrop-filter: blur(8px) saturate(120%);
       z-index: 800;
       display: flex;
       align-items: center;
@@ -2214,36 +2312,62 @@
       padding: 20px;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.25s;
+      visibility: hidden;
+      transition: opacity 0.24s ease, visibility 0.24s ease;
+      will-change: opacity;
     }
 
     .modal-overlay.open {
       opacity: 1;
       pointer-events: all;
+      visibility: visible;
+    }
+
+    .modal-overlay.closing {
+      opacity: 0;
+      pointer-events: none;
     }
 
     .modal-box {
-      background: var(--white);
+      background:
+        linear-gradient(180deg, rgba(200, 96, 58, 0.045), transparent 34%),
+        var(--white);
+      border: 1.5px solid rgba(200, 96, 58, 0.13);
       border-radius: var(--radius-lg);
-      padding: 28px;
+      padding: clamp(22px, 4vw, 30px);
       width: 100%;
-      max-width: 480px;
+      max-width: min(480px, 100%);
       box-shadow: var(--shadow-float);
-      transform: translateY(16px) scale(0.97);
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      max-height: 90vh;
+      opacity: 0;
+      transform: translateY(18px) scale(0.97);
+      transition:
+        opacity 0.24s ease,
+        transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+      max-height: min(90vh, 720px);
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      will-change: transform, opacity;
     }
 
     .modal-overlay.open .modal-box {
+      opacity: 1;
       transform: translateY(0) scale(1);
+    }
+
+    .modal-overlay.closing .modal-box {
+      opacity: 0;
+      transform: translateY(14px) scale(0.985);
+      transition-duration: 0.2s;
     }
 
     .modal-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 20px;
+      gap: 16px;
+      margin-bottom: 22px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--cream-deep);
     }
 
     .modal-title {
@@ -2254,8 +2378,8 @@
     }
 
     .modal-close {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       border: none;
       background: var(--cream);
       border-radius: var(--radius-sm);
@@ -2265,11 +2389,19 @@
       justify-content: center;
       color: var(--brown-mid);
       font-size: 1.1rem;
-      transition: background var(--t);
+      transition: background var(--t), color var(--t), transform var(--t), box-shadow var(--t);
+      flex-shrink: 0;
     }
 
     .modal-close:hover {
       background: var(--cream-deep);
+      color: var(--terracotta);
+      transform: rotate(6deg) scale(1.04);
+    }
+
+    .modal-close:focus-visible {
+      outline: 3px solid rgba(200, 96, 58, 0.22);
+      outline-offset: 2px;
     }
 
     .modal-field {
@@ -2298,13 +2430,15 @@
       color: var(--brown);
       background: var(--cream);
       outline: none;
-      transition: border-color var(--t);
+      transition: border-color var(--t), box-shadow var(--t), background var(--t);
     }
 
     .modal-input:focus,
     .modal-select:focus,
     .modal-textarea:focus {
       border-color: var(--terracotta);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(200, 96, 58, 0.11);
     }
 
     .modal-textarea {
@@ -2317,6 +2451,7 @@
       gap: 10px;
       justify-content: flex-end;
       margin-top: 20px;
+      flex-wrap: wrap;
     }
 
     .btn-primary {
@@ -2352,6 +2487,28 @@
 
     .btn-secondary:hover {
       background: var(--cream-deep);
+    }
+
+    @media (max-width: 560px) {
+      .modal-overlay {
+        padding: 14px;
+        align-items: flex-end;
+      }
+
+      .modal-box {
+        max-height: min(88vh, 680px);
+        border-radius: var(--radius-lg) var(--radius-lg) var(--radius) var(--radius);
+      }
+
+      .modal-footer {
+        flex-direction: column-reverse;
+      }
+
+      .modal-footer .btn-primary,
+      .modal-footer .btn-secondary,
+      .modal-footer .btn-danger {
+        width: 100%;
+      }
     }
 
     body.dark-mode .modal-box {
@@ -2630,6 +2787,17 @@
         display: none;
       }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
 
@@ -2657,10 +2825,10 @@
   <div class="toast-container" id="toast-container"></div>
 
   <!-- Modal: Adicionar Card Kanban -->
-  <div class="modal-overlay" id="modal-kanban">
+  <div class="modal-overlay" id="modal-kanban" role="dialog" aria-modal="true" aria-labelledby="modal-kanban-title">
     <div class="modal-box">
       <div class="modal-header">
-        <span class="modal-title">Novo Card</span>
+        <span class="modal-title" id="modal-kanban-title">Novo Card</span>
         <button class="modal-close" onclick="fecharModal('modal-kanban')"><i class='bx bx-x'></i></button>
       </div>
       <div class="modal-field">
@@ -2703,10 +2871,10 @@
   </div>
 
   <!-- Modal: Adicionar Ficha Técnica -->
-  <div class="modal-overlay" id="modal-ficha">
+  <div class="modal-overlay" id="modal-ficha" role="dialog" aria-modal="true" aria-labelledby="modal-ficha-title">
     <div class="modal-box">
       <div class="modal-header">
-        <span class="modal-title">Nova Ficha Técnica</span>
+        <span class="modal-title" id="modal-ficha-title">Nova Ficha Técnica</span>
         <button class="modal-close" onclick="fecharModal('modal-ficha')"><i class='bx bx-x'></i></button>
       </div>
       <div class="modal-field">
@@ -2743,10 +2911,10 @@
   </div>
 
   <!-- Modal: Adicionar Item Cardápio -->
-  <div class="modal-overlay" id="modal-cardapio">
+  <div class="modal-overlay" id="modal-cardapio" role="dialog" aria-modal="true" aria-labelledby="modal-cardapio-title">
     <div class="modal-box">
       <div class="modal-header">
-        <span class="modal-title">Novo Item do Cardápio</span>
+        <span class="modal-title" id="modal-cardapio-title">Novo Item do Cardápio</span>
         <button class="modal-close" onclick="fecharModal('modal-cardapio')"><i class='bx bx-x'></i></button>
       </div>
       <div class="modal-field">
@@ -2784,10 +2952,10 @@
   </div>
 
   <!-- Modal: Adicionar Item Estoque -->
-  <div class="modal-overlay" id="modal-estoque">
+  <div class="modal-overlay" id="modal-estoque" role="dialog" aria-modal="true" aria-labelledby="modal-estoque-title">
     <div class="modal-box">
       <div class="modal-header">
-        <span class="modal-title">Novo Item de Estoque</span>
+        <span class="modal-title" id="modal-estoque-title">Novo Item de Estoque</span>
         <button class="modal-close" onclick="fecharModal('modal-estoque')"><i class='bx bx-x'></i></button>
       </div>
       <div class="modal-field">
@@ -2814,7 +2982,7 @@
   </div>
 
   <!-- Modal: Confirmação -->
-  <div class="modal-overlay" id="modal-confirm">
+  <div class="modal-overlay" id="modal-confirm" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
     <div class="modal-box confirm-box">
       <div class="confirm-icon"><i class='bx bx-log-out-circle'></i></div>
       <div class="modal-title" id="confirm-title">Confirmar ação</div>
@@ -3006,11 +3174,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Botão Home -->
-        <button class="icon-btn" id="btn-home" title="Voltar à homepage" aria-label="Voltar à homepage">
-          <i class='bx bx-home'></i>
-        </button>
 
         <!-- Avatar do usuário logado -->
         <div class="topbar-avatar" role="button" tabindex="0" aria-label="Menu do usuário" title="Admin Cozinha">
@@ -4623,14 +4786,45 @@
     // MODAL SYSTEM
     // ================================================================
 
+    const MODAL_ANIMATION_MS = 260;
+    const modalCloseTimers = new WeakMap();
+
+    function existeModalAberto() {
+      return !!document.querySelector('.modal-overlay.open:not(.closing)');
+    }
+
     function abrirModal(id) {
       const m = document.getElementById(id);
-      if (m) m.classList.add('open');
+      if (!m) return;
+
+      const pendingTimer = modalCloseTimers.get(m);
+      if (pendingTimer) {
+        clearTimeout(pendingTimer);
+        modalCloseTimers.delete(m);
+      }
+
+      m.classList.remove('closing');
+      m.classList.add('open');
+      DOM.body.classList.add('modal-open');
+
+      requestAnimationFrame(() => {
+        const focusTarget = m.querySelector('input, select, textarea, button');
+        focusTarget?.focus({ preventScroll: true });
+      });
     }
 
     function fecharModal(id) {
       const m = document.getElementById(id);
-      if (m) m.classList.remove('open');
+      if (!m || !m.classList.contains('open')) return;
+
+      m.classList.add('closing');
+      const timer = setTimeout(() => {
+        m.classList.remove('open', 'closing');
+        modalCloseTimers.delete(m);
+        if (!existeModalAberto()) DOM.body.classList.remove('modal-open');
+      }, MODAL_ANIMATION_MS);
+
+      modalCloseTimers.set(m, timer);
     }
 
     let pendingConfirmAction = null;
@@ -4665,7 +4859,7 @@
     document.addEventListener('click', (e) => {
       if (e.target.classList.contains('modal-overlay')) {
         if (e.target.id === 'modal-confirm') fecharConfirmacao();
-        else e.target.classList.remove('open');
+        else fecharModal(e.target.id);
       }
     });
 
@@ -4673,7 +4867,7 @@
       if (e.key === 'Escape') {
         document.querySelectorAll('.modal-overlay.open').forEach(m => {
           if (m.id === 'modal-confirm') fecharConfirmacao();
-          else m.classList.remove('open');
+          else fecharModal(m.id);
         });
       }
     });
@@ -4722,6 +4916,15 @@
     // ================================================================
 
     const SEARCH_INDEX = [
+      { label: 'Dashboard', section: 'Visão Geral', page: 'dashboard', icon: 'bx-grid-alt' },
+      { label: 'Estoque', section: 'Módulo', page: 'estoque', icon: 'bx-box' },
+      { label: 'Cardápio & PCP', section: 'Módulo', page: 'cardapio', icon: 'bx-book-content' },
+      { label: 'Kanban', section: 'Módulo', page: 'kanban', icon: 'bx-columns' },
+      { label: 'POPs & Fichas Técnicas', section: 'Módulo', page: 'pops', icon: 'bx-file-blank' },
+      { label: 'Curva ABC', section: 'Análises', page: 'analises-abc', icon: 'bx-bar-chart-alt-2' },
+      { label: 'CMV & Custos', section: 'Análises', page: 'analises-cmv', icon: 'bx-line-chart' },
+      { label: 'Relatórios', section: 'Sistema', page: 'relatorios', icon: 'bx-receipt' },
+      { label: 'Configurações', section: 'Sistema', page: 'configuracoes', icon: 'bx-cog' },
       { label: 'Filé de Frango', section: 'Estoque', page: 'estoque', icon: 'bx-box' },
       { label: 'Carne Bovina', section: 'Estoque', page: 'estoque', icon: 'bx-box' },
       { label: 'Azeite Extra Virgem', section: 'Estoque', page: 'estoque', icon: 'bx-box' },
@@ -4729,13 +4932,156 @@
       { label: 'Feijão Carioca', section: 'Estoque', page: 'estoque', icon: 'bx-box' },
       { label: 'Frango Grelhado', section: 'Fichas Técnicas', page: 'pops', icon: 'bx-file-blank' },
       { label: 'Bife Acebolado', section: 'Fichas Técnicas', page: 'pops', icon: 'bx-file-blank' },
-      { label: 'Curva ABC', section: 'Análises', page: 'analises-abc', icon: 'bx-bar-chart-alt-2' },
-      { label: 'CMV & Custos', section: 'Análises', page: 'analises-cmv', icon: 'bx-line-chart' },
       { label: 'Cardápio Semanal', section: 'Planejamento', page: 'cardapio', icon: 'bx-book-content' },
       { label: 'Kanban de Processos', section: 'Operações', page: 'kanban', icon: 'bx-columns' },
-      { label: 'Relatórios', section: 'Sistema', page: 'relatorios', icon: 'bx-receipt' },
-      { label: 'Configurações', section: 'Sistema', page: 'configuracoes', icon: 'bx-cog' },
     ];
+
+    const SEARCH_ALIASES = {
+      dashboard: ['painel', 'inicio', 'home', 'visao geral', 'indicadores', 'kpis'],
+      estoque: ['insumo', 'insumos', 'produtos', 'almoxarifado', 'alerta', 'critico'],
+      cardapio: ['menu', 'pcp', 'planejamento', 'prato', 'semana', 'semanal'],
+      kanban: ['processos', 'tarefas', 'cards', 'status', 'operacoes'],
+      pops: ['ficha', 'fichas', 'receita', 'receitas', 'pop', 'procedimento', 'tecnica'],
+      'analises-abc': ['abc', 'curva', 'classificacao', 'impacto', 'analise'],
+      'analises-cmv': ['cmv', 'custos', 'custo', 'margem', 'despesa'],
+      relatorios: ['relatorio', 'documentos', 'exportar', 'download'],
+      configuracoes: ['config', 'preferencias', 'tema', 'idioma', 'conta', 'logout', 'sair'],
+    };
+
+    function normalizarBusca(value) {
+      return String(value || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim();
+    }
+
+    function distanciaLevenshtein(a, b) {
+      if (!a || !b) return Math.max(a.length, b.length);
+      const matrix = Array.from({ length: b.length + 1 }, (_, i) => [i]);
+
+      for (let j = 0; j <= a.length; j += 1) matrix[0][j] = j;
+
+      for (let i = 1; i <= b.length; i += 1) {
+        for (let j = 1; j <= a.length; j += 1) {
+          const custo = a[j - 1] === b[i - 1] ? 0 : 1;
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j] + 1,
+            matrix[i][j - 1] + 1,
+            matrix[i - 1][j - 1] + custo
+          );
+        }
+      }
+
+      return matrix[b.length][a.length];
+    }
+
+    function textoBuscaItem(item) {
+      const pageConfig = getPageConfig(item.page) || {};
+      return [
+        item.label,
+        item.section,
+        pageConfig.title,
+        pageConfig.breadcrumb,
+        ...(SEARCH_ALIASES[item.page] || []),
+      ].map(normalizarBusca).join(' ');
+    }
+
+    function pontuarResultadoBusca(item, query) {
+      const q = normalizarBusca(query);
+      if (!q) return 0;
+
+      const label = normalizarBusca(item.label);
+      const section = normalizarBusca(item.section);
+      const pageTitle = normalizarBusca(getPageConfig(item.page)?.title || '');
+      const haystack = textoBuscaItem(item);
+      const queryWords = q.split(/\s+/).filter(Boolean);
+      const haystackWords = haystack.split(/\s+/).filter(Boolean);
+      let score = 0;
+
+      if (label === q) score += 130;
+      if (pageTitle === q) score += 120;
+      if (section === q) score += 100;
+      if (label && label === pageTitle) score += 26;
+
+      if (label.includes(q)) score += 84 - Math.min(label.indexOf(q), 24);
+      if (pageTitle.includes(q)) score += 76 - Math.min(pageTitle.indexOf(q), 24);
+      if (section.includes(q)) score += 62 - Math.min(section.indexOf(q), 18);
+      if (haystack.includes(q)) score += 44 - Math.min(haystack.indexOf(q) / 2, 18);
+
+      if (queryWords.length && queryWords.every(word => haystack.includes(word))) {
+        score += 34 + queryWords.length * 6;
+      }
+
+      queryWords.forEach(word => {
+        if (haystackWords.some(target => target.startsWith(word))) score += 18;
+        if (haystackWords.some(target => target.includes(word))) score += 8;
+
+        if (word.length >= 3) {
+          const melhorDistancia = Math.min(...haystackWords.map(target => distanciaLevenshtein(word, target)));
+          if (melhorDistancia <= 2) score += 22 - melhorDistancia * 7;
+        }
+      });
+
+      return score;
+    }
+
+    function obterResultadosBusca(query, limit = 6) {
+      return SEARCH_INDEX
+        .map(item => ({ item, score: pontuarResultadoBusca(item, query) }))
+        .filter(result => result.score > 0)
+        .sort((a, b) => b.score - a.score || a.item.label.localeCompare(b.item.label))
+        .slice(0, limit);
+    }
+
+    function esconderResultadosBusca(results) {
+      results.classList.remove('open');
+      results.innerHTML = '';
+    }
+
+    function renderizarResultadosBusca(matches, results) {
+      results.innerHTML = '';
+
+      if (!matches.length) {
+        const empty = document.createElement('div');
+        empty.className = 'search-empty';
+        empty.style.cssText = 'padding:12px 16px;font-size:0.83rem;color:var(--text-muted);';
+        empty.textContent = uiText('search_empty');
+        results.appendChild(empty);
+        results.classList.add('open');
+        return;
+      }
+
+      matches.forEach(({ item }, index) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = `search-result-item${index === 0 ? ' best-match' : ''}`;
+        button.dataset.page = item.page;
+        button.dataset.label = item.label;
+
+        const icon = document.createElement('i');
+        icon.className = `bx ${item.icon}`;
+
+        const label = document.createElement('span');
+        label.textContent = item.label;
+
+        const section = document.createElement('span');
+        section.className = 'search-result-section';
+        section.textContent = getPageConfig(item.page)?.title || item.section;
+
+        button.append(icon, label, section);
+        results.appendChild(button);
+      });
+
+      results.classList.add('open');
+    }
+
+    function redirecionarResultadoBusca(item, input, results) {
+      navegarPara(item.page);
+      input.value = '';
+      esconderResultadosBusca(results);
+      toast(`Abrindo ${getPageConfig(item.page)?.title || item.label}`, 'info', 1800);
+    }
 
     function setupBusca() {
       const input = document.getElementById('search-input');
@@ -4743,31 +5089,39 @@
       if (!input || !results) return;
 
       input.addEventListener('input', () => {
-        const q = input.value.trim().toLowerCase();
-        if (!q) { results.classList.remove('open'); return; }
+        const q = input.value.trim();
+        if (!q) { esconderResultadosBusca(results); return; }
 
-        const matches = SEARCH_INDEX.filter(item => {
-          const pageTitle = getPageConfig(item.page)?.title || item.section;
-          return item.label.toLowerCase().includes(q) || pageTitle.toLowerCase().includes(q);
-        }).slice(0, 6);
+        renderizarResultadosBusca(obterResultadosBusca(q), results);
+      });
 
-        if (!matches.length) {
-          results.innerHTML = `<div style="padding:12px 16px;font-size:0.83rem;color:var(--text-muted);">${uiText('search_empty')}</div>`;
+      input.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter') return;
+
+        e.preventDefault();
+        const melhorResultado = obterResultadosBusca(input.value, 1)[0]?.item;
+
+        if (melhorResultado) {
+          redirecionarResultadoBusca(melhorResultado, input, results);
         } else {
-          results.innerHTML = matches.map(m => `
-        <div class="search-result-item" onclick="navegarPara('${m.page}');document.getElementById('search-input').value='';document.getElementById('search-results').classList.remove('open')">
-          <i class='bx ${m.icon}'></i>
-          <span>${m.label}</span>
-          <span class="search-result-section" style="margin-left:auto">${getPageConfig(m.page)?.title || m.section}</span>
-        </div>
-      `).join('');
+          renderizarResultadosBusca([], results);
         }
-        results.classList.add('open');
+      });
+
+      results.addEventListener('click', (e) => {
+        const item = e.target.closest('.search-result-item');
+        if (!item) return;
+
+        const page = item.dataset.page;
+        const resultado = SEARCH_INDEX.find(entry => entry.page === page && entry.label === item.dataset.label)
+          || SEARCH_INDEX.find(entry => entry.page === page);
+
+        if (resultado) redirecionarResultadoBusca(resultado, input, results);
       });
 
       document.addEventListener('click', (e) => {
         if (!input.closest('.search-wrapper').contains(e.target)) {
-          results.classList.remove('open');
+          esconderResultadosBusca(results);
         }
       });
     }
@@ -5064,7 +5418,7 @@
       atualizarNavAtiva(pageId);
       AppState.currentPage = pageId;
       localStorage.setItem('current-page', pageId);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: isMobile() ? 'auto' : 'smooth' });
     }
 
     function atualizarNavAtiva(pageId) {
@@ -5475,11 +5829,6 @@
           const lang = btn.getAttribute('data-lang');
           selecionarIdioma(lang);
         });
-      });
-
-      // Home button
-      document.getElementById('btn-home')?.addEventListener('click', () => {
-        window.location.replace('login.html');
       });
 
       // Logout button

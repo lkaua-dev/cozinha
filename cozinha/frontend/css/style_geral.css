@@ -3,7 +3,7 @@
    style_geral.css
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Nunito:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap');
 
 /* ── Variáveis ─────────────────────────────────────────────── */
 :root {
@@ -28,6 +28,8 @@
   --radius: 16px;
   --radius-sm: 10px;
   --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-display: 'Libre Baskerville', Georgia, serif;
+  --font-body: 'Source Serif 4', Georgia, serif;
 }
 
 /* ── Reset ─────────────────────────────────────────────────── */
@@ -43,10 +45,11 @@ html {
   font-size: 16px;
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  font-family: 'Nunito', sans-serif;
+  font-family: var(--font-body);
   background-color: var(--cream);
   color: var(--brown);
   min-height: 100vh;
@@ -73,7 +76,7 @@ h1,
 h2,
 h3,
 .serif {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);
 }
 
 /* ── Utilitários ───────────────────────────────────────────── */
@@ -96,7 +99,7 @@ h3,
   padding: 14px 24px;
   background: var(--terracotta);
   color: var(--white);
-  font-family: 'Nunito', sans-serif;
+  font-family: var(--font-body);
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -191,7 +194,7 @@ h3,
   background: var(--white);
   border: 1.5px solid var(--cream-deep);
   border-radius: var(--radius-sm);
-  font-family: 'Nunito', sans-serif;
+  font-family: var(--font-body);
   font-size: 0.95rem;
   color: var(--brown);
   transition: border-color var(--transition), box-shadow var(--transition);
@@ -371,5 +374,16 @@ a.link:hover {
 @media (max-width: 900px) {
   html {
     scroll-behavior: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }
