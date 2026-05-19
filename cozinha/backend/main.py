@@ -32,7 +32,14 @@ def gerar_token():
 
 @main.before_request
 def validar_token():
-    if request.endpoint in ("login", "static", None):
+    if request.endpoint in (
+    "login",
+    "static",
+    "listar_estoque",
+    "cadastrar_estoque",
+    "excluir_estoque",
+    None
+    ):
         return None
 
     token = obter_token()
@@ -104,6 +111,74 @@ def logout():
 
     return jsonify({"erro": "Token inválido"}), 401
 
+# ── LISTAR ESTOQUE ──────────────────────────
+@main.route("/estoque", methods=["GET"])
+def listar_estoque():
+    try:
+        itens = executar(
+            "SELECT * FROM estoque ORDER BY nome ASC",
+            fetchall=True
+        )
+
+        return jsonify(itens), 200
+
+    except Exception as e:
+        print("Erro ao listar estoque:", e)
+        return jsonify({"erro": "Erro ao buscar estoque"}), 500
+
+
+# ── CADASTRAR ITEM ──────────────────────────
+@main.route("/estoque", methods=["POST"])
+def cadastrar_estoque():
+    try:
+        data = request.get_json()
+
+        nome = data.get("nome")
+        quantidade = data.get("quantidade")
+        unidade = data.get("unidade")
+        validade = data.get("validade")
+        minimo = data.get("minimo")
+
+        executar(
+            """
+            INSERT INTO estoque
+            (nome, quantidade, unidade, validade, minimo)
+            VALUES (%s, %s, %s, %s, %s)
+            """,
+            (nome, quantidade, unidade, validade, minimo)
+        )
+
+        return jsonify({
+            "mensagem": "Item cadastrado com sucesso"
+        }), 201
+
+    except Exception as e:
+        print("Erro ao cadastrar:", e)
+
+        return jsonify({
+            "erro": "Erro ao cadastrar item"
+        }), 500
+
+
+# ── EXCLUIR ITEM ──────────────────────────
+@main.route("/estoque/<int:id>", methods=["DELETE"])
+def excluir_estoque(id):
+    try:
+        executar(
+            "DELETE FROM estoque WHERE id = %s",
+            (id,)
+        )
+
+        return jsonify({
+            "mensagem": "Item removido"
+        }), 200
+
+    except Exception as e:
+        print("Erro ao excluir:", e)
+
+        return jsonify({
+            "erro": "Erro ao excluir item"
+        }), 500
 
 # ── Rodar servidor ───────────────────────────
 if __name__ == "__main__":

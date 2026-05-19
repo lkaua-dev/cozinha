@@ -3418,76 +3418,7 @@
                   </tr>
                 </thead>
                 <tbody id="estoque-tbody">
-                  <tr>
-                    <td><strong>Filé de Frango</strong></td>
-                    <td>1 kg</td>
-                    <td>2.4 kg</td>
-                    <td>5 kg</td>
-                    <td>
-                      <div class="estoque-progress-bar">
-                        <div class="estoque-progress-fill prog-critico" style="width:48%"></div>
-                      </div>
-                    </td>
-                    <td><span class="abc-status critico"><i class='bx bx-error'></i> Crítico</span></td>
-                    <td><button class="pcp-btn del" onclick="removerLinhaEstoque(this)"><i
-                          class='bx bx-trash'></i></button></td>
-                  </tr>
-                  <tr>
-                    <td><strong>Carne Bovina</strong></td>
-                    <td>1.5 kg</td>
-                    <td>3.1 kg</td>
-                    <td>6 kg</td>
-                    <td>
-                      <div class="estoque-progress-bar">
-                        <div class="estoque-progress-fill prog-alerta" style="width:52%"></div>
-                      </div>
-                    </td>
-                    <td><span class="abc-status alerta"><i class='bx bx-time'></i> Alerta</span></td>
-                    <td><button class="pcp-btn del" onclick="removerLinhaEstoque(this)"><i
-                          class='bx bx-trash'></i></button></td>
-                  </tr>
-                  <tr>
-                    <td><strong>Azeite Extra Virgem</strong></td>
-                    <td>0.5 L</td>
-                    <td>1.2 L</td>
-                    <td>2 L</td>
-                    <td>
-                      <div class="estoque-progress-bar">
-                        <div class="estoque-progress-fill prog-critico" style="width:60%"></div>
-                      </div>
-                    </td>
-                    <td><span class="abc-status critico"><i class='bx bx-error'></i> Crítico</span></td>
-                    <td><button class="pcp-btn del" onclick="removerLinhaEstoque(this)"><i
-                          class='bx bx-trash'></i></button></td>
-                  </tr>
-                  <tr>
-                    <td><strong>Arroz Parboilizado</strong></td>
-                    <td>5 kg</td>
-                    <td>8.0 kg</td>
-                    <td>15 kg</td>
-                    <td>
-                      <div class="estoque-progress-bar">
-                        <div class="estoque-progress-fill prog-ok" style="width:53%"></div>
-                      </div>
-                    </td>
-                    <td><span class="abc-status ok"><i class='bx bx-check'></i> OK</span></td>
-                    <td><button class="pcp-btn del" onclick="removerLinhaEstoque(this)"><i
-                          class='bx bx-trash'></i></button></td>
-                  </tr>
-                  <tr>
-                    <td><strong>Feijão Carioca</strong></td>
-                    <td>3 kg</td>
-                    <td>5.5 kg</td>
-                    <td>12 kg</td>
-                    <td>
-                      <div class="estoque-progress-bar">
-                        <div class="estoque-progress-fill prog-ok" style="width:46%"></div>
-                      </div>
-                    </td>
-                    <td><span class="abc-status ok"><i class='bx bx-check'></i> OK</span></td>
-                    <td><button class="pcp-btn del" onclick="removerLinhaEstoque(this)"><i
-                          class='bx bx-trash'></i></button></td>
-                  </tr>
+                  
                 </tbody>
               </table>
             </div>
@@ -5637,36 +5568,93 @@
     // ESTOQUE
     // ================================================================
 
-    function adicionarItemEstoque() {
-      const nome = document.getElementById('est-nome')?.value.trim();
-      const min = document.getElementById('est-min')?.value.trim();
-      const atual = document.getElementById('est-atual')?.value.trim();
-      const max = document.getElementById('est-max')?.value.trim();
+    async function adicionarItemEstoque() {
 
-      if (!nome) { toast('Informe o nome do item', 'warning'); return; }
+    const nome = document.getElementById('est-nome').value;
 
-      const tbody = document.getElementById('estoque-tbody');
-      if (!tbody) return;
+    const minimoTexto = document.getElementById('est-min').value;
 
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-    <td><strong>${nome}</strong></td>
-    <td>${min || '—'}</td>
-    <td>${atual || '—'}</td>
-    <td>${max || '—'}</td>
-    <td><div class="estoque-progress-bar"><div class="estoque-progress-fill prog-ok" style="width:50%"></div></div></td>
-    <td><span class="abc-status ok"><i class='bx bx-check'></i> OK</span></td>
-    <td><button class="pcp-btn del" onclick="removerLinhaEstoque(this)"><i class='bx bx-trash'></i></button></td>
-  `;
-      tbody.appendChild(tr);
+    const atualTexto = document.getElementById('est-atual').value;
 
-      fecharModal('modal-estoque');
-      ['est-nome', 'est-min', 'est-atual', 'est-max'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = '';
-      });
-      toast(`Item "${nome}" adicionado ao estoque`, 'success');
+    const maxTexto = document.getElementById('est-max').value;
+
+    if (!nome || !minimoTexto || !atualTexto || !maxTexto) {
+
+        alert('Preencha todos os campos');
+
+        return;
     }
+
+    // Extrai número e unidade
+    const minimo = parseFloat(minimoTexto);
+
+    const quantidade = parseFloat(atualTexto);
+
+    const maximo = parseFloat(maxTexto);
+
+    // Detecta unidade automaticamente
+    let unidade = 'un';
+
+    if (minimoTexto.includes('kg')) {
+        unidade = 'kg';
+    } else if (minimoTexto.includes('L')) {
+        unidade = 'L';
+    }
+
+    try {
+
+        const response = await fetch('http://localhost:5000/estoque', {
+
+            method: 'POST',
+
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify({
+
+                nome: nome,
+
+                quantidade: quantidade,
+
+                unidade: unidade,
+
+                validade: null,
+
+                minimo: minimo
+            })
+        });
+
+        const resultado = await response.json();
+
+        console.log(resultado);
+
+        // Fecha modal
+        fecharModal('modal-estoque');
+
+        // Limpa campos
+        document.getElementById('est-nome').value = '';
+
+        document.getElementById('est-min').value = '';
+
+        document.getElementById('est-atual').value = '';
+
+        document.getElementById('est-max').value = '';
+
+        // Atualiza tabela
+        carregarEstoque();
+
+        alert('Item cadastrado com sucesso!');
+
+    } catch (erro) {
+
+        console.error('Erro ao cadastrar item:', erro);
+
+        alert('Erro ao cadastrar item');
+
+    }
+}
+      
 
     function removerLinhaEstoque(btn) {
       const tr = btn.closest('tr');
@@ -5936,6 +5924,115 @@
       fetchKPIs, fetchCMVSemanal, fetchAlertas,
       toast, abrirModal, fecharModal,
     };
+
+    async function carregarEstoque() {
+    try {
+        const response = await fetch('http://localhost:5000/estoque');
+
+        const itens = await response.json();
+
+        console.log("📦 Estoque carregado:", itens);
+
+    } catch (erro) {
+        console.error('Erro ao carregar estoque:', erro);
+    }
+}
+
+
+async function carregarEstoque() {
+    try {
+        const response = await fetch('http://localhost:5000/estoque');
+
+        const itens = await response.json();
+
+        console.log("📦 Estoque carregado:", itens);
+
+        const tbody = document.getElementById('estoque-tbody');
+
+        tbody.innerHTML = '';
+
+        itens.forEach(item => {
+
+            let status = 'ok';
+            let statusTexto = 'OK';
+            let classeBarra = 'prog-ok';
+            let icone = 'bx-check';
+
+            if (item.quantidade <= item.minimo) {
+                status = 'critico';
+                statusTexto = 'Crítico';
+                classeBarra = 'prog-critico';
+                icone = 'bx-error';
+            }
+
+            const porcentagem = Math.min(
+                (item.quantidade / (item.minimo * 2)) * 100,
+                100
+            );
+
+            tbody.innerHTML += `
+                <tr>
+                    <td><strong>${item.nome}</strong></td>
+
+                    <td>${item.minimo} ${item.unidade}</td>
+
+                    <td>${item.quantidade} ${item.unidade}</td>
+
+                    <td>${item.minimo * 2} ${item.unidade}</td>
+
+                    <td>
+                        <div class="estoque-progress-bar">
+                            <div class="estoque-progress-fill ${classeBarra}"
+                                 style="width:${porcentagem}%">
+                            </div>
+                        </div>
+                    </td>
+
+                    <td>
+                        <span class="abc-status ${status}">
+                            <i class='bx ${icone}'></i>
+                            ${statusTexto}
+                        </span>
+                    </td>
+
+                    <td>
+                        <button class="pcp-btn del"
+                                onclick="excluirItem(${item.id})">
+                            <i class='bx bx-trash'></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+    } catch (erro) {
+        console.error('Erro ao carregar estoque:', erro);
+    }
+}
+
+async function excluirItem(id) {
+
+    if (!confirm('Deseja excluir este item?')) {
+        return;
+    }
+
+    try {
+
+        await fetch(`http://localhost:5000/estoque/${id}`, {
+            method: 'DELETE'
+        });
+
+        carregarEstoque();
+
+    } catch (erro) {
+
+        console.error('Erro ao excluir:', erro);
+
+    }
+}
+
+carregarEstoque();
+
   </script>
 </body>
 
