@@ -16,7 +16,7 @@ DB_CONFIG = {
 def conectar():
     return mysql.connector.connect(**DB_CONFIG)
 
-
+# Context manager para gerenciar conexões e cursores do banco de dados, garantindo que sejam fechados corretamente mesmo em caso de erros, e permitindo a execução de múltiplas operações dentro do mesmo contexto
 @contextmanager
 def get_cursor(dictionary=True):
     conn = conectar()

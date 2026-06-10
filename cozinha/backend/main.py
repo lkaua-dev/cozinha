@@ -9,7 +9,7 @@ from app.database import executar, get_cursor
 app = Flask(__name__)
 CORS(app)
 
-
+# Função auxiliar para converter valores para float de forma segura, tratando casos de None ou valores inválidos
 def float_safe(value):
     if value is None:
         return 0.0
@@ -18,7 +18,7 @@ def float_safe(value):
     except (TypeError, ValueError):
         return 0.0
 
-
+# Calcula o status do estoque com base na quantidade e no mínimo definido
 def calcular_status_estoque(quantidade, minimo):
     quantidade = float_safe(quantidade)
     minimo = float_safe(minimo)
@@ -32,7 +32,7 @@ def calcular_status_estoque(quantidade, minimo):
         return "alerta"
     return "normal"
 
-
+# Calcula o nível de progresso do estoque em relação ao mínimo, retornando um percentual entre 0 e 100
 def calcular_nivel_progresso(quantidade, minimo):
     quantidade = float_safe(quantidade)
     minimo = float_safe(minimo)
@@ -43,7 +43,7 @@ def calcular_nivel_progresso(quantidade, minimo):
     pct = (quantidade / minimo) * 100
     return max(0, min(round(pct, 2), 100))
 
-
+# Calcula o status de validade com base na data de validade, retornando "vencido", "vence_em_7_dias" ou "ok"
 def calcular_status_validade(validade):
     if not validade:
         return None
@@ -60,7 +60,7 @@ def calcular_status_validade(validade):
         return "vence_em_7_dias"
     return "ok"
 
-
+# Enriquecer o item do estoque com os status calculados e outras informações derivadas, como falta para o mínimo e validade formatada
 def enriquecer_item(item):
     quantidade = item.get("quantidade")
     minimo = item.get("minimo")
@@ -80,12 +80,12 @@ def enriquecer_item(item):
         "validade": validade,
     }
 
-
+# le os items do banco, ordenando do mais recente para o mais antigo, e já retorna eles enriquecidos com os status calculados
 def buscar_itens():
     itens = executar("SELECT * FROM estoque ORDER BY created_at DESC", fetchall=True) or []
     return [enriquecer_item(item) for item in itens]
 
-
+# Monta um resumo para o dashboard, calculando totais, contagens por status e percentuais com base nos itens do estoque
 def montar_resumo_dashboard():
     itens = buscar_itens()
 
@@ -112,12 +112,12 @@ def montar_resumo_dashboard():
         "percentual_alerta": round((len(itens_alerta) / total_itens) * 100, 2) if total_itens else 0,
     }
 
-
+# Endpoint para verificar a saúde da API, retornando um status "ok" se estiver funcionando corretamente
 @app.get("/health")
 def health():
     return jsonify({"status": "ok"}), 200
 
-
+# Endpoint para login, verificando as credenciais do usuário e retornando uma mensagem de sucesso ou erro conforme o caso
 @app.post("/login")
 def login():
     data = request.get_json(silent=True) or {}
@@ -145,12 +145,12 @@ def login():
         "usuario": usuario,
     }), 200
 
-
+#   Endpoints para CRUD do estoque, permitindo listar, obter, criar, atualizar e excluir itens do estoque, com validações e respostas adequadas para cada caso
 @app.get("/estoque")
 def listar_estoque():
     return jsonify(buscar_itens()), 200
 
-
+# Endpoint para obter um item específico do estoque pelo ID, retornando os detalhes do item ou um erro se não for encontrado
 @app.get("/estoque/<int:item_id>")
 def obter_item(item_id):
     item = executar(
@@ -164,7 +164,7 @@ def obter_item(item_id):
 
     return jsonify(enriquecer_item(item)), 200
 
-
+#   Endpoint para criar um novo item no estoque, recebendo os dados do item no corpo da requisição, validando os campos obrigatórios e inserindo no banco de dados
 @app.post("/estoque")
 def criar_item():
     data = request.get_json(silent=True) or {}
@@ -190,7 +190,7 @@ def criar_item():
 
     return jsonify({"mensagem": "Item criado com sucesso", "id": novo_id}), 201
 
-
+# Endpoint para atualizar um item existente no estoque, recebendo os dados atualizados no corpo da requisição e aplicando as mudanças no banco de dados, mantendo os valores anteriores para campos não fornecidos
 @app.put("/estoque/<int:item_id>")
 def atualizar_item(item_id):
     data = request.get_json(silent=True) or {}
@@ -226,7 +226,7 @@ def atualizar_item(item_id):
 
     return jsonify({"mensagem": "Item atualizado com sucesso"}), 200
 
-
+# Endpoint para excluir um item do estoque pelo ID, removendo o registro do banco de dados e retornando uma mensagem de sucesso ou erro se o item não for encontrado
 @app.delete("/estoque/<int:item_id>")
 def excluir_item(item_id):
     item = executar(
@@ -241,12 +241,12 @@ def excluir_item(item_id):
     executar("DELETE FROM estoque WHERE id = %s", (item_id,))
     return jsonify({"mensagem": "Item excluído com sucesso"}), 200
 
-
+# Endpoints para o dashboard, fornecendo dados resumidos, listas de itens filtrados por status, alertas de estoque e validade, e progresso do estoque para exibição no frontend
 @app.get("/dashboard/resumo")
 def dashboard_resumo():
     return jsonify(montar_resumo_dashboard()), 200
 
-
+# Endpoint para listar os itens do estoque filtrados por status, permitindo que o frontend solicite apenas os itens críticos, em alerta ou normais conforme a necessidade
 @app.get("/dashboard/itens")
 def dashboard_itens():
     status = request.args.get("status")
@@ -257,7 +257,7 @@ def dashboard_itens():
 
     return jsonify(itens), 200
 
-
+# Endpoint para listar os alertas de estoque e validade, retornando uma lista de itens que estão em status crítico, alerta ou vencidos, com informações relevantes para o usuário tomar ações
 @app.get("/dashboard/alertas")
 def dashboard_alertas():
     itens = buscar_itens()
@@ -290,7 +290,7 @@ def dashboard_alertas():
 
     return jsonify(alertas), 200
 
-
+# Endpoint para fornecer os dados de progresso do estoque, retornando uma lista de itens com seus níveis de estoque e status para exibição em gráficos ou indicadores no frontend
 @app.get("/dashboard/progresso")
 def dashboard_progresso():
     itens = buscar_itens()
@@ -307,6 +307,6 @@ def dashboard_progresso():
         for item in itens
     ]), 200
 
-
+# Roda a aplicação Flask em modo de desenvolvimento, permitindo que seja acessada localmente para testes e desenvolvimento do frontend
 if __name__ == "__main__":
     app.run(debug=True)
