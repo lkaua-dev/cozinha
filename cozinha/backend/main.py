@@ -1,185 +1,312 @@
-# Backend Flask para autenticação de usuário da aplicação Cozinha.
-# Recebe requisições do frontend, valida dados e consulta o banco MySQL.
-import uuid
+from datetime import date, datetime
 
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
-from app.database import executar
 
-VALID_TOKENS = set()
-
-# Permite chamadas do frontend local para este backend.
-main = Flask(__name__)
-CORS(main)
+from app.database import executar, get_cursor
 
 
-def obter_token():
-    auth = request.headers.get("Authorization", "")
-    if auth.startswith("Bearer "):
-        return auth.split(" ", 1)[1]
-    return request.headers.get("X-Auth-Token") or None
+app = Flask(__name__)
+CORS(app)
 
 
-def token_valido(token):
-    return token in VALID_TOKENS
+def float_safe(value):
+    if value is None:
+        return 0.0
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return 0.0
 
 
-def gerar_token():
-    token = uuid.uuid4().hex
-    VALID_TOKENS.add(token)
-    return token
+def calcular_status_estoque(quantidade, minimo):
+    quantidade = float_safe(quantidade)
+    minimo = float_safe(minimo)
+
+    if minimo <= 0:
+        return "crítico" if quantidade <= 0 else "normal"
+
+    if quantidade <= minimo:
+        return "crítico"
+    if quantidade <= (minimo * 1.5):
+        return "alerta"
+    return "normal"
 
 
-@main.before_request
-def validar_token():
-    if request.endpoint in (
-    "login",
-    "static",
-    "listar_estoque",
-    "cadastrar_estoque",
-    "excluir_estoque",
-    None
-    ):
+def calcular_nivel_progresso(quantidade, minimo):
+    quantidade = float_safe(quantidade)
+    minimo = float_safe(minimo)
+
+    if minimo <= 0:
+        return 100 if quantidade > 0 else 0
+
+    pct = (quantidade / minimo) * 100
+    return max(0, min(round(pct, 2), 100))
+
+
+def calcular_status_validade(validade):
+    if not validade:
         return None
 
-    token = obter_token()
-    if not token or not token_valido(token):
-        return jsonify({"erro": "Token inválido"}), 401
+    if isinstance(validade, str):
+        validade = datetime.strptime(validade, "%Y-%m-%d").date()
 
-    return None
+    hoje = date.today()
+    dias = (validade - hoje).days
+
+    if dias < 0:
+        return "vencido"
+    if dias <= 7:
+        return "vence_em_7_dias"
+    return "ok"
 
 
-# ── Rota de login ────────────────────────────
-@main.route("/login", methods=["POST"])
+def enriquecer_item(item):
+    quantidade = item.get("quantidade")
+    minimo = item.get("minimo")
+    validade = item.get("validade")
+
+    if validade and not isinstance(validade, str):
+        validade = validade.isoformat()
+
+    return {
+        **item,
+        "quantidade": float_safe(quantidade),
+        "minimo": float_safe(minimo),
+        "status_estoque": calcular_status_estoque(quantidade, minimo),
+        "progresso_estoque": calcular_nivel_progresso(quantidade, minimo),
+        "status_validade": calcular_status_validade(validade),
+        "falta_para_minimo": max(float_safe(minimo) - float_safe(quantidade), 0),
+        "validade": validade,
+    }
+
+
+def buscar_itens():
+    itens = executar("SELECT * FROM estoque ORDER BY created_at DESC", fetchall=True) or []
+    return [enriquecer_item(item) for item in itens]
+
+
+def montar_resumo_dashboard():
+    itens = buscar_itens()
+
+    total_itens = len(itens)
+    total_estoque = round(sum(item["quantidade"] for item in itens), 2)
+
+    itens_criticos = [item for item in itens if item["status_estoque"] == "crítico"]
+    itens_alerta = [item for item in itens if item["status_estoque"] == "alerta"]
+    itens_normais = [item for item in itens if item["status_estoque"] == "normal"]
+
+    vencidos = [item for item in itens if item["status_validade"] == "vencido"]
+    vencendo_7_dias = [item for item in itens if item["status_validade"] == "vence_em_7_dias"]
+
+    return {
+        "total_itens": total_itens,
+        "estoque_total": total_estoque,
+        "itens_criticos": len(itens_criticos),
+        "itens_alerta": len(itens_alerta),
+        "itens_normais": len(itens_normais),
+        "itens_vencidos": len(vencidos),
+        "itens_vencendo_7_dias": len(vencendo_7_dias),
+        "cmv_status": None,
+        "percentual_criticos": round((len(itens_criticos) / total_itens) * 100, 2) if total_itens else 0,
+        "percentual_alerta": round((len(itens_alerta) / total_itens) * 100, 2) if total_itens else 0,
+    }
+
+
+@app.get("/health")
+def health():
+    return jsonify({"status": "ok"}), 200
+
+
+@app.post("/login")
 def login():
-    try:
-        # Recebe dados do frontend
-        data = request.get_json()
+    data = request.get_json(silent=True) or {}
+    email = data.get("email")
+    senha = data.get("senha")
 
-        # Validação básica
-        if not data:
-            return jsonify({"erro": "Dados não enviados"}), 400
+    if not email or not senha:
+        return jsonify({"erro": "Preencha todos os campos"}), 400
 
-        email = data.get("email")
-        senha = data.get("senha")
-
-        if not email or not senha:
-            return jsonify({"erro": "Preencha todos os campos"}), 400
-
-        # Busca usuário no banco
-        usuario = executar(
-            """
-            SELECT * FROM usuarios
-            WHERE email = %s AND senha = %s
+    usuario = executar(
+        """
+        SELECT id, email
+        FROM usuarios
+        WHERE email = %s AND senha = %s
         """,
-            (email, senha),
-            fetchone=True,
-        )
+        (email, senha),
+        fetchone=True,
+    )
 
-        # Usuário não encontrado
-        if not usuario:
-            return jsonify({"erro": "Usuário ou senha inválidos"}), 401
+    if not usuario:
+        return jsonify({"erro": "Usuário ou senha inválidos"}), 401
 
-        token = gerar_token()
-
-        # Sucesso
-        return (
-            jsonify(
-                {
-                    "mensagem": "Login realizado com sucesso",
-                    "usuario": usuario["email"],
-                    "token": token,
-                }
-            ),
-            200,
-        )
-
-    # Erro de banco de dados
-    except Exception as e:
-        print("Erro no login:", e)
-
-        return jsonify({"erro": "Erro interno no servidor"}), 500
+    return jsonify({
+        "mensagem": "Login realizado com sucesso",
+        "usuario": usuario,
+    }), 200
 
 
-# ── Rota de logout ──────────────────────────
-@main.route("/logout", methods=["POST"])
-def logout():
-    token = obter_token()
-    if token and token in VALID_TOKENS:
-        VALID_TOKENS.discard(token)
-        return jsonify({"mensagem": "Logout realizado com sucesso"}), 200
-
-    return jsonify({"erro": "Token inválido"}), 401
-
-# ── LISTAR ESTOQUE ──────────────────────────
-@main.route("/estoque", methods=["GET"])
+@app.get("/estoque")
 def listar_estoque():
-    try:
-        itens = executar(
-            "SELECT * FROM estoque ORDER BY nome ASC",
-            fetchall=True
-        )
-
-        return jsonify(itens), 200
-
-    except Exception as e:
-        print("Erro ao listar estoque:", e)
-        return jsonify({"erro": "Erro ao buscar estoque"}), 500
+    return jsonify(buscar_itens()), 200
 
 
-# ── CADASTRAR ITEM ──────────────────────────
-@main.route("/estoque", methods=["POST"])
-def cadastrar_estoque():
-    try:
-        data = request.get_json()
+@app.get("/estoque/<int:item_id>")
+def obter_item(item_id):
+    item = executar(
+        "SELECT * FROM estoque WHERE id = %s",
+        (item_id,),
+        fetchone=True,
+    )
 
-        nome = data.get("nome")
-        quantidade = data.get("quantidade")
-        unidade = data.get("unidade")
-        validade = data.get("validade")
-        minimo = data.get("minimo")
+    if not item:
+        return jsonify({"erro": "Item não encontrado"}), 404
 
-        executar(
+    return jsonify(enriquecer_item(item)), 200
+
+
+@app.post("/estoque")
+def criar_item():
+    data = request.get_json(silent=True) or {}
+
+    nome = data.get("nome")
+    quantidade = data.get("quantidade")
+    unidade = data.get("unidade")
+    validade = data.get("validade")
+    minimo = data.get("minimo", 0)
+
+    if not nome or quantidade is None or not unidade:
+        return jsonify({"erro": "nome, quantidade e unidade são obrigatórios"}), 400
+
+    with get_cursor() as (_conn, cursor):
+        cursor.execute(
             """
-            INSERT INTO estoque
-            (nome, quantidade, unidade, validade, minimo)
+            INSERT INTO estoque (nome, quantidade, unidade, validade, minimo)
             VALUES (%s, %s, %s, %s, %s)
             """,
-            (nome, quantidade, unidade, validade, minimo)
+            (nome, quantidade, unidade, validade or None, minimo),
+        )
+        novo_id = cursor.lastrowid
+
+    return jsonify({"mensagem": "Item criado com sucesso", "id": novo_id}), 201
+
+
+@app.put("/estoque/<int:item_id>")
+def atualizar_item(item_id):
+    data = request.get_json(silent=True) or {}
+
+    item = executar(
+        "SELECT * FROM estoque WHERE id = %s",
+        (item_id,),
+        fetchone=True,
+    )
+
+    if not item:
+        return jsonify({"erro": "Item não encontrado"}), 404
+
+    nome = data.get("nome", item["nome"])
+    quantidade = data.get("quantidade", item["quantidade"])
+    unidade = data.get("unidade", item["unidade"])
+    validade = data.get("validade", item["validade"])
+    minimo = data.get("minimo", item["minimo"])
+
+    with get_cursor() as (_conn, cursor):
+        cursor.execute(
+            """
+            UPDATE estoque
+            SET nome = %s,
+                quantidade = %s,
+                unidade = %s,
+                validade = %s,
+                minimo = %s
+            WHERE id = %s
+            """,
+            (nome, quantidade, unidade, validade, minimo, item_id),
         )
 
-        return jsonify({
-            "mensagem": "Item cadastrado com sucesso"
-        }), 201
-
-    except Exception as e:
-        print("Erro ao cadastrar:", e)
-
-        return jsonify({
-            "erro": "Erro ao cadastrar item"
-        }), 500
+    return jsonify({"mensagem": "Item atualizado com sucesso"}), 200
 
 
-# ── EXCLUIR ITEM ──────────────────────────
-@main.route("/estoque/<int:id>", methods=["DELETE"])
-def excluir_estoque(id):
-    try:
-        executar(
-            "DELETE FROM estoque WHERE id = %s",
-            (id,)
-        )
+@app.delete("/estoque/<int:item_id>")
+def excluir_item(item_id):
+    item = executar(
+        "SELECT id FROM estoque WHERE id = %s",
+        (item_id,),
+        fetchone=True,
+    )
 
-        return jsonify({
-            "mensagem": "Item removido"
-        }), 200
+    if not item:
+        return jsonify({"erro": "Item não encontrado"}), 404
 
-    except Exception as e:
-        print("Erro ao excluir:", e)
+    executar("DELETE FROM estoque WHERE id = %s", (item_id,))
+    return jsonify({"mensagem": "Item excluído com sucesso"}), 200
 
-        return jsonify({
-            "erro": "Erro ao excluir item"
-        }), 500
 
-# ── Rodar servidor ───────────────────────────
+@app.get("/dashboard/resumo")
+def dashboard_resumo():
+    return jsonify(montar_resumo_dashboard()), 200
+
+
+@app.get("/dashboard/itens")
+def dashboard_itens():
+    status = request.args.get("status")
+    itens = buscar_itens()
+
+    if status:
+        itens = [item for item in itens if item["status_estoque"] == status]
+
+    return jsonify(itens), 200
+
+
+@app.get("/dashboard/alertas")
+def dashboard_alertas():
+    itens = buscar_itens()
+    alertas = []
+
+    for item in itens:
+        if item["status_estoque"] in ("crítico", "alerta"):
+            alertas.append({
+                "tipo": "estoque",
+                "titulo": f'{item["nome"]} está em {item["status_estoque"]}',
+                "descricao": f'Quantidade atual: {item["quantidade"]} {item["unidade"]} | Mínimo: {item["minimo"]} {item["unidade"]}',
+                "item_id": item["id"],
+            })
+
+        if item["status_validade"] == "vence_em_7_dias":
+            alertas.append({
+                "tipo": "validade",
+                "titulo": f'{item["nome"]} vence em até 7 dias',
+                "descricao": f'Validade: {item["validade"]}',
+                "item_id": item["id"],
+            })
+
+        if item["status_validade"] == "vencido":
+            alertas.append({
+                "tipo": "validade",
+                "titulo": f'{item["nome"]} está vencido',
+                "descricao": f'Validade: {item["validade"]}',
+                "item_id": item["id"],
+            })
+
+    return jsonify(alertas), 200
+
+
+@app.get("/dashboard/progresso")
+def dashboard_progresso():
+    itens = buscar_itens()
+    return jsonify([
+        {
+            "id": item["id"],
+            "nome": item["nome"],
+            "progresso_estoque": item["progresso_estoque"],
+            "status_estoque": item["status_estoque"],
+            "quantidade": item["quantidade"],
+            "minimo": item["minimo"],
+            "unidade": item["unidade"],
+        }
+        for item in itens
+    ]), 200
+
+
 if __name__ == "__main__":
-    main.run(debug=True)
+    app.run(debug=True)

@@ -1,33 +1,42 @@
+import os
+from contextlib import contextmanager
+
 import mysql.connector
 
-# Database helper para conexão e execução de queries MySQL.
-# Retorna dados como dicionário para facilitar o uso no backend.
+
+DB_CONFIG = {
+    "host": os.getenv("DB_HOST", "localhost"),
+    "user": os.getenv("DB_USER", "root"),
+    "password": os.getenv("DB_PASSWORD", "root"),
+    "database": os.getenv("DB_NAME", "cozinha"),
+    "port": int(os.getenv("DB_PORT", "3306")),
+}
+
 
 def conectar():
-    return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="root",
-        database="cozinha"
-    )
+    return mysql.connector.connect(**DB_CONFIG)
 
-# executa queries
-def executar(query, valores=None, fetchone=False, fetchall=False):
+
+@contextmanager
+def get_cursor(dictionary=True):
     conn = conectar()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(dictionary=dictionary)
+    try:
+        yield conn, cursor
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        cursor.close()
+        conn.close()
 
-    cursor.execute(query, valores or ())
 
-    resultado = None
-
-    if fetchone:
-        resultado = cursor.fetchone()
-    elif fetchall:
-        resultado = cursor.fetchall()
-
-    conn.commit()
-
-    cursor.close()
-    conn.close()
-
-    return resultado
+def executar(query, valores=None, fetchone=False, fetchall=False):
+    with get_cursor() as (_conn, cursor):
+        cursor.execute(query, valores or ())
+        if fetchone:
+            return cursor.fetchone()
+        if fetchall:
+            return cursor.fetchall()
+        return cursor.rowcount
