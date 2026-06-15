@@ -356,6 +356,8 @@ a.link:hover {
     radial-gradient(circle at 80% 70%, rgba(92, 122, 78, 0.06) 0%, transparent 50%);
 }
 
+/* Ajustes de toque para celulares pequenos: botoes e campos ficam mais altos
+   para facilitar uso com o dedo e evitar texto apertado. */
 @media (max-width: 480px) {
   .btn-primary {
     min-height: 48px;
@@ -375,6 +377,74 @@ a.link:hover {
   html {
     scroll-behavior: auto;
   }
+}
+
+/* ============================================================
+   Base visual compartilhada alinhada ao dashboard
+   Complementa as telas de autenticacao com o mesmo acabamento operacional
+   usado no painel, sem mudar a estrutura dos formularios.
+   ============================================================ */
+
+/* Tokens visuais compartilhados por login e recuperacao.
+   Ao trocar identidade visual, comece por estas variaveis. */
+:root {
+  --ops-ink: #2f1d13;
+  --ops-muted: #806b5a;
+  --ops-border: rgba(91, 58, 37, 0.12);
+  --ops-border-strong: rgba(200, 96, 58, 0.22);
+  --ops-surface: rgba(255, 255, 255, 0.92);
+  --ops-surface-soft: #f7ede3;
+  --ops-shadow: 0 16px 38px rgba(59, 42, 26, 0.10);
+  --ops-shadow-soft: 0 8px 22px rgba(59, 42, 26, 0.07);
+}
+
+body {
+  background:
+    linear-gradient(180deg, rgba(255, 250, 244, 0.96) 0%, rgba(251, 244, 236, 0.88) 360px, var(--cream) 100%);
+}
+
+.btn-primary {
+  min-height: 48px;
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(200, 96, 58, 0.22);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 14px 30px rgba(200, 96, 58, 0.28);
+}
+
+.field-group label {
+  color: var(--ops-muted);
+}
+
+.input-wrapper input {
+  border-radius: 14px;
+  border-color: var(--ops-border);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 250, 245, 0.92));
+}
+
+.input-wrapper input:focus {
+  border-color: var(--terracotta);
+  box-shadow: 0 0 0 4px rgba(200, 96, 58, 0.11);
+}
+
+.alert {
+  border-radius: 14px;
+  box-shadow: var(--ops-shadow-soft);
+}
+
+a.link {
+  text-underline-offset: 3px;
+}
+
+code {
+  padding: 1px 5px;
+  border-radius: 6px;
+  background: rgba(200, 96, 58, 0.10);
+  color: var(--terra-dark);
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.92em;
 }
 
 @media (prefers-reduced-motion: reduce) {

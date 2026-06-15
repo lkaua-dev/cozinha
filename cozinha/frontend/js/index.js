@@ -2,9 +2,13 @@
 // CatiraX — index.js (Melhorado)
 // ============================================================
 
+// Este arquivo roda somente depois que o HTML da pagina publica esta carregado.
+// Ele nao guarda dados: apenas controla interacao visual e navegacao da home.
 document.addEventListener('DOMContentLoaded', () => {
 
   // ── Referências ────────────────────────────────────────────
+  // Referencias principais usadas em toda a pagina. IDs e classes precisam ficar
+  // sincronizados com index.html para a navegacao e o menu continuarem funcionando.
   const navTriggers = document.querySelectorAll('.nav-trigger');
   const paginas = document.querySelectorAll('.pagina');
   const navLinks = document.querySelectorAll('.nav-link');
@@ -21,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const scrollGestureLimit = 10;
 
   // ── Navegação entre páginas ────────────────────────────────
+  // Ativa a section solicitada e reinicia animacoes/progressos quando necessario.
   function ativarPagina(targetId) {
     const alvo = document.getElementById(targetId);
     if (alvo) {
@@ -78,6 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Event listeners de navegação
+  // O controle de touch evita que um gesto de rolagem no celular seja interpretado
+  // como clique acidental em links e botoes de navegacao.
   navTriggers.forEach(trigger => {
     trigger.addEventListener('touchstart', (e) => {
       const touch = e.touches[0];
@@ -127,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (primeiraPagina) mostrarPagina(primeiraPagina.id, true);
 
   // ── Menu Mobile (Hamburger) ────────────────────────────────
+  // Abre a navegacao mobile e trava o scroll do body enquanto o menu esta ativo.
   function abrirMenuMobile() {
     hamburgerBtn.classList.add('open');
     navMenu.classList.add('mobile-open');
@@ -168,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ── Scroll Progress Bar ────────────────────────────────────
+  // Atualiza a barra de progresso e o estado visual do header durante a rolagem.
   function atualizarScrollProgress() {
     const scrollTop = window.scrollY;
 
@@ -198,6 +207,8 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('scroll', solicitarScrollProgress, { passive: true });
 
   // ── Scroll Reveal (IntersectionObserver) ──────────────────
+  // Revela blocos conforme entram na viewport; no mobile a funcao abaixo libera
+  // os elementos imediatamente para evitar atrasos e saltos de layout.
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
