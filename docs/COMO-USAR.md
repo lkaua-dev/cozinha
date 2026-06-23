@@ -24,19 +24,19 @@ http://localhost:8026
 
 ## Entrar no sistema
 
-Na pagina inicial, clique em `Entrar`.
+Na página inicial, clique em `Entrar`.
 
 Use as credenciais demo:
 
 ```text
-Usuario: admin
+Usuário: admin
 Senha: 123456
 ```
 
 ou:
 
 ```text
-Usuario: cozinha@teste.com
+Usuário: cozinha@teste.com
 Senha: 123456
 ```
 
@@ -44,13 +44,13 @@ Depois do login, o sistema abre `dashboard.html`.
 
 ## Usar o dashboard
 
-O dashboard mostra uma visao geral do negocio:
+O dashboard mostra uma visão geral do negócio:
 
 - Faturamento total.
 - Faturamento do dia.
 - Pedidos.
 - Status dos pedidos.
-- Ticket medio.
+- Ticket médio.
 - Produtos.
 - Alertas.
 - Pedidos recentes.
@@ -58,13 +58,13 @@ O dashboard mostra uma visao geral do negocio:
 
 Os valores podem vir de dados salvos no navegador ou de dados demonstrativos.
 
-## Navegar pelas secoes
+## Navegar pelas seções
 
 Use o menu lateral para acessar:
 
 - Dashboard.
 - Estoque.
-- Cardapio.
+- Cardápio.
 - Kanban.
 - POPs e fichas.
 - Analise ABC.
@@ -72,39 +72,39 @@ Use o menu lateral para acessar:
 - Relatorios.
 - Configuracoes.
 
-Em celular, use o botao de menu para abrir/fechar a navegacao.
+Em celular, use o botão de menu para abrir/fechar a navegação.
 
-## Cadastrar item no cardapio
+## Cadastrar item no cardápio
 
-1. Abra a secao `Cardapio`.
+1. Abra a seção `Cardápio`.
 2. Clique em `Novo item`.
 3. Escolha o dia da semana.
 4. Informe o prato principal.
 5. Informe o acompanhamento.
 6. Escolha o status.
 7. Se quiser, selecione uma foto.
-8. Confira a previa da imagem.
+8. Confira a prévia da imagem.
 9. Clique em `Adicionar`.
 
-O item sera exibido na tabela/listagem do cardapio.
+O item será exibido na tabela/listagem do cardápio.
 
-## Editar item do cardapio
+## Editar item do cardápio
 
-1. Na linha do item, clique no botao de editar.
+1. Na linha do item, clique no botão de editar.
 2. Altere os dados desejados.
-3. Troque ou remova a foto, se necessario.
+3. Troque ou remova a foto, se necessário.
 4. Clique em `Salvar`.
 
-## Remover item do cardapio
+## Remover item do cardápio
 
-1. Clique no botao de remover.
-2. Confirme a remocao no modal.
+1. Clique no botão de remover.
+2. Confirme a remoção no modal.
 
-## Usar imagem no cardapio
+## Usar imagem no cardápio
 
 Ao selecionar uma imagem:
 
-- O sistema mostra uma previa.
+- O sistema mostra uma prévia.
 - A imagem e compactada no navegador.
 - A imagem e salva junto com o item no `localStorage`.
 - A miniatura aparece na listagem.
@@ -113,7 +113,7 @@ Se a imagem for muito grande, o navegador pode recusar o salvamento. Nesse caso,
 
 ## Usar estoque
 
-1. Abra a secao `Estoque`.
+1. Abra a seção `Estoque`.
 2. Veja os itens cadastrados e seus status.
 3. Clique em `Novo item` para cadastrar.
 4. Informe nome, quantidade minima, quantidade atual e quantidade maxima.
@@ -122,24 +122,24 @@ Se a imagem for muito grande, o navegador pode recusar o salvamento. Nesse caso,
 Status visual:
 
 - OK: estoque adequado.
-- Alerta: estoque proximo do minimo.
-- Critico: estoque abaixo ou muito proximo do minimo.
+- Alerta: estoque próximo do mínimo.
+- Critico: estoque abaixo ou muito próximo do mínimo.
 
-Se o backend estiver ligado, o estoque tenta usar a API. Se nao estiver, o sistema mantem uma base demonstrativa.
+Se o backend estiver ligado, o estoque tenta usar a API. Se não estiver, o sistema mantém uma base demonstrativa.
 
 ## Usar Kanban
 
-1. Abra a secao `Kanban`.
+1. Abra a seção `Kanban`.
 2. Clique em `Novo card`.
 3. Preencha titulo, coluna, prioridade, tag e data.
 4. Salve.
 5. Arraste cards entre colunas para atualizar o fluxo.
 
-## Usar POPs e fichas tecnicas
+## Usar POPs e fichas técnicas
 
 1. Abra `POPs e Fichas`.
 2. Clique em `Nova ficha`.
-3. Informe nome do prato, icone, tipo, versao e observacoes.
+3. Informe nome do prato, ícone, tipo, versão e observações.
 4. Salve.
 
 ## Alterar tema e idioma
@@ -148,7 +148,7 @@ Se o backend estiver ligado, o estoque tenta usar a API. Se nao estiver, o siste
 2. Escolha tema claro ou escuro.
 3. Escolha idioma.
 
-As preferencias ficam salvas no navegador.
+As preferências ficam salvas no navegador.
 
 ## Sair do sistema
 
@@ -156,14 +156,14 @@ As preferencias ficam salvas no navegador.
 2. Clique em sair/logout.
 3. Confirme.
 
-O token e removido do `localStorage` e o usuario volta para a tela de login.
+O token é removido do `localStorage` e o usuário volta para a tela de login.
 
 ## Limpar dados locais
 
 Se quiser apagar os dados salvos apenas no navegador:
 
 1. Abra as ferramentas do desenvolvedor.
-2. Va em Application/Aplicacao.
+2. Vá em Application/Aplicacao.
 3. Abra Local Storage.
 4. Remova as chaves do projeto.
 

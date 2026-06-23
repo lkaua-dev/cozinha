@@ -1,41 +1,41 @@
-# Guia de Manutencao
+# Guia de Manutenção
 
-Este guia orienta alteracoes futuras sem quebrar as funcionalidades atuais.
+Este guia orienta alterações futuras sem quebrar as funcionalidades atuais.
 
 ## Regras gerais
 
 - Mantenha o projeto com HTML, CSS e JavaScript puro.
 - Evite adicionar frameworks sem decisao explicita.
-- Antes de alterar uma funcao, procure onde ela e chamada.
+- Antes de alterar uma função, procure onde ela e chamada.
 - Preserve os IDs usados por JavaScript.
 - Preserve classes usadas por CSS e seletores.
-- Em `dashboard.html`, prefira alteracoes pequenas e localizadas.
-- Depois de editar JavaScript, rode validacao de sintaxe.
+- Em `dashboard.html`, prefira alterações pequenas e localizadas.
+- Depois de editar JavaScript, rode validação de sintaxe.
 
 ## Arquivos mais importantes
 
-### Pagina publica
+### Página pública
 
 - HTML: `cozinha/frontend/index.html`
 - CSS: `cozinha/frontend/css/index.css`
 - JS: `cozinha/frontend/js/index.js`
 
-Use esses arquivos para alterar a pagina inicial, metas, equipe, menu publico e animacoes da home.
+Use esses arquivos para alterar a página inicial, metas, equipe, menu publico e animações da home.
 
-### Login e recuperacao
+### Login e recuperação
 
 - Login: `cozinha/frontend/login.html`
 - Recuperacao: `cozinha/frontend/recuperar.html`
 - CSS compartilhado: `cozinha/frontend/css/style_geral.css`
 - JS do login: `cozinha/frontend/js/login_geral.js`
 
-Use esses arquivos para alterar layout, validacao, toasts e fluxo de entrada.
+Use esses arquivos para alterar layout, validação, toasts e fluxo de entrada.
 
 ### Dashboard e telas internas
 
 - Arquivo principal: `cozinha/frontend/dashboard.html`
 
-Este arquivo concentra dashboard, estoque, cardapio, kanban, fichas, analises, relatorios e configuracoes.
+Este arquivo concentra dashboard, estoque, cardápio, kanban, fichas, análises, relatórios e configurações.
 
 ## Cuidado com IDs
 
@@ -55,11 +55,11 @@ O JavaScript depende de muitos IDs do HTML. Exemplos importantes:
 - `modal-cardapio`
 - `modal-estoque`
 
-Se renomear um ID no HTML, atualize tambem todas as referencias no JavaScript.
+Se renomear um ID no HTML, atualize também todas as referências no JavaScript.
 
 ## Como alterar estilos
 
-### Pagina publica
+### Página pública
 
 Edite:
 
@@ -69,14 +69,14 @@ cozinha/frontend/css/index.css
 
 Organizacao recomendada:
 
-1. Variaveis globais.
+1. Variáveis globais.
 2. Reset/base.
 3. Header/menu.
 4. Secoes.
 5. Cards.
 6. Responsividade.
 
-### Login e recuperacao
+### Login e recuperação
 
 Edite:
 
@@ -84,17 +84,17 @@ Edite:
 cozinha/frontend/css/style_geral.css
 ```
 
-Esse arquivo contem a base compartilhada. Cada pagina tambem possui um bloco `<style>` proprio para seu layout especifico.
+Esse arquivo contém a base compartilhada. Cada página também possui um bloco `<style>` proprio para seu layout especifico.
 
 ### Dashboard
 
-O CSS do dashboard esta dentro de `dashboard.html`. Ao alterar:
+O CSS do dashboard está dentro de `dashboard.html`. Ao alterar:
 
-- Procure primeiro o bloco da secao desejada.
-- Mantenha variaveis existentes quando possivel.
+- Procure primeiro o bloco da seção desejada.
+- Mantenha variaveis existentes quando possível.
 - Evite duplicar regras.
 - Verifique media queries para celular.
-- Teste no minimo desktop e mobile.
+- Teste no mínimo desktop e mobile.
 
 ## Como alterar o dashboard
 
@@ -105,7 +105,7 @@ Funcoes importantes:
 - `renderizarPedidosRecentes`: monta a lista de pedidos recentes.
 - `renderizarProdutosMaisVendidos`: monta a lista de produtos mais vendidos.
 - `renderizarAlertasDashboard`: monta alertas administrativos.
-- `navegarPara`: troca a secao visivel do dashboard.
+- `navegarPara`: troca a seção visível do dashboard.
 
 Ao criar um novo card:
 
@@ -115,7 +115,7 @@ Ao criar um novo card:
 4. Se precisar de calculo novo, adicione em `calcularDashboardNegocio`.
 5. Documente o novo calculo em `docs/DASHBOARD.md`.
 
-## Como alterar o cardapio
+## Como alterar o cardápio
 
 Funcoes importantes:
 
@@ -127,14 +127,14 @@ Funcoes importantes:
 - `editarLinhaCardapio`
 - `removerLinhaCardapio`
 
-Ao adicionar um novo campo no cardapio:
+Ao adicionar um novo campo no cardápio:
 
 1. Adicione o campo no modal.
 2. Inclua o campo em `criarLinhaCardapio`.
 3. Inclua o campo em `serializarLinhaCardapio`.
 4. Garanta que `salvarCardapioLocal` salve o dado.
 5. Garanta que `restaurarCardapioLocal` restaure o dado.
-6. Atualize a documentacao.
+6. Atualize a documentação.
 
 ## Como alterar upload de imagens
 
@@ -147,7 +147,7 @@ Funcoes importantes:
 
 Recomendacoes:
 
-- Mantenha validacao `image/*`.
+- Mantenha validação `image/*`.
 - Mantenha compactacao via `canvas`.
 - Evite salvar imagens muito grandes em `localStorage`.
 - Use `object-fit: cover` nas miniaturas.
@@ -168,7 +168,7 @@ Fluxo atual:
 1. Renderiza dados demonstrativos imediatamente.
 2. Tenta buscar dados em `http://localhost:5000/estoque`.
 3. Se a API retornar itens, troca a listagem.
-4. Se a API falhar, mantem dados demonstrativos.
+4. Se a API falhar, mantém dados demonstrativos.
 
 ## Como alterar login
 
@@ -182,8 +182,8 @@ Fluxo:
 
 1. Verifica campos.
 2. Testa credenciais demo.
-3. Se nao forem demo, chama `http://localhost:5000/login`.
-4. Salva token e usuario no `localStorage`.
+3. Se não forem demo, chama `http://localhost:5000/login`.
+4. Salva token e usuário no `localStorage`.
 5. Redireciona para `dashboard.html`.
 
 Para mudar credenciais demo, altere:
@@ -213,7 +213,7 @@ Se criar uma rota nova:
 1. Adicione no Flask.
 2. Teste com backend rodando.
 3. Atualize a chamada no frontend.
-4. Atualize a documentacao.
+4. Atualize a documentação.
 
 ## Validacao recomendada
 
@@ -229,9 +229,9 @@ HTML/CSS:
 - Abra `index.html`, `login.html`, `recuperar.html` e `dashboard.html`.
 - Teste em largura de celular, tablet e desktop.
 - Verifique se modais abrem e fecham.
-- Teste cadastro/edicao/remocao de item do cardapio.
-- Teste upload e remocao de imagem.
-- Teste navegacao entre secoes.
+- Teste cadastro/edição/remoção de item do cardápio.
+- Teste upload e remoção de imagem.
+- Teste navegação entre seções.
 
 Backend:
 
@@ -245,7 +245,7 @@ Depois teste:
 - `POST http://localhost:5000/login`
 - `GET http://localhost:5000/estoque`
 
-## Melhorias tecnicas recomendadas
+## Melhorias técnicas recomendadas
 
 - Separar `dashboard.html` em arquivos menores.
 - Mover CSS inline para `css/dashboard.css`.
@@ -253,5 +253,5 @@ Depois teste:
 - Padronizar encoding UTF-8 em todos os arquivos.
 - Completar `banco.sql`.
 - Criar schema documentado para pedidos, produtos e estoque.
-- Adicionar testes para calculos do dashboard.
+- Adicionar testes para cálculos do dashboard.
 - Evitar salvar imagens grandes em `localStorage` no longo prazo.

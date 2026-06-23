@@ -2,13 +2,13 @@
 // CatiraX — index.js (Melhorado)
 // ============================================================
 
-// Este arquivo roda somente depois que o HTML da pagina publica esta carregado.
-// Ele nao guarda dados: apenas controla interacao visual e navegacao da home.
+// Este arquivo roda somente depois que o HTML da página pública está carregado.
+// Ele não guarda dados: apenas controla interação visual e navegação da home.
 document.addEventListener('DOMContentLoaded', () => {
 
   // ── Referências ────────────────────────────────────────────
-  // Referencias principais usadas em toda a pagina. IDs e classes precisam ficar
-  // sincronizados com index.html para a navegacao e o menu continuarem funcionando.
+  // Referências principais usadas em toda a página. IDs e classes precisam ficar
+  // sincronizados com index.html para a navegação e o menu continuarem funcionando.
   const navTriggers = document.querySelectorAll('.nav-trigger');
   const paginas = document.querySelectorAll('.pagina');
   const navLinks = document.querySelectorAll('.nav-link');
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const scrollGestureLimit = 10;
 
   // ── Navegação entre páginas ────────────────────────────────
-  // Ativa a section solicitada e reinicia animacoes/progressos quando necessario.
+  // Ativa a seção solicitada e reinicia animações/progressos quando necessário.
   function ativarPagina(targetId) {
     const alvo = document.getElementById(targetId);
     if (alvo) {
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function atualizarNavegacao(targetId) {
-    // Atualizar nav ativo
+    // Atualiza o item ativo da navegação.
     navLinks.forEach(link => {
       link.classList.toggle('ativo', link.getAttribute('data-target') === targetId);
     });
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function mostrarPagina(targetId, instantaneo = false) {
-    // Fechar menu mobile
+    // Fecha o menu mobile.
     fecharMenuMobile();
 
     const paginaAtual = document.querySelector('.pagina.animando');
@@ -82,9 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
     pageTransitionTimeout = setTimeout(finalizarTroca, desktopQuery.matches ? 180 : 130);
   }
 
-  // Event listeners de navegação
+  // Eventos de navegação.
   // O controle de touch evita que um gesto de rolagem no celular seja interpretado
-  // como clique acidental em links e botoes de navegacao.
+  // como clique acidental em links e botões de navegação.
   navTriggers.forEach(trigger => {
     trigger.addEventListener('touchstart', (e) => {
       const touch = e.touches[0];
@@ -129,12 +129,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Mostrar página inicial
+  // Mostra a página inicial.
   const primeiraPagina = paginas[0];
   if (primeiraPagina) mostrarPagina(primeiraPagina.id, true);
 
   // ── Menu Mobile (Hamburger) ────────────────────────────────
-  // Abre a navegacao mobile e trava o scroll do body enquanto o menu esta ativo.
+  // Abre a navegação mobile e trava o scroll do body enquanto o menu está ativo.
   function abrirMenuMobile() {
     hamburgerBtn.classList.add('open');
     navMenu.classList.add('mobile-open');
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
     hamburgerBtn.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
 
-    // Aguardar transição antes de esconder
+    // Aguarda a transição antes de esconder.
     setTimeout(() => {
       if (!navMenu.classList.contains('mobile-open')) {
         navOverlay.style.display = '';

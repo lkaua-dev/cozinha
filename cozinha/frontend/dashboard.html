@@ -3272,8 +3272,8 @@
 
     /* ============================================================
        DASHBOARD OPERACIONAL - NOVA IDENTIDADE
-       Estilos exclusivos da visao geral: hero, KPIs, alertas,
-       graficos resumidos e listas de pedidos/produtos.
+       Estilos exclusivos da visão geral: hero, KPIs, alertas,
+       gráficos resumidos e listas de pedidos/produtos.
        ============================================================ */
     #section-dashboard {
       --dash-border: rgba(96, 64, 42, 0.12);
@@ -4072,7 +4072,7 @@
     /* ============================================================
        DASHBOARD - LAYOUT DA REFERENCIA
        Esta camada preserva a paleta atual e reorganiza apenas a
-       estrutura espacial em tres faixas: KPIs, graficos e operacao.
+       estrutura espacial em três faixas: KPIs, gráficos e operação.
        ============================================================ */
     #section-dashboard .dashboard-command {
       gap: 16px;
@@ -4629,7 +4629,7 @@
 
     /* ============================================================
        DASHBOARD - MOVIMENTO E MICROINTERACOES
-       Camada de comportamento visual: nao altera grid, flex ou paleta.
+       Camada de comportamento visual: não altera grid, flex ou paleta.
        ============================================================ */
     @keyframes dashboardKpiEnter {
       from {
@@ -5800,7 +5800,7 @@
       }
     }
 
-    /* Ajustes finais para celular estreito: botoes ocupam largura total e
+    /* Ajustes finais para celular estreito: botões ocupam largura total e
        previews de imagem viram blocos verticais com toque mais confortavel. */
     @media (max-width: 520px) {
       .page-section:not(#section-dashboard) .section-title-row {
@@ -6015,7 +6015,7 @@
           <option value="atraso">Crítico</option>
         </select>
       </div>
-      <!-- Upload e previa da foto do item. A imagem e compactada no JavaScript antes de salvar no localStorage. -->
+      <!-- Upload e prévia da foto do item. A imagem é compactada no JavaScript antes de salvar no localStorage. -->
       <div class="modal-field menu-upload-field">
         <label class="modal-label" for="card-foto">Foto do item</label>
         <label class="file-upload-card" for="card-foto">
@@ -6034,7 +6034,7 @@
           </div>
         </div>
       </div>
-      <!-- Acoes do modal: cancelar fecha sem salvar; adicionar/salvar grava ou atualiza a linha do cardapio. -->
+      <!-- Ações do modal: cancelar fecha sem salvar; adicionar/salvar grava ou atualiza a linha do cardápio. -->
       <div class="modal-footer">
         <button class="btn-secondary" onclick="fecharModal('modal-cardapio')">Cancelar</button>
         <button class="btn-primary" onclick="adicionarItemCardapio()"><i class='bx bx-plus'></i> Adicionar</button>
@@ -6124,10 +6124,10 @@
           <span class="nav-label">Dashboard</span>
         </button>
 
-        <!-- Producao -->
-        <button class="nav-item" data-tooltip="Producao" data-page="producao" role="listitem">
+        <!-- Produção -->
+        <button class="nav-item" data-tooltip="Produção" data-page="producao" role="listitem">
           <i class='bx bx-bowl-hot'></i>
-          <span class="nav-label">Producao</span>
+          <span class="nav-label">Produção</span>
         </button>
 
         <!-- Estoque -->
@@ -6295,15 +6295,15 @@
           <section class="dashboard-hero reveal" aria-label="Cabecalho do dashboard">
             <div class="dashboard-hero-copy welcome-text">
               <span class="dashboard-eyebrow greeting"><i class='bx bx-restaurant'></i> Central operacional</span>
-              <h1>Dashboard de Producao da Cozinha</h1>
-              <p>Visao geral da operacao, pedidos, produtos e faturamento do restaurante.</p>
+              <h1>Dashboard de Produção da Cozinha</h1>
+              <p>Visão geral da operação, pedidos, produtos e faturamento do restaurante.</p>
             </div>
 
             <div class="dashboard-hero-actions dashboard-toolbar" aria-label="Atalhos e contexto">
               <span class="operation-badge"><i class='bx bx-calendar'></i> <span id="welcome-date"></span></span>
               <span class="operation-badge"><i class='bx bx-data'></i> <span id="dash-data-source">Carregando</span></span>
               <span class="operation-badge"><i class='bx bx-user'></i> <span id="welcome-user">Admin</span></span>
-              <button class="dash-action-btn primary" onclick="navegarPara('cardapio')"><i class='bx bx-book-content'></i> Cardapio</button>
+              <button class="dash-action-btn primary" onclick="navegarPara('cardapio')"><i class='bx bx-book-content'></i> Cardápio</button>
               <button class="dash-action-btn" onclick="navegarPara('estoque')"><i class='bx bx-package'></i> Produtos</button>
               <button class="dash-action-btn" onclick="navegarPara('kanban')"><i class='bx bx-receipt'></i> Pedidos</button>
             </div>
@@ -6365,7 +6365,7 @@
 
             <article class="kpi-card green" role="region" aria-label="Pedidos concluidos">
               <div class="kpi-topline">
-                <div class="kpi-label">Concluidos</div>
+                <div class="kpi-label">Concluídos</div>
                 <div class="kpi-icon"><i class='bx bx-check-circle'></i></div>
               </div>
               <div class="kpi-value" id="dash-orders-done">0</div>
@@ -6391,25 +6391,25 @@
             </article>
           </div>
 
-          <div class="dashboard-section-heading" aria-label="Grupo de analise operacional">
+          <div class="dashboard-section-heading" aria-label="Grupo de análise operacional">
             <div>
-              <span class="dashboard-section-kicker">Leitura da operacao</span>
-              <h2>Analise operacional</h2>
+              <span class="dashboard-section-kicker">Leitura da operação</span>
+              <h2>Análise operacional</h2>
             </div>
             <span class="dashboard-section-meta">Produção, faturamento e distribuição</span>
           </div>
 
-          <div class="dashboard-chart-row dashboard-insights-grid" aria-label="Graficos do dashboard">
-            <section class="panel-card dashboard-panel" aria-label="Producao por item">
+          <div class="dashboard-chart-row dashboard-insights-grid" aria-label="Gráficos do dashboard">
+            <section class="panel-card dashboard-panel" aria-label="Produção por item">
               <div class="panel-header">
                 <div>
-                  <div class="panel-title">Producao por item</div>
-                  <div class="panel-subtitle">Volume dos ultimos produtos vendidos</div>
+                  <div class="panel-title">Produção por item</div>
+                  <div class="panel-subtitle">Volume dos últimos produtos vendidos</div>
                 </div>
                 <span class="panel-badge"><i class='bx bx-bar-chart-alt-2'></i> Itens</span>
               </div>
               <div class="panel-body">
-                <div class="revenue-chart" id="dash-revenue-bars" role="img" aria-label="Grafico de producao por item"></div>
+                <div class="revenue-chart" id="dash-revenue-bars" role="img" aria-label="Gráfico de produção por item"></div>
               </div>
             </section>
 
@@ -6417,20 +6417,20 @@
               <div class="panel-header">
                 <div>
                   <div class="panel-title">Faturamento da semana</div>
-                  <div class="panel-subtitle">Evolucao calculada pelos pedidos validos</div>
+                  <div class="panel-subtitle">Evolução calculada pelos pedidos válidos</div>
                 </div>
                 <span class="panel-badge"><i class='bx bx-line-chart'></i> BRL</span>
               </div>
               <div class="panel-body">
-                <div class="dashboard-line-chart" id="dash-revenue-line" role="img" aria-label="Grafico de linha do faturamento"></div>
+                <div class="dashboard-line-chart" id="dash-revenue-line" role="img" aria-label="Gráfico de linha do faturamento"></div>
               </div>
             </section>
 
-            <section class="panel-card dashboard-panel" aria-label="Distribuicao de pedidos">
+            <section class="panel-card dashboard-panel" aria-label="Distribuição de pedidos">
               <div class="panel-header">
                 <div>
-                  <div class="panel-title">Distribuicao de pedidos</div>
-                  <div class="panel-subtitle">Status da operacao atual</div>
+                  <div class="panel-title">Distribuição de pedidos</div>
+                  <div class="panel-subtitle">Status da operação atual</div>
                 </div>
                 <span class="panel-badge"><i class='bx bx-pulse'></i> <span id="dash-op-score">0%</span></span>
               </div>
@@ -6441,7 +6441,7 @@
                     <span>Total</span>
                   </div>
                   <div class="dashboard-donut-legend">
-                    <div class="dashboard-legend-item"><span class="legend-dot done"></span><strong id="dash-dist-done">0</strong><small>Concluidos</small></div>
+                    <div class="dashboard-legend-item"><span class="legend-dot done"></span><strong id="dash-dist-done">0</strong><small>Concluídos</small></div>
                     <div class="dashboard-legend-item"><span class="legend-dot pending"></span><strong id="dash-dist-pending">0</strong><small>Pendentes</small></div>
                     <div class="dashboard-legend-item"><span class="legend-dot cancelled"></span><strong id="dash-dist-cancelled">0</strong><small>Cancelados</small></div>
                   </div>
@@ -6450,10 +6450,10 @@
             </section>
           </div>
 
-          <div class="dashboard-section-heading" aria-label="Grupo de operacao e prioridades">
+          <div class="dashboard-section-heading" aria-label="Grupo de operação e prioridades">
             <div>
-              <span class="dashboard-section-kicker">Gestao do dia</span>
-              <h2>Operacao e prioridades</h2>
+              <span class="dashboard-section-kicker">Gestão do dia</span>
+              <h2>Operação e prioridades</h2>
             </div>
             <span class="dashboard-section-meta">Produtos, alertas e metas</span>
           </div>
@@ -6490,7 +6490,7 @@
                 <div class="panel-header">
                   <div>
                     <div class="panel-title">Alertas e avisos</div>
-                    <div class="panel-subtitle">Pontos que merecem atencao hoje</div>
+                    <div class="panel-subtitle">Pontos que merecem atenção hoje</div>
                   </div>
                 </div>
                 <div class="panel-body">
@@ -6502,7 +6502,7 @@
                 <div class="panel-header">
                   <div>
                     <div class="panel-title">Metas do dia</div>
-                    <div class="panel-subtitle">Indicadores de acompanhamento rapido</div>
+                    <div class="panel-subtitle">Indicadores de acompanhamento rápido</div>
                   </div>
                   <button class="dash-action-btn dashboard-panel-link" onclick="navegarPara('kanban')"><i class='bx bx-edit'></i> Pedidos</button>
                 </div>
@@ -6521,7 +6521,7 @@
                       <small id="dash-goal-orders-note">0%</small>
                     </div>
                     <div class="dashboard-goal">
-                      <span>Saude</span>
+                      <span>Saúde</span>
                       <strong id="dash-goal-health-value">0%</strong>
                       <div class="dashboard-progress"><span id="dash-goal-health-bar"></span></div>
                       <small id="dash-goal-health-note">Meta 85%</small>
@@ -6542,21 +6542,21 @@
       <section id="section-producao" class="page-section">
         <div class="reveal">
           <div class="section-title-row">
-            <h2 class="section-title"><i class='bx bx-bowl-hot'></i> Producao</h2>
+            <h2 class="section-title"><i class='bx bx-bowl-hot'></i> Produção</h2>
           </div>
 
           <div class="panels-grid reveal" style="margin-bottom:20px;">
-            <section class="panel-card" aria-label="Criar producao">
+            <section class="panel-card" aria-label="Criar produção">
               <div class="panel-header">
                 <div>
-                  <div class="panel-title">Criar Producao</div>
+                  <div class="panel-title">Criar Produção</div>
                   <div class="panel-subtitle">Planeje produto, quantidade e turno</div>
                 </div>
                 <span class="panel-badge"><i class='bx bx-plus-circle'></i> Novo</span>
               </div>
               <div class="panel-body">
                 <div class="modal-field">
-                  <label class="modal-label" for="producao-produto">Produto do cardapio</label>
+                  <label class="modal-label" for="producao-produto">Produto do cardápio</label>
                   <select class="modal-select" id="producao-produto"></select>
                 </div>
                 <div class="modal-field">
@@ -6565,17 +6565,17 @@
                 </div>
                 <div class="modal-field">
                   <label class="modal-label" for="producao-turno">Data ou turno</label>
-                  <input class="modal-input" id="producao-turno" type="text" placeholder="Ex: Hoje - almoco">
+                  <input class="modal-input" id="producao-turno" type="text" placeholder="Ex: Hoje - almoço">
                 </div>
-                <button class="btn-add" type="button" onclick="criarProducao()"><i class='bx bx-play-circle'></i> Criar producao</button>
+                <button class="btn-add" type="button" onclick="criarProducao()"><i class='bx bx-play-circle'></i> Criar produção</button>
               </div>
             </section>
 
-            <section class="panel-card" aria-label="Resumo da producao">
+            <section class="panel-card" aria-label="Resumo da produção">
               <div class="panel-header">
                 <div>
-                  <div class="panel-title">Resumo da Producao</div>
-                  <div class="panel-subtitle">Ingredientes, custo e estoque disponivel</div>
+                  <div class="panel-title">Resumo da Produção</div>
+                  <div class="panel-subtitle">Ingredientes, custo e estoque disponível</div>
                 </div>
                 <span class="panel-badge"><i class='bx bx-calculator'></i> Receita</span>
               </div>
@@ -6591,7 +6591,7 @@
             </section>
           </div>
 
-          <div class="kanban-grid reveal" role="region" aria-label="Producoes em andamento">
+          <div class="kanban-grid reveal" role="region" aria-label="Produções em andamento">
             <div class="kanban-col a-fazer" data-producao-status="pendente">
               <div class="kanban-col-header">
                 <div class="kanban-col-title">
@@ -6627,13 +6627,13 @@
           </div>
 
           <div class="producao-bottom-stack reveal">
-            <section class="panel-card producao-historico-panel" aria-label="Historico de producoes">
+            <section class="panel-card producao-historico-panel" aria-label="Histórico de produções">
               <div class="panel-header">
                 <div>
-                  <div class="panel-title">Historico de Producoes</div>
+                  <div class="panel-title">Histórico de Produções</div>
                   <div class="panel-subtitle">Registros finalizados para consulta</div>
                 </div>
-                <span class="panel-badge"><i class='bx bx-history'></i> Historico</span>
+                <span class="panel-badge"><i class='bx bx-history'></i> Histórico</span>
               </div>
               <div class="panel-body">
                 <div class="recent-orders-list" id="producao-historico"></div>
@@ -6642,10 +6642,10 @@
 
             <section class="panel-card producao-resumo-panel" aria-label="Resumo do dia">
               <div class="panel-header">
-                <div>
-                  <div class="panel-title">Resumo do Dia</div>
-                  <div class="panel-subtitle">Indicadores de producao atualizados em tempo real</div>
-                </div>
+                  <div>
+                    <div class="panel-title">Resumo do Dia</div>
+                    <div class="panel-subtitle">Indicadores de produção atualizados em tempo real</div>
+                  </div>
                 <span class="panel-badge"><i class='bx bx-pulse'></i> Hoje</span>
               </div>
               <div class="panel-body">
@@ -6662,7 +6662,7 @@
                   </div>
                   <div class="kpi-card green">
                     <div class="kpi-icon"><i class='bx bx-check-circle'></i></div>
-                    <div class="kpi-label">Concluidas</div>
+                    <div class="kpi-label">Concluídas</div>
                     <div class="kpi-value" id="producao-dia-concluidas">0</div>
                   </div>
                   <div class="kpi-card red">
@@ -7499,8 +7499,8 @@
     // CONFIGURAÇÃO & ESTADO GLOBAL
     // ================================================================
 
-    // Parametros centrais usados por navegacao, animacoes e comportamento responsivo.
-    // Manter esses valores agrupados evita numeros soltos espalhados pelo script.
+    // Parâmetros centrais usados por navegação, animações e comportamento responsivo.
+    // Manter esses valores agrupados evita números soltos espalhados pelo script.
     const CONFIG = {
       MOBILE_BREAKPOINT: 900,
       ANIMATION: {
@@ -7523,8 +7523,8 @@
       }
     };
 
-    // Estado em memoria da sessao atual do painel. Preferencias permanentes
-    // sao restauradas do localStorage durante a inicializacao.
+    // Estado em memória da sessão atual do painel. Preferências permanentes
+    // são restauradas do localStorage durante a inicialização.
     const AppState = {
       currentPage: 'dashboard',
       sidebarCollapsed: false,
@@ -7537,8 +7537,8 @@
       estadoGlobalConectado: false,
     };
 
-    // Chaves de persistencia usadas pelo dashboard. O cardapio fica no navegador
-    // porque ainda nao existe endpoint backend proprio para esses itens.
+    // Chaves de persistência usadas pelo dashboard. O cardápio fica no navegador
+    // porque ainda não existe endpoint backend próprio para esses itens.
     const STORAGE_KEYS = {
       cardapio: 'cozinha-cardapio-itens',
       kanban: 'cozinha-kanban-cards',
@@ -7547,8 +7547,8 @@
       producao: 'cozinha-producoes',
     };
 
-    // Base demonstrativa usada quando nao existem pedidos/produtos salvos.
-    // Isso mantem o dashboard preenchido sem depender de API ou banco local.
+    // Base demonstrativa usada quando não existem pedidos/produtos salvos.
+    // Isso mantém o dashboard preenchido sem depender de API ou banco local.
     const DASHBOARD_DEMO_DATA = {
       pedidos: [
         {
@@ -7558,13 +7558,13 @@
           valor: 186.4,
           data: new Date().toISOString(),
           itens: [
-            { nome: 'Frango grelhado com limao', quantidade: 2, valor: 37.9 },
+            { nome: 'Frango grelhado com limão', quantidade: 2, valor: 37.9 },
             { nome: 'Suco natural', quantidade: 2, valor: 9.9 },
           ],
         },
         {
           id: '1027',
-          cliente: 'Balcao',
+          cliente: 'Balcão',
           status: 'pendente',
           valor: 78.5,
           data: new Date(Date.now() - 1000 * 60 * 26).toISOString(),
@@ -7610,7 +7610,7 @@
         },
       ],
       produtos: [
-        { nome: 'Frango grelhado com limao', vendidos: 42, valor: 37.9 },
+        { nome: 'Frango grelhado com limão', vendidos: 42, valor: 37.9 },
         { nome: 'Bife acebolado', vendidos: 31, valor: 42.5 },
         { nome: 'Peixe ao molho', vendidos: 24, valor: 48.9 },
         { nome: 'Frango a parmegiana', vendidos: 19, valor: 46.9 },
@@ -7630,7 +7630,7 @@
     ];
 
     const PRODUCAO_RECEITAS_DEMO = {
-      'Frango grelhado com limao': [
+      'Frango grelhado com limão': [
         { insumo: 'File de Frango', quantidade: 0.18, unidade: 'kg', custoUnitario: 19.8 },
         { insumo: 'Arroz Parboilizado', quantidade: 0.09, unidade: 'kg', custoUnitario: 5.6 },
         { insumo: 'Verduras Frescas', quantidade: 0.4, unidade: 'un', custoUnitario: 1.8 },
@@ -7654,7 +7654,7 @@
     const TRANSLATIONS = {
       pt: {
         nav_dashboard: 'Dashboard',
-        nav_producao: 'Producao',
+        nav_producao: 'Produção',
         nav_estoque: 'Estoque',
         nav_cardapio: 'Cardápio / PCP',
         nav_kanban: 'Kanban',
@@ -7670,7 +7670,7 @@
         nav_groups: ['Principal', 'Análise', 'Sistema'],
         pages: {
           dashboard: { title: 'Dashboard', breadcrumb: 'Visão Geral' },
-          producao: { title: 'Producao', breadcrumb: 'Operacao de Producao' },
+          producao: { title: 'Produção', breadcrumb: 'Operação de Produção' },
           estoque: { title: 'Estoque', breadcrumb: 'Controle de Estoque' },
           cardapio: { title: 'Cardápio & PCP', breadcrumb: 'Cardápio e Planejamento' },
           kanban: { title: 'Kanban', breadcrumb: 'Kanban de Processos' },
@@ -7696,7 +7696,7 @@
           notif_stock_title_3: 'Carne Bovina — Alerta',
           notif_stock_desc_3: 'Estoque próximo do nível mínimo.',
           section_estoque: 'Controle de Estoque',
-          section_producao: 'Producao da Cozinha',
+          section_producao: 'Produção da Cozinha',
           section_cardapio: 'Planejamento Semanal (PCP)',
           section_kanban: 'Kanban de Processos',
           section_pops: 'POPs & Fichas Técnicas',
@@ -7924,7 +7924,7 @@
       },
       es: {
         nav_dashboard: 'Panel de control',
-        nav_producao: 'Produccion',
+        nav_producao: 'Producción',
         nav_estoque: 'Inventario',
         nav_cardapio: 'Menú / PCP',
         nav_kanban: 'Kanban',
@@ -7940,7 +7940,7 @@
         nav_groups: ['Principal', 'Análisis', 'Sistema'],
         pages: {
           dashboard: { title: 'Panel de control', breadcrumb: 'Vista general' },
-          producao: { title: 'Produccion', breadcrumb: 'Operacion de Produccion' },
+          producao: { title: 'Producción', breadcrumb: 'Operación de Producción' },
           estoque: { title: 'Inventario', breadcrumb: 'Control de inventario' },
           cardapio: { title: 'Menú y PCP', breadcrumb: 'Menú y planificación' },
           kanban: { title: 'Kanban', breadcrumb: 'Kanban de procesos' },
@@ -7966,7 +7966,7 @@
           notif_stock_title_3: 'Carne bovina — Alerta',
           notif_stock_desc_3: 'El stock está cerca del nivel mínimo.',
           section_estoque: 'Control de Inventario',
-          section_producao: 'Produccion de Cocina',
+          section_producao: 'Producción de Cocina',
           section_cardapio: 'Planificación Semanal (PCP)',
           section_kanban: 'Kanban de Procesos',
           section_pops: 'POE y Fichas Técnicas',
@@ -8243,7 +8243,7 @@
       });
     }
 
-    // Utilitarios de dados do dashboard: formatam moeda, convertem numeros,
+    // Utilitários de dados do dashboard: formatam moeda, convertem números,
     // leem listas do localStorage e adaptam pedidos/produtos a um formato unico.
     function formatarMoedaBR(valor) {
       return new Intl.NumberFormat('pt-BR', {
@@ -8277,7 +8277,7 @@
         const parsed = JSON.parse(raw);
         return parsed ?? fallback;
       } catch (error) {
-        logSeguro(`Nao foi possivel ler estado ${chave}`, error);
+        logSeguro(`Não foi possível ler estado ${chave}`, error);
         return fallback;
       }
     }
@@ -8287,7 +8287,7 @@
         localStorage.setItem(chave, JSON.stringify(valor));
         return true;
       } catch (error) {
-        logSeguro(`Nao foi possivel persistir estado ${chave}`, error);
+        logSeguro(`Não foi possível persistir estado ${chave}`, error);
         return false;
       }
     }
@@ -8314,7 +8314,7 @@
 
     function normalizarCardKanban(card = {}, index = 0) {
       const tag = normalizarTagKanban(card.tag);
-      const tagLabels = { info: 'Operacoes', tec: 'Tecnico', amb: 'Ambiente' };
+      const tagLabels = { info: 'Operações', tec: 'Técnico', amb: 'Ambiente' };
       const tituloFallback = `Card ${index + 1}`;
 
       return {
@@ -8725,7 +8725,7 @@
       ctx.closePath();
     }
 
-    function prepararCanvasDashboard(container, classe = 'dashboard-canvas-chart', ariaLabel = 'Grafico do dashboard') {
+    function prepararCanvasDashboard(container, classe = 'dashboard-canvas-chart', ariaLabel = 'Gráfico do dashboard') {
       const cleanupAnterior = dashboardCanvasCleanups.get(container);
       if (cleanupAnterior) cleanupAnterior();
 
@@ -8907,7 +8907,7 @@
           const parsed = JSON.parse(raw);
           if (Array.isArray(parsed)) return { data: parsed, key: chave };
         } catch (error) {
-          logSeguro(`Nao foi possivel ler ${chave}`, error);
+          logSeguro(`Não foi possível ler ${chave}`, error);
         }
       }
       return { data: [], key: null };
@@ -9030,7 +9030,7 @@
         && dataA.getDate() === dataB.getDate();
     }
 
-    // Consolida os numeros principais do dashboard. Pedidos cancelados nao entram
+    // Consolida os números principais do dashboard. Pedidos cancelados não entram
     // no faturamento, mas continuam contando no total e no resumo de status.
     function calcularDashboardNegocio() {
       const { origem: origemPedidos, pedidos } = obterPedidosDashboard();
@@ -9122,7 +9122,7 @@
       const { canvas, ctx, dimensionar, aoRedimensionar } = prepararCanvasDashboard(
         container,
         'dashboard-canvas-chart',
-        'Grafico de producao por item'
+        'Gráfico de produção por item'
       );
 
       const desenhar = (progresso = 1) => {
@@ -9236,7 +9236,7 @@
       const { canvas, ctx, dimensionar, aoRedimensionar } = prepararCanvasDashboard(
         container,
         'dashboard-canvas-chart',
-        'Grafico de linha do faturamento semanal'
+        'Gráfico de linha do faturamento semanal'
       );
 
       const montarPontos = (largura, altura, padding) => {
@@ -9551,7 +9551,7 @@
           tipo: 'warning',
           icone: 'bx-columns',
           titulo: `${dados.resumoKanban['em-andamento']} card(s) em andamento`,
-          texto: 'O Kanban esta conectado ao painel operacional.',
+          texto: 'O Kanban está conectado ao painel operacional.',
         });
       }
       if (dados.cmvResumo?.acimaDaMeta) {
@@ -9566,7 +9566,7 @@
         alertas.push({
           tipo: dados.resumoProducao.pendente > 2 ? 'warning' : 'success',
           icone: 'bx-bowl-hot',
-          titulo: `${dados.resumoProducao.total} producao(oes) planejada(s)`,
+          titulo: `${dados.resumoProducao.total} produção(ões) planejada(s)`,
           texto: `${dados.resumoProducao.preparo} em preparo e ${dados.resumoProducao.finalizado} finalizada(s).`,
         });
       }
@@ -9574,7 +9574,7 @@
         alertas.push({
           tipo: 'warning',
           icone: 'bx-dish',
-          titulo: 'Cardapio enxuto',
+          titulo: 'Cardápio enxuto',
           texto: 'Cadastre mais itens para enriquecer a listagem de produtos.',
         });
       }
@@ -9582,7 +9582,7 @@
         alertas.push({
           tipo: 'success',
           icone: 'bx-check-shield',
-          titulo: 'Operacao sob controle',
+          titulo: 'Operação sob controle',
           texto: 'Sem avisos criticos neste momento.',
         });
       }
@@ -9621,7 +9621,7 @@
         const { canvas, ctx, dimensionar, aoRedimensionar } = prepararCanvasDashboard(
           donut,
           'dashboard-canvas-donut',
-          'Grafico de distribuicao de pedidos por status'
+          'Gráfico de distribuição de pedidos por status'
         );
         const totalEl = document.createElement('strong');
         totalEl.id = 'dash-status-total';
@@ -9632,7 +9632,7 @@
 
         const segmentos = [
           {
-            rotulo: 'Concluidos',
+            rotulo: 'Concluídos',
             valor: Math.max(0, normalizarNumero(dados.concluidos, 0)),
             porcentagem: concluidosPct,
             cor: 'herb',
@@ -9961,7 +9961,7 @@
       { label: 'Dashboard', section: 'Visão Geral', page: 'dashboard', icon: 'bx-grid-alt' },
       { label: 'Estoque', section: 'Módulo', page: 'estoque', icon: 'bx-box' },
       { label: 'Cardápio & PCP', section: 'Módulo', page: 'cardapio', icon: 'bx-book-content' },
-      { label: 'Producao', section: 'Modulo', page: 'producao', icon: 'bx-bowl-hot' },
+      { label: 'Produção', section: 'Módulo', page: 'producao', icon: 'bx-bowl-hot' },
       { label: 'Kanban', section: 'Módulo', page: 'kanban', icon: 'bx-columns' },
       { label: 'POPs & Fichas Técnicas', section: 'Módulo', page: 'pops', icon: 'bx-file-blank' },
       { label: 'Curva ABC', section: 'Análises', page: 'analises-abc', icon: 'bx-bar-chart-alt-2' },
@@ -10320,10 +10320,10 @@
       setIconText('#section-pops .btn-add', u.new_sheet);
       setIconText('#section-analises-cmv .btn-link', u.compare_periods);
 
-      setText('#section-dashboard .dashboard-insights-grid .panel-card:nth-child(1) .panel-title', 'Producao por item');
+      setText('#section-dashboard .dashboard-insights-grid .panel-card:nth-child(1) .panel-title', 'Produção por item');
       setText('#section-dashboard .dashboard-insights-grid .panel-card:nth-child(1) .panel-subtitle', 'Volume dos ultimos produtos vendidos');
       setText('#section-dashboard .dashboard-insights-grid .panel-card:nth-child(2) .panel-title', 'Faturamento da semana');
-      setText('#section-dashboard .dashboard-insights-grid .panel-card:nth-child(2) .panel-subtitle', 'Evolucao calculada pelos pedidos validos');
+      setText('#section-dashboard .dashboard-insights-grid .panel-card:nth-child(2) .panel-subtitle', 'Evolução calculada pelos pedidos válidos');
       setIconText('#section-dashboard .dashboard-insights-grid .panel-card:nth-child(2) .panel-badge', 'BRL');
       setText('#section-estoque .panel-title', u.panel_inventory);
       setText('#section-estoque .panel-subtitle', u.panel_inventory_sub);
@@ -10915,7 +10915,7 @@
           const status = document.createElement('span');
           status.className = `abc-status ${item.suficiente ? 'ok' : 'critico'}`;
           status.appendChild(criarIconeBox(item.suficiente ? 'bx-check' : 'bx-error'));
-          status.append(` ${item.suficiente ? 'Disponivel' : 'Falta estoque'}`);
+          status.append(` ${item.suficiente ? 'Disponível' : 'Falta estoque'}`);
 
           row.append(tag, nome, qtd, status);
           lista.appendChild(row);
@@ -10932,7 +10932,7 @@
           const title = document.createElement('strong');
           title.textContent = 'Estoque suficiente';
           const text = document.createElement('span');
-          text.textContent = 'Todos os insumos estao disponiveis para esta producao.';
+          text.textContent = 'Todos os insumos estão disponíveis para esta produção.';
           content.append(title, text);
           ok.appendChild(content);
           alertas.appendChild(ok);
@@ -10945,7 +10945,7 @@
             const title = document.createElement('strong');
             title.textContent = `${item.insumo} insuficiente`;
             const text = document.createElement('span');
-            text.textContent = `Necessario: ${item.necessario.toFixed(2).replace('.', ',')} ${item.unidade}. Disponivel: ${item.disponivel.toFixed(2).replace('.', ',')} ${item.unidade}.`;
+            text.textContent = `Necessário: ${item.necessario.toFixed(2).replace('.', ',')} ${item.unidade}. Disponível: ${item.disponivel.toFixed(2).replace('.', ',')} ${item.unidade}.`;
             content.append(title, text);
             alerta.appendChild(content);
             alertas.appendChild(alerta);
@@ -10954,7 +10954,7 @@
       }
 
       setTextById('producao-custo-estimado', formatarMoedaBR(resumo.custo));
-      setTextById('producao-estoque-status', resumo.alertas.length ? 'Ha insumos insuficientes. Gere reabastecimento antes de iniciar.' : 'Producao liberada pelo estoque atual.');
+      setTextById('producao-estoque-status', resumo.alertas.length ? 'Há insumos insuficientes. Gere reabastecimento antes de iniciar.' : 'Produção liberada pelo estoque atual.');
       return resumo;
     }
 
@@ -10963,7 +10963,7 @@
       const quantidade = validarNumeroSeguro(document.getElementById('producao-quantidade')?.value, 1, 100000, null);
       const turno = limparTextoSeguro(document.getElementById('producao-turno')?.value, 40, 'Hoje');
       if (!produto || quantidade === null) {
-        toast('Informe produto e quantidade validos para criar a producao.', 'warning');
+        toast('Informe produto e quantidade válidos para criar a produção.', 'warning');
         return;
       }
 
@@ -10978,7 +10978,7 @@
         alertas: resumo.alertas,
       }, { source: 'producao:create' });
 
-      toast(resumo.alertas.length ? 'Producao criada com alerta de estoque' : 'Producao criada', resumo.alertas.length ? 'warning' : 'success');
+      toast(resumo.alertas.length ? 'Produção criada com alerta de estoque' : 'Produção criada', resumo.alertas.length ? 'warning' : 'success');
     }
 
     function alterarStatusProducao(id, status) {
@@ -11056,7 +11056,7 @@
         preparo: 'Em Preparo',
         finalizado: 'Finalizado',
       };
-      toast(`Producao movida para ${labels[destinoSeguro]}`, 'success');
+      toast(`Produção movida para ${labels[destinoSeguro]}`, 'success');
       return true;
     }
 
@@ -11200,7 +11200,7 @@
       card.setAttribute('role', 'article');
       card.setAttribute('draggable', 'true');
       card.setAttribute('aria-label', `${producao.produto}, ${producao.quantidade} unidades, ${producao.turno}`);
-      card.title = 'Arraste para mover esta producao entre as etapas';
+      card.title = 'Arraste para mover esta produção entre as etapas';
       card.addEventListener('dragstart', onProducaoDragStart);
       card.addEventListener('pointerdown', onProducaoPointerDown);
 
@@ -11253,7 +11253,7 @@
         if (!finalizados.length) {
           const empty = document.createElement('div');
           empty.className = 'dashboard-empty';
-          empty.textContent = 'Nenhuma producao finalizada ainda.';
+          empty.textContent = 'Nenhuma produção finalizada ainda.';
           historico.appendChild(empty);
         } else {
           finalizados.forEach(item => {
@@ -11347,8 +11347,8 @@
     // CARDÁPIO
     // ================================================================
 
-    // Cardapio: renderizacao, serializacao e persistencia local dos itens.
-    // Cada linha guarda dados em dataset para edicao e para salvar no localStorage.
+    // Cardápio: renderização, serialização e persistência local dos itens.
+    // Cada linha guarda dados em dataset para edição e para salvar no localStorage.
     function escapeHTML(value) {
       return String(value ?? '').replace(/[&<>"']/g, char => ({
         '&': '&amp;',
@@ -11368,7 +11368,7 @@
       return statusMap[status] || statusMap.ok;
     }
 
-    function miniaturaCardapioHTML(src, nome = 'Item do cardapio') {
+    function miniaturaCardapioHTML(src, nome = 'Item do cardápio') {
       const imagem = normalizarImagemSegura(src);
       if (imagem) {
         return `<img class="menu-thumb" src="${escapeHTML(imagem)}" alt="Foto de ${escapeHTML(nome)}">`;
@@ -11444,7 +11444,7 @@
           const pratoCell = tr.children[1];
           const imageCell = document.createElement('td');
           imageCell.className = 'pcp-image-cell';
-          imageCell.innerHTML = miniaturaCardapioHTML('', pratoCell?.textContent.trim() || 'Item do cardapio');
+          imageCell.innerHTML = miniaturaCardapioHTML('', pratoCell?.textContent.trim() || 'Item do cardápio');
           tr.insertBefore(imageCell, pratoCell || tr.children[1] || null);
         }
 
@@ -11485,7 +11485,7 @@
         localStorage.setItem(STORAGE_KEYS.cardapio, JSON.stringify(linhas));
         CozinhaStore.dispatch('cardapio:set', linhas, { source: 'cardapio:save' });
       } catch (error) {
-        logSeguro('Nao foi possivel salvar as imagens no navegador', error);
+        logSeguro('Não foi possível salvar as imagens no navegador', error);
         CozinhaStore.dispatch('cardapio:set', linhas, { source: 'cardapio:memory' });
         toast('Imagem grande demais para salvar localmente. O item foi mantido na tela.', 'warning', 5000);
       }
@@ -11502,7 +11502,7 @@
           itensSalvos.forEach(item => tbody.appendChild(criarLinhaCardapio(item)));
         }
       } catch (error) {
-        logSeguro('Nao foi possivel restaurar o cardapio local', error);
+        logSeguro('Não foi possível restaurar o cardápio local', error);
       }
 
       prepararLinhasCardapioExistentes();
@@ -11511,7 +11511,7 @@
     function aplicarRotulosLinhaResponsiva(tr) {
       const table = tr.closest('table');
       if (!table) return;
-      const headers = Array.from(table.querySelectorAll('thead th')).map((th, index, list) => th.textContent.trim() || (index === list.length - 1 ? 'Acoes' : 'Info'));
+      const headers = Array.from(table.querySelectorAll('thead th')).map((th, index, list) => th.textContent.trim() || (index === list.length - 1 ? 'Ações' : 'Info'));
       Array.from(tr.children).forEach((td, index) => {
         td.setAttribute('data-label', headers[index] || 'Info');
       });
@@ -11519,7 +11519,7 @@
 
     function aplicarRotulosTabelasResponsivas() {
       document.querySelectorAll('.pcp-table').forEach(table => {
-        const headers = Array.from(table.querySelectorAll('thead th')).map((th, index, list) => th.textContent.trim() || (index === list.length - 1 ? 'Acoes' : 'Info'));
+        const headers = Array.from(table.querySelectorAll('thead th')).map((th, index, list) => th.textContent.trim() || (index === list.length - 1 ? 'Ações' : 'Info'));
         table.querySelectorAll('tbody tr').forEach(tr => {
           Array.from(tr.children).forEach((td, index) => {
             td.setAttribute('data-label', headers[index] || 'Info');
@@ -11560,7 +11560,7 @@
     }
 
     // Reduz imagens antes de salvar no localStorage. O navegador tem limite de
-    // armazenamento, entao a foto e desenhada em canvas e exportada como JPEG.
+    // armazenamento, então a foto é desenhada em canvas e exportada como JPEG.
     function compactarImagemProduto(file, maxWidth = 900, maxHeight = 700, quality = 0.82) {
       return new Promise((resolve, reject) => {
         if (!file || !SAFE_IMAGE_TYPES.has(file.type)) {
@@ -11594,7 +11594,7 @@
       });
     }
 
-    // Atualiza a imagem temporaria do modal e mostra a previa antes de salvar.
+    // Atualiza a imagem temporária do modal e mostra a prévia antes de salvar.
     async function handleImagemCardapioChange(event) {
       const file = event.target.files?.[0];
       if (!file) {
@@ -11606,9 +11606,9 @@
         AppState.cardapioImagemAtual = await compactarImagemProduto(file);
         renderizarPreviewCardapio(AppState.cardapioImagemAtual, file.name);
       } catch (error) {
-        logSeguro('Imagem invalida no cardapio', error);
+        logSeguro('Imagem inválida no cardápio', error);
         limparImagemCardapio();
-        toast('Escolha uma imagem valida para o item.', 'warning');
+        toast('Escolha uma imagem válida para o item.', 'warning');
       }
     }
 
@@ -11621,7 +11621,7 @@
       });
       const status = document.getElementById('card-status');
       if (status) status.value = 'ok';
-      const title = TRANSLATIONS[AppState.currentLang]?.ui?.modal_menu_title || 'Novo Item do Cardapio';
+      const title = TRANSLATIONS[AppState.currentLang]?.ui?.modal_menu_title || 'Novo Item do Cardápio';
       setText('#modal-cardapio .modal-title', title);
       setIconText('#modal-cardapio .btn-primary', TRANSLATIONS[AppState.currentLang]?.ui?.add || 'Adicionar');
     }
@@ -11642,7 +11642,7 @@
       if (status) status.value = item.status;
       AppState.cardapioImagemAtual = item.imagem || '';
       renderizarPreviewCardapio(AppState.cardapioImagemAtual, item.imagem ? 'Foto atual do item' : '');
-      setText('#modal-cardapio .modal-title', 'Editar Item do Cardapio');
+      setText('#modal-cardapio .modal-title', 'Editar Item do Cardápio');
       setIconText('#modal-cardapio .btn-primary', 'Salvar');
       abrirModal('modal-cardapio');
     }
@@ -11668,10 +11668,10 @@
 
       if (AppState.linhaCardapioEmEdicao) {
         AppState.linhaCardapioEmEdicao.replaceWith(novaLinha);
-        toast('Item atualizado no cardapio', 'success');
+        toast('Item atualizado no cardápio', 'success');
       } else {
         tbody.appendChild(novaLinha);
-        toast('Item adicionado ao cardapio', 'success');
+        toast('Item adicionado ao cardápio', 'success');
       }
 
       salvarCardapioLocal();
@@ -11801,7 +11801,7 @@
       const maxInfo = extrairQuantidadeUnidade(document.getElementById('est-max')?.value, atualInfo?.unidade || minimoInfo?.unidade || 'un');
 
       if (!nome || !minimoInfo || !atualInfo || !maxInfo || maxInfo.quantidade < atualInfo.quantidade) {
-        toast('Preencha o estoque com nome e quantidades validas.', 'warning');
+        toast('Preencha o estoque com nome e quantidades válidas.', 'warning');
         return;
       }
 
@@ -11852,7 +11852,7 @@
         finalizarCadastro();
       } catch (erro) {
         logSeguro('Erro ao cadastrar item', erro);
-        toast('Nao foi possivel cadastrar o item agora.', 'error');
+        toast('Não foi possível cadastrar o item agora.', 'error');
       }
     };
 
@@ -12072,7 +12072,7 @@
           avatar: null
         };
       } catch (error) {
-        logSeguro('Erro ao buscar dados do usuario', error);
+        logSeguro('Erro ao buscar dados do usuário', error);
         return null;
       }
     }
@@ -12093,7 +12093,7 @@
               }
             });
           } catch (error) {
-            logSeguro('Nao foi possivel invalidar a sessao no servidor', error);
+            logSeguro('Não foi possível invalidar a sessão no servidor', error);
           }
         }
       } catch (error) {
@@ -12525,7 +12525,7 @@ window.excluirItem = async function excluirItemVisual(id) {
                 toast('Item removido do estoque', 'info');
             } catch (erro) {
                 logSeguro('Erro ao excluir item', erro);
-                toast('Nao foi possivel excluir o item agora', 'error');
+                toast('Não foi possível excluir o item agora', 'error');
             }
         },
     });

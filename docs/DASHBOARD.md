@@ -1,6 +1,6 @@
 # Dashboard
 
-Este documento explica de onde vem os dados do dashboard e como os principais indicadores sao calculados.
+Este documento explica de onde vem os dados do dashboard e como os principais indicadores são calculados.
 
 ## Arquivo principal
 
@@ -10,11 +10,11 @@ O dashboard fica em:
 cozinha/frontend/dashboard.html
 ```
 
-Esse arquivo contem:
+Esse arquivo contém:
 
-- HTML das secoes do painel.
+- HTML das seções do painel.
 - CSS inline do painel e das telas internas.
-- JavaScript de navegacao, modais, dashboard, estoque, cardapio e configuracoes.
+- JavaScript de navegação, modais, dashboard, estoque, cardápio e configurações.
 
 ## Fontes de dados
 
@@ -39,15 +39,15 @@ Chaves lidas no `localStorage`:
 - `produtos`
 - `products`
 
-O dashboard tambem usa os itens salvos do cardapio:
+O dashboard também usa os itens salvos do cardápio:
 
 - `cozinha-cardapio-itens`
 
-Se nao houver produtos nem cardapio salvo, usa `DASHBOARD_DEMO_DATA.produtos`.
+Se não houver produtos nem cardápio salvo, usa `DASHBOARD_DEMO_DATA.produtos`.
 
-### Cardapio
+### Cardápio
 
-O cardapio e salvo em:
+O cardápio e salvo em:
 
 ```text
 cozinha-cardapio-itens
@@ -67,7 +67,7 @@ Como o projeto pode receber dados com nomes diferentes, o dashboard normaliza pe
 
 ### Pedido normalizado
 
-A funcao `normalizarPedidoDashboard` tenta encontrar:
+A função `normalizarPedidoDashboard` tenta encontrar:
 
 - `id`, `codigo` ou `numero`.
 - `cliente`, `nomeCliente`, `mesa` ou `origem`.
@@ -78,7 +78,7 @@ A funcao `normalizarPedidoDashboard` tenta encontrar:
 
 ### Produto normalizado
 
-A funcao `normalizarProdutoDashboard` tenta encontrar:
+A função `normalizarProdutoDashboard` tenta encontrar:
 
 - `id` ou `codigo`.
 - `nome`, `prato`, `name` ou `titulo`.
@@ -87,10 +87,10 @@ A funcao `normalizarProdutoDashboard` tenta encontrar:
 
 ## Status de pedidos
 
-A funcao `normalizarStatusPedido` converte textos diferentes para tres estados principais:
+A função `normalizarStatusPedido` converte textos diferentes para três estados principais:
 
-- `cancelado`: quando o status contem `cancel`.
-- `concluido`: quando contem `concl`, `entreg`, `final` ou `pago`.
+- `cancelado`: quando o status contém `cancel`.
+- `concluido`: quando contém `concl`, `entreg`, `final` ou `pago`.
 - `pendente`: qualquer outro caso.
 
 ## Calculos principais
@@ -101,11 +101,11 @@ Funcao central:
 calcularDashboardNegocio()
 ```
 
-Ela retorna todos os numeros usados nos cards e paineis do dashboard.
+Ela retorna todos os números usados nos cards e painéis do dashboard.
 
 ### Faturamento total
 
-Soma o valor de todos os pedidos que nao estao cancelados.
+Soma o valor de todos os pedidos que não estão cancelados.
 
 ```text
 faturamentoTotal = soma(pedidos com status diferente de cancelado)
@@ -113,10 +113,10 @@ faturamentoTotal = soma(pedidos com status diferente de cancelado)
 
 ### Faturamento do dia
 
-Filtra os pedidos validos pela data atual e soma seus valores.
+Filtra os pedidos válidos pela data atual e soma seus valores.
 
 ```text
-faturamentoDia = soma(pedidos validos cuja data e hoje)
+faturamentoDia = soma(pedidos válidos cuja data é hoje)
 ```
 
 ### Total de pedidos
@@ -127,7 +127,7 @@ Conta todos os pedidos encontrados, incluindo cancelados.
 totalPedidos = quantidade total de pedidos
 ```
 
-### Pedidos concluidos
+### Pedidos concluídos
 
 Conta pedidos com status normalizado igual a `concluido`.
 
@@ -139,15 +139,15 @@ Conta pedidos com status normalizado igual a `pendente`.
 
 Conta pedidos com status normalizado igual a `cancelado`.
 
-### Ticket medio
+### Ticket médio
 
-Divide o faturamento total pela quantidade de pedidos validos.
+Divide o faturamento total pela quantidade de pedidos válidos.
 
 ```text
-ticketMedio = faturamentoTotal / quantidade de pedidos nao cancelados
+ticketMedio = faturamentoTotal / quantidade de pedidos não cancelados
 ```
 
-Se nao houver pedido valido, o valor fica `0`.
+Se não houver pedido válido, o valor fica `0`.
 
 ### Produtos mais vendidos
 
@@ -164,7 +164,7 @@ O calculo:
 3. Agrupa os itens por nome.
 4. Soma quantidade vendida.
 5. Soma valor vendido.
-6. Complementa com produtos cadastrados que ainda nao aparecem nos pedidos.
+6. Complementa com produtos cadastrados que ainda não aparecem nos pedidos.
 7. Ordena por quantidade vendida.
 8. Retorna os 5 primeiros.
 
@@ -172,13 +172,13 @@ O calculo:
 
 Soma as quantidades dos produtos retornados em `topProdutos`.
 
-### Saude operacional
+### Saúde operacional
 
 Indicador visual calculado por uma formula simples:
 
 ```text
 saude = 72
-  + pontos por pedidos concluidos
+  + pontos por pedidos concluídos
   - pontos por pedidos pendentes
   - pontos por pedidos cancelados
   + pontos por pedidos do dia
@@ -221,23 +221,23 @@ Responsabilidades:
 - Renderizar pedidos recentes.
 - Renderizar produtos mais vendidos.
 - Renderizar alertas.
-- Indicar quando os dados sao demonstrativos.
+- Indicar quando os dados são demonstrativos.
 
-Essa funcao tambem e chamada depois de mudancas no cardapio para refletir novos dados.
+Essa função também e chamada depois de mudanças no cardápio para refletir novos dados.
 
-## Quando os dados sao demonstrativos
+## Quando os dados são demonstrativos
 
 O dashboard usa dados demonstrativos quando:
 
 - Nao existem pedidos salvos no `localStorage`.
-- Nao existem produtos nem itens de cardapio salvos no `localStorage`.
+- Nao existem produtos nem itens de cardápio salvos no `localStorage`.
 
 Esse comportamento evita uma tela vazia e ajuda a demonstrar a interface.
 
-## Pontos de atencao
+## Pontos de atenção
 
 - `localStorage` e salvo apenas no navegador atual.
 - Imagens em base64 aumentam o tamanho do item salvo.
 - O navegador tem limite de armazenamento local.
 - Se uma imagem for muito grande, o sistema tenta compactar antes de salvar.
-- Se o limite do `localStorage` for atingido, o sistema mantem o item na tela e mostra aviso.
+- Se o limite do `localStorage` for atingido, o sistema mantém o item na tela e mostra aviso.
