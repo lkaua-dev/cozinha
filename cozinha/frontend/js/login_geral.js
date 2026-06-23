@@ -117,12 +117,12 @@ function validateFields() {
   const passVal = normalizarSenha(inputPass.value);
 
   if (!userVal || !SAFE_LOGIN_RE.test(userVal)) {
-    setFieldError(fieldUser, errUser, 'Informe um usuario ou e-mail valido.');
+    setFieldError(fieldUser, errUser, 'Informe um usuário ou e-mail válido.');
     valid = false;
   }
 
   if (!passVal || passVal.length < 4 || passVal.length > 128) {
-    setFieldError(fieldPass, errPass, 'Informe uma senha valida.');
+    setFieldError(fieldPass, errPass, 'Informe uma senha válida.');
     valid = false;
   }
 
@@ -190,7 +190,7 @@ form.addEventListener('submit', function (e) {
       return;
     }
 
-    showToast('Usuario ou senha incorretos. Tente novamente.', 'error');
+    showToast('Usuário ou senha incorretos. Tente novamente.', 'error');
     fieldUser.classList.add('has-error');
     fieldPass.classList.add('has-error');
     errUser.textContent = '';
