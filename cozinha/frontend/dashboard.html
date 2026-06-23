@@ -590,16 +590,20 @@
 
     /* Botão toggle sidebar */
     .btn-sidebar-toggle {
-      display: flex;
+      position: relative;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       width: 38px;
       height: 38px;
+      padding: 0;
       border-radius: var(--radius-sm);
       border: 1.5px solid var(--cream-deep);
       background: var(--white);
       color: var(--brown-mid);
-      transition: border-color var(--t), color var(--t), background var(--t);
+      line-height: 0;
+      overflow: hidden;
+      transition: border-color var(--t), color var(--t), background var(--t), box-shadow var(--t), transform var(--t);
       flex-shrink: 0;
     }
 
@@ -607,10 +611,18 @@
       border-color: var(--terracotta);
       color: var(--terracotta);
       background: var(--terra-faint);
+      box-shadow: 0 8px 18px rgba(91, 58, 37, 0.10);
+      transform: translateY(-1px);
+    }
+
+    .btn-sidebar-toggle:active {
+      transform: translateY(0) scale(0.96);
     }
 
     .btn-sidebar-toggle i {
       font-size: 1.2rem;
+      line-height: 1;
+      pointer-events: none;
     }
 
     /* Título de página */
@@ -689,25 +701,36 @@
     /* Ícone de ação (notificação, etc.) */
     .icon-btn {
       position: relative;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       width: 38px;
       height: 38px;
+      padding: 0;
       border-radius: var(--radius-sm);
       border: 1.5px solid var(--cream-deep);
       background: var(--white);
       color: var(--brown-mid);
-      transition: all var(--t);
+      line-height: 0;
+      transition: border-color var(--t), color var(--t), background var(--t), box-shadow var(--t), transform var(--t);
     }
 
     .icon-btn:hover {
       border-color: var(--terracotta);
       color: var(--terracotta);
+      background: var(--terra-faint);
+      box-shadow: 0 8px 18px rgba(91, 58, 37, 0.10);
+      transform: translateY(-1px);
+    }
+
+    .icon-btn:active {
+      transform: translateY(0) scale(0.96);
     }
 
     .icon-btn i {
+      display: block;
       font-size: 1.15rem;
+      line-height: 1;
     }
 
     /* Dot de notificação */
@@ -1974,9 +1997,11 @@
       }
 
       .topbar-right {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 38px 36px;
         width: 100%;
         flex: 1 1 100%;
-        align-items: stretch;
+        align-items: center;
       }
 
       .search-wrapper {
@@ -1985,8 +2010,15 @@
       }
 
       .search-bar {
-        width: 100%;
+        width: auto;
+        min-width: 0;
         min-height: 42px;
+      }
+
+      .topbar-right .icon-btn,
+      .topbar-right .topbar-avatar {
+        justify-self: end;
+        flex-shrink: 0;
       }
 
       .search-bar input {
@@ -2938,6 +2970,94 @@
     .kanban-card.dragging {
       opacity: 0.4;
       transform: rotate(2deg);
+    }
+
+    #section-producao .kanban-card {
+      cursor: grab;
+      will-change: transform, opacity;
+    }
+
+    #section-producao .kanban-card:active {
+      cursor: grabbing;
+    }
+
+    #section-kanban .kanban-card {
+      cursor: grab;
+      will-change: transform, opacity;
+    }
+
+    #section-kanban .kanban-card:active {
+      cursor: grabbing;
+    }
+
+    #section-producao .producao-bottom-stack {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 22px;
+      margin-top: 24px;
+    }
+
+    #section-producao .producao-historico-panel {
+      min-height: 270px;
+    }
+
+    #section-producao #producao-historico {
+      min-height: 160px;
+      display: grid;
+      align-content: start;
+      gap: 10px;
+    }
+
+    #section-producao .producao-resumo-panel {
+      margin-top: 2px;
+    }
+
+    #section-producao .producao-resumo-grid {
+      grid-template-columns: repeat(4, minmax(160px, 1fr)) !important;
+      gap: 18px !important;
+      margin: 0 !important;
+    }
+
+    #section-producao .producao-resumo-grid .kpi-card {
+      min-height: 150px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    #section-producao .producao-resumo-grid .kpi-icon {
+      margin-bottom: 10px;
+    }
+
+    #section-producao .producao-resumo-grid .kpi-label {
+      margin-bottom: 8px;
+    }
+
+    #section-producao .producao-resumo-grid .kpi-value {
+      margin-bottom: 0;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 1024px) {
+      #section-producao .producao-resumo-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+    }
+
+    @media (max-width: 560px) {
+      #section-producao .producao-bottom-stack {
+        gap: 16px;
+        margin-top: 18px;
+      }
+
+      #section-producao .producao-resumo-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      #section-producao .producao-resumo-grid .kpi-card {
+        min-height: 132px;
+      }
     }
 
     .kanban-col.drag-over {
@@ -3973,6 +4093,11 @@
       overflow: visible;
     }
 
+    #section-dashboard .dashboard-hero-copy {
+      min-width: 0;
+      max-width: 100%;
+    }
+
     #section-dashboard .dashboard-hero::after {
       display: none;
     }
@@ -3983,6 +4108,7 @@
       color: var(--brown);
       font-size: clamp(1.45rem, 2.4vw, 2.15rem);
       line-height: 1.16;
+      overflow-wrap: anywhere;
     }
 
     #section-dashboard .dashboard-hero p {
@@ -3990,6 +4116,7 @@
       color: var(--text-muted);
       font-size: 0.92rem;
       line-height: 1.55;
+      overflow-wrap: anywhere;
     }
 
     #section-dashboard .dashboard-eyebrow {
@@ -4004,6 +4131,8 @@
       align-items: center;
       margin-top: 0;
       gap: 8px;
+      min-width: 0;
+      max-width: 100%;
     }
 
     #section-dashboard .dashboard-toolbar .operation-badge,
@@ -4027,23 +4156,58 @@
       border-color: rgba(200, 96, 58, 0.32);
     }
 
+    #section-dashboard .dashboard-section-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 4px 2px 0;
+      margin: 2px 0 -2px;
+    }
+
+    #section-dashboard .dashboard-section-heading h2 {
+      margin: 0;
+      color: var(--brown);
+      font-family: var(--font-display);
+      font-size: clamp(1.05rem, 1.5vw, 1.28rem);
+      line-height: 1.15;
+    }
+
+    #section-dashboard .dashboard-section-kicker {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 4px;
+      color: var(--terracotta);
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    #section-dashboard .dashboard-section-meta {
+      max-width: 260px;
+      color: var(--text-muted);
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-align: right;
+    }
+
     #section-dashboard .dashboard-kpi-row {
       display: grid;
-      grid-template-columns: repeat(8, minmax(148px, 1fr));
-      gap: 12px;
-      overflow-x: auto;
-      padding: 2px 2px 8px;
-      scroll-snap-type: x proximity;
-      scrollbar-width: thin;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      overflow: visible;
+      padding: 0;
+      scroll-snap-type: none;
     }
 
     #section-dashboard .dashboard-kpi-row .kpi-card {
-      min-width: 148px;
-      min-height: 122px;
+      min-width: 0;
+      min-height: 136px;
       scroll-snap-align: start;
       gap: 10px;
-      padding: 14px;
-      border-radius: 16px;
+      padding: 16px;
+      border-radius: 18px;
     }
 
     #section-dashboard .dashboard-kpi-row .kpi-card.featured {
@@ -4063,7 +4227,7 @@
     }
 
     #section-dashboard .dashboard-kpi-row .kpi-value {
-      font-size: clamp(1.18rem, 1.55vw, 1.62rem);
+      font-size: clamp(1.25rem, 1.6vw, 1.72rem);
       line-height: 1.05;
     }
 
@@ -4783,7 +4947,7 @@
 
     @media (max-width: 1120px) {
       #section-dashboard .dashboard-kpi-row {
-        grid-template-columns: repeat(8, minmax(148px, 160px));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
       }
 
       .dashboard-chart-row {
@@ -4810,6 +4974,21 @@
     }
 
     @media (max-width: 820px) {
+      #section-dashboard .dashboard-section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      #section-dashboard .dashboard-section-meta {
+        max-width: none;
+        text-align: left;
+      }
+
+      #section-dashboard .dashboard-kpi-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .dashboard-chart-row {
         grid-template-columns: 1fr;
       }
@@ -4850,7 +5029,7 @@
       }
 
       #section-dashboard .dashboard-kpi-row {
-        grid-template-columns: repeat(8, minmax(142px, 74vw));
+        grid-template-columns: 1fr;
       }
 
       .dashboard-goals-grid,
@@ -5448,14 +5627,23 @@
 
     .btn-sidebar-toggle::before {
       content: '';
+      position: absolute;
+      inset: 0;
+      margin: auto;
       width: 18px;
       height: 13px;
       display: block;
       background:
-        linear-gradient(var(--brown) 0 0) top left / 18px 2px no-repeat,
-        linear-gradient(var(--brown) 0 0) center left / 14px 2px no-repeat,
-        linear-gradient(var(--brown) 0 0) bottom left / 18px 2px no-repeat;
+        linear-gradient(currentColor 0 0) 0 0 / 18px 2px no-repeat,
+        linear-gradient(currentColor 0 0) 50% 50% / 14px 2px no-repeat,
+        linear-gradient(currentColor 0 0) 0 100% / 18px 2px no-repeat;
       border-radius: 2px;
+      transform: translateZ(0);
+      transition: transform var(--t), opacity var(--t);
+    }
+
+    .btn-sidebar-toggle:hover::before {
+      transform: translateY(-1px);
     }
 
     .modal-close::before {
@@ -5936,6 +6124,12 @@
           <span class="nav-label">Dashboard</span>
         </button>
 
+        <!-- Producao -->
+        <button class="nav-item" data-tooltip="Producao" data-page="producao" role="listitem">
+          <i class='bx bx-bowl-hot'></i>
+          <span class="nav-label">Producao</span>
+        </button>
+
         <!-- Estoque -->
         <button class="nav-item" data-tooltip="Estoque" data-page="estoque" role="listitem">
           <i class='bx bx-box'></i>
@@ -6115,6 +6309,14 @@
             </div>
           </section>
 
+          <div class="dashboard-section-heading" aria-label="Grupo de indicadores principais">
+            <div>
+              <span class="dashboard-section-kicker">Resumo executivo</span>
+              <h2>Indicadores principais</h2>
+            </div>
+            <span class="dashboard-section-meta">Atualizado em tempo real</span>
+          </div>
+
           <div class="business-kpi-grid dashboard-kpi-row kpi-grid" id="kpi-grid" aria-label="Indicadores principais">
             <article class="kpi-card terra" role="region" aria-label="Faturamento total">
               <div class="kpi-topline">
@@ -6189,6 +6391,14 @@
             </article>
           </div>
 
+          <div class="dashboard-section-heading" aria-label="Grupo de analise operacional">
+            <div>
+              <span class="dashboard-section-kicker">Leitura da operacao</span>
+              <h2>Analise operacional</h2>
+            </div>
+            <span class="dashboard-section-meta">Produção, faturamento e distribuição</span>
+          </div>
+
           <div class="dashboard-chart-row dashboard-insights-grid" aria-label="Graficos do dashboard">
             <section class="panel-card dashboard-panel" aria-label="Producao por item">
               <div class="panel-header">
@@ -6238,6 +6448,14 @@
                 </div>
               </div>
             </section>
+          </div>
+
+          <div class="dashboard-section-heading" aria-label="Grupo de operacao e prioridades">
+            <div>
+              <span class="dashboard-section-kicker">Gestao do dia</span>
+              <h2>Operacao e prioridades</h2>
+            </div>
+            <span class="dashboard-section-meta">Produtos, alertas e metas</span>
           </div>
 
           <div class="dashboard-bottom-grid" aria-label="Tabela, alertas e metas">
@@ -6321,6 +6539,144 @@
       <!-- ══════════════════════════════════════════════════════════
            SEÇÃO: ESTOQUE
            ══════════════════════════════════════════════════════════ -->
+      <section id="section-producao" class="page-section">
+        <div class="reveal">
+          <div class="section-title-row">
+            <h2 class="section-title"><i class='bx bx-bowl-hot'></i> Producao</h2>
+          </div>
+
+          <div class="panels-grid reveal" style="margin-bottom:20px;">
+            <section class="panel-card" aria-label="Criar producao">
+              <div class="panel-header">
+                <div>
+                  <div class="panel-title">Criar Producao</div>
+                  <div class="panel-subtitle">Planeje produto, quantidade e turno</div>
+                </div>
+                <span class="panel-badge"><i class='bx bx-plus-circle'></i> Novo</span>
+              </div>
+              <div class="panel-body">
+                <div class="modal-field">
+                  <label class="modal-label" for="producao-produto">Produto do cardapio</label>
+                  <select class="modal-select" id="producao-produto"></select>
+                </div>
+                <div class="modal-field">
+                  <label class="modal-label" for="producao-quantidade">Quantidade</label>
+                  <input class="modal-input" id="producao-quantidade" type="number" min="1" step="1" value="10">
+                </div>
+                <div class="modal-field">
+                  <label class="modal-label" for="producao-turno">Data ou turno</label>
+                  <input class="modal-input" id="producao-turno" type="text" placeholder="Ex: Hoje - almoco">
+                </div>
+                <button class="btn-add" type="button" onclick="criarProducao()"><i class='bx bx-play-circle'></i> Criar producao</button>
+              </div>
+            </section>
+
+            <section class="panel-card" aria-label="Resumo da producao">
+              <div class="panel-header">
+                <div>
+                  <div class="panel-title">Resumo da Producao</div>
+                  <div class="panel-subtitle">Ingredientes, custo e estoque disponivel</div>
+                </div>
+                <span class="panel-badge"><i class='bx bx-calculator'></i> Receita</span>
+              </div>
+              <div class="panel-body">
+                <div class="abc-list" id="producao-resumo-ingredientes" role="list"></div>
+                <div class="admin-alert-list" id="producao-alertas" style="margin-top:12px;"></div>
+                <div class="dashboard-goal" style="margin-top:12px;">
+                  <span>Custo estimado</span>
+                  <strong id="producao-custo-estimado">R$ 0,00</strong>
+                  <small id="producao-estoque-status">Selecione um produto para calcular.</small>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="kanban-grid reveal" role="region" aria-label="Producoes em andamento">
+            <div class="kanban-col a-fazer" data-producao-status="pendente">
+              <div class="kanban-col-header">
+                <div class="kanban-col-title">
+                  <div class="kanban-dot"></div>
+                  Pendente
+                </div>
+                <span class="kanban-count" id="producao-count-pendente">0</span>
+              </div>
+              <div id="producao-col-pendente" style="display:grid;gap:10px;"></div>
+            </div>
+
+            <div class="kanban-col em-andamento" data-producao-status="preparo">
+              <div class="kanban-col-header">
+                <div class="kanban-col-title">
+                  <div class="kanban-dot"></div>
+                  Em Preparo
+                </div>
+                <span class="kanban-count" id="producao-count-preparo">0</span>
+              </div>
+              <div id="producao-col-preparo" style="display:grid;gap:10px;"></div>
+            </div>
+
+            <div class="kanban-col concluido" data-producao-status="finalizado">
+              <div class="kanban-col-header">
+                <div class="kanban-col-title">
+                  <div class="kanban-dot"></div>
+                  Finalizado
+                </div>
+                <span class="kanban-count" id="producao-count-finalizado">0</span>
+              </div>
+              <div id="producao-col-finalizado" style="display:grid;gap:10px;"></div>
+            </div>
+          </div>
+
+          <div class="producao-bottom-stack reveal">
+            <section class="panel-card producao-historico-panel" aria-label="Historico de producoes">
+              <div class="panel-header">
+                <div>
+                  <div class="panel-title">Historico de Producoes</div>
+                  <div class="panel-subtitle">Registros finalizados para consulta</div>
+                </div>
+                <span class="panel-badge"><i class='bx bx-history'></i> Historico</span>
+              </div>
+              <div class="panel-body">
+                <div class="recent-orders-list" id="producao-historico"></div>
+              </div>
+            </section>
+
+            <section class="panel-card producao-resumo-panel" aria-label="Resumo do dia">
+              <div class="panel-header">
+                <div>
+                  <div class="panel-title">Resumo do Dia</div>
+                  <div class="panel-subtitle">Indicadores de producao atualizados em tempo real</div>
+                </div>
+                <span class="panel-badge"><i class='bx bx-pulse'></i> Hoje</span>
+              </div>
+              <div class="panel-body">
+                <div class="kpi-grid producao-resumo-grid">
+                  <div class="kpi-card amber">
+                    <div class="kpi-icon"><i class='bx bx-calendar'></i></div>
+                    <div class="kpi-label">Planejadas</div>
+                    <div class="kpi-value" id="producao-dia-planejadas">0</div>
+                  </div>
+                  <div class="kpi-card terra">
+                    <div class="kpi-icon"><i class='bx bx-loader-circle'></i></div>
+                    <div class="kpi-label">Em andamento</div>
+                    <div class="kpi-value" id="producao-dia-andamento">0</div>
+                  </div>
+                  <div class="kpi-card green">
+                    <div class="kpi-icon"><i class='bx bx-check-circle'></i></div>
+                    <div class="kpi-label">Concluidas</div>
+                    <div class="kpi-value" id="producao-dia-concluidas">0</div>
+                  </div>
+                  <div class="kpi-card red">
+                    <div class="kpi-icon"><i class='bx bx-money'></i></div>
+                    <div class="kpi-label">Custo do dia</div>
+                    <div class="kpi-value" id="producao-dia-custo">R$ 0,00</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
       <section id="section-estoque" class="page-section">
         <div class="reveal">
           <div class="section-title-row">
@@ -6380,7 +6736,7 @@
                   </tr>
                 </thead>
                 <tbody id="estoque-tbody">
-                  
+
                 </tbody>
               </table>
             </div>
@@ -7178,12 +7534,17 @@
       cardapioImagemAtual: '',
       linhaCardapioEmEdicao: null,
       dashboardNumerosAnimados: false,
+      estadoGlobalConectado: false,
     };
 
     // Chaves de persistencia usadas pelo dashboard. O cardapio fica no navegador
     // porque ainda nao existe endpoint backend proprio para esses itens.
     const STORAGE_KEYS = {
       cardapio: 'cozinha-cardapio-itens',
+      kanban: 'cozinha-kanban-cards',
+      cmv: 'cozinha-cmv-registros',
+      estoque: 'cozinha-estoque-itens',
+      producao: 'cozinha-producoes',
     };
 
     // Base demonstrativa usada quando nao existem pedidos/produtos salvos.
@@ -7268,6 +7629,24 @@
       { id: -6, nome: 'Carne Bovina', minimo: 10, quantidade: 14, maximo: 24, unidade: 'kg' },
     ];
 
+    const PRODUCAO_RECEITAS_DEMO = {
+      'Frango grelhado com limao': [
+        { insumo: 'File de Frango', quantidade: 0.18, unidade: 'kg', custoUnitario: 19.8 },
+        { insumo: 'Arroz Parboilizado', quantidade: 0.09, unidade: 'kg', custoUnitario: 5.6 },
+        { insumo: 'Verduras Frescas', quantidade: 0.4, unidade: 'un', custoUnitario: 1.8 },
+      ],
+      'Bife acebolado': [
+        { insumo: 'Carne Bovina', quantidade: 0.2, unidade: 'kg', custoUnitario: 32.5 },
+        { insumo: 'Arroz Parboilizado', quantidade: 0.08, unidade: 'kg', custoUnitario: 5.6 },
+        { insumo: 'Azeite Extra Virgem', quantidade: 0.02, unidade: 'L', custoUnitario: 28 },
+      ],
+      'Peixe ao molho': [
+        { insumo: 'File de Frango', quantidade: 0.16, unidade: 'kg', custoUnitario: 21 },
+        { insumo: 'Verduras Frescas', quantidade: 0.35, unidade: 'un', custoUnitario: 1.8 },
+        { insumo: 'Azeite Extra Virgem', quantidade: 0.015, unidade: 'L', custoUnitario: 28 },
+      ],
+    };
+
     // ================================================================
     // TRADUÇÕES
     // ================================================================
@@ -7275,6 +7654,7 @@
     const TRANSLATIONS = {
       pt: {
         nav_dashboard: 'Dashboard',
+        nav_producao: 'Producao',
         nav_estoque: 'Estoque',
         nav_cardapio: 'Cardápio / PCP',
         nav_kanban: 'Kanban',
@@ -7290,6 +7670,7 @@
         nav_groups: ['Principal', 'Análise', 'Sistema'],
         pages: {
           dashboard: { title: 'Dashboard', breadcrumb: 'Visão Geral' },
+          producao: { title: 'Producao', breadcrumb: 'Operacao de Producao' },
           estoque: { title: 'Estoque', breadcrumb: 'Controle de Estoque' },
           cardapio: { title: 'Cardápio & PCP', breadcrumb: 'Cardápio e Planejamento' },
           kanban: { title: 'Kanban', breadcrumb: 'Kanban de Processos' },
@@ -7315,6 +7696,7 @@
           notif_stock_title_3: 'Carne Bovina — Alerta',
           notif_stock_desc_3: 'Estoque próximo do nível mínimo.',
           section_estoque: 'Controle de Estoque',
+          section_producao: 'Producao da Cozinha',
           section_cardapio: 'Planejamento Semanal (PCP)',
           section_kanban: 'Kanban de Processos',
           section_pops: 'POPs & Fichas Técnicas',
@@ -7407,6 +7789,7 @@
       },
       en: {
         nav_dashboard: 'Dashboard',
+        nav_producao: 'Production',
         nav_estoque: 'Inventory',
         nav_cardapio: 'Menu / PPC',
         nav_kanban: 'Kanban',
@@ -7422,6 +7805,7 @@
         nav_groups: ['Main', 'Analysis', 'System'],
         pages: {
           dashboard: { title: 'Dashboard', breadcrumb: 'Overview' },
+          producao: { title: 'Production', breadcrumb: 'Kitchen Production' },
           estoque: { title: 'Inventory', breadcrumb: 'Inventory Control' },
           cardapio: { title: 'Menu & PPC', breadcrumb: 'Menu and Planning' },
           kanban: { title: 'Kanban', breadcrumb: 'Process Kanban' },
@@ -7447,6 +7831,7 @@
           notif_stock_title_3: 'Beef — Alert',
           notif_stock_desc_3: 'Stock is close to the minimum level.',
           section_estoque: 'Inventory Control',
+          section_producao: 'Kitchen Production',
           section_cardapio: 'Weekly Planning (PPC)',
           section_kanban: 'Process Kanban',
           section_pops: 'SOPs & Recipe Cards',
@@ -7539,6 +7924,7 @@
       },
       es: {
         nav_dashboard: 'Panel de control',
+        nav_producao: 'Produccion',
         nav_estoque: 'Inventario',
         nav_cardapio: 'Menú / PCP',
         nav_kanban: 'Kanban',
@@ -7554,6 +7940,7 @@
         nav_groups: ['Principal', 'Análisis', 'Sistema'],
         pages: {
           dashboard: { title: 'Panel de control', breadcrumb: 'Vista general' },
+          producao: { title: 'Produccion', breadcrumb: 'Operacion de Produccion' },
           estoque: { title: 'Inventario', breadcrumb: 'Control de inventario' },
           cardapio: { title: 'Menú y PCP', breadcrumb: 'Menú y planificación' },
           kanban: { title: 'Kanban', breadcrumb: 'Kanban de procesos' },
@@ -7579,6 +7966,7 @@
           notif_stock_title_3: 'Carne bovina — Alerta',
           notif_stock_desc_3: 'El stock está cerca del nivel mínimo.',
           section_estoque: 'Control de Inventario',
+          section_producao: 'Produccion de Cocina',
           section_cardapio: 'Planificación Semanal (PCP)',
           section_kanban: 'Kanban de Procesos',
           section_pops: 'POE y Fichas Técnicas',
@@ -7793,7 +8181,7 @@
     const DEBUG = ['localhost', '127.0.0.1'].includes(window.location.hostname);
     const SAFE_TEXT_RE = /^[^<>"'`\x00-\x1F]{1,120}$/u;
     const SAFE_STATUS = new Set(['ok', 'pendente', 'atraso', 'concluido', 'cancelado']);
-    const SAFE_PRIORITY = new Set(['low', 'medium', 'high', 'alta', 'media', 'baixa']);
+    const SAFE_PRIORITY = new Set(['low', 'medium', 'high', 'alta', 'media', 'baixa', 'prio-alta', 'prio-media', 'prio-baixa']);
     const SAFE_TAG = new Set(['info', 'tec', 'amb']);
     const SAFE_COL = new Set(['a-fazer', 'em-andamento', 'concluido']);
     const SAFE_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
@@ -7870,6 +8258,325 @@
         : Number(valor);
       return Number.isFinite(numero) ? numero : fallback;
     }
+
+    function clonarEstadoSeguro(valor) {
+      try {
+        return typeof structuredClone === 'function'
+          ? structuredClone(valor)
+          : JSON.parse(JSON.stringify(valor));
+      } catch (error) {
+        logSeguro('Falha ao clonar estado', error);
+        return valor;
+      }
+    }
+
+    function lerJSONSeguroLocal(chave, fallback) {
+      try {
+        const raw = localStorage.getItem(chave);
+        if (!raw) return fallback;
+        const parsed = JSON.parse(raw);
+        return parsed ?? fallback;
+      } catch (error) {
+        logSeguro(`Nao foi possivel ler estado ${chave}`, error);
+        return fallback;
+      }
+    }
+
+    function salvarJSONSeguroLocal(chave, valor) {
+      try {
+        localStorage.setItem(chave, JSON.stringify(valor));
+        return true;
+      } catch (error) {
+        logSeguro(`Nao foi possivel persistir estado ${chave}`, error);
+        return false;
+      }
+    }
+
+    function criarIdEstado(prefixo = 'item') {
+      const id = window.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+      return `${prefixo}-${id}`;
+    }
+
+    function normalizarColunaKanban(coluna) {
+      return validarEscolha(String(coluna || ''), SAFE_COL, 'a-fazer');
+    }
+
+    function normalizarPrioridadeKanban(prioridade) {
+      const valor = String(prioridade || '').toLowerCase();
+      if (['alta', 'high', 'prio-alta'].includes(valor)) return 'prio-alta';
+      if (['baixa', 'low', 'prio-baixa'].includes(valor)) return 'prio-baixa';
+      return 'prio-media';
+    }
+
+    function normalizarTagKanban(tag) {
+      return validarEscolha(String(tag || ''), SAFE_TAG, 'info');
+    }
+
+    function normalizarCardKanban(card = {}, index = 0) {
+      const tag = normalizarTagKanban(card.tag);
+      const tagLabels = { info: 'Operacoes', tec: 'Tecnico', amb: 'Ambiente' };
+      const tituloFallback = `Card ${index + 1}`;
+
+      return {
+        id: limparTextoSeguro(card.id || criarIdEstado('kanban'), 80, criarIdEstado('kanban')),
+        title: limparTextoSeguro(card.title ?? card.titulo ?? card.nome, 100, tituloFallback),
+        col: normalizarColunaKanban(card.col ?? card.status ?? card.coluna),
+        prio: normalizarPrioridadeKanban(card.prio ?? card.prioridade ?? card.priority),
+        tag,
+        tagLabel: limparTextoSeguro(card.tagLabel ?? card.tagTexto, 40, tagLabels[tag]),
+        date: limparTextoSeguro(card.date ?? card.data ?? card.prazo, 30, 'Sem data'),
+        createdAt: card.createdAt || new Date().toISOString(),
+        updatedAt: card.updatedAt || new Date().toISOString(),
+        order: normalizarNumero(card.order ?? index, index),
+      };
+    }
+
+    function normalizarListaKanban(cards = []) {
+      return (Array.isArray(cards) ? cards : [])
+        .map(normalizarCardKanban)
+        .sort((a, b) => {
+          if (a.col !== b.col) return a.col.localeCompare(b.col);
+          return a.order - b.order;
+        });
+    }
+
+    function obterStatusCMV(valor, meta = 32) {
+      const diferenca = normalizarNumero(valor, 0) - normalizarNumero(meta, 32);
+      if (diferenca <= 0.5) return { status: 'dentro', classe: 'green' };
+      if (diferenca <= 3) return { status: 'proximo', classe: 'amber' };
+      return { status: 'acima', classe: 'terra' };
+    }
+
+    function normalizarRegistroCMV(registro = {}, index = 0) {
+      const valor = normalizarNumero(registro.valor ?? registro.cmv ?? registro.percentual, 0);
+      const meta = normalizarNumero(registro.meta, 32);
+      const statusInfo = obterStatusCMV(valor, meta);
+
+      return {
+        id: limparTextoSeguro(registro.id || registro.periodo || registro.mes || registro.semana || criarIdEstado('cmv'), 80, criarIdEstado('cmv')),
+        periodo: limparTextoSeguro(registro.periodo ?? registro.mes ?? registro.label ?? (registro.semana ? `Sem ${registro.semana}` : ''), 24, `Periodo ${index + 1}`),
+        valor,
+        meta,
+        custoDia: normalizarNumero(registro.custoDia ?? registro.custosDia ?? registro.custo_diario ?? registro.custo, 0),
+        eficiencia: normalizarNumero(registro.eficiencia, Math.max(0, Math.min(100, 100 - Math.max(0, valor - meta) * 2))),
+        desperdicio: normalizarNumero(registro.desperdicio ?? registro.perda ?? registro.perdas, 0),
+        status: registro.status || statusInfo.status,
+        classe: registro.classe || statusInfo.classe,
+        updatedAt: registro.updatedAt || new Date().toISOString(),
+      };
+    }
+
+    function normalizarListaCMV(registros = []) {
+      return (Array.isArray(registros) ? registros : [])
+        .map(normalizarRegistroCMV)
+        .filter(registro => registro.valor > 0 || registro.custoDia > 0 || registro.desperdicio > 0);
+    }
+
+    function resumirKanban(cards = []) {
+      return normalizarListaKanban(cards).reduce((acc, card) => {
+        acc.total += 1;
+        acc[card.col] = (acc[card.col] || 0) + 1;
+        return acc;
+      }, { total: 0, 'a-fazer': 0, 'em-andamento': 0, concluido: 0 });
+    }
+
+    function resumirCMV(registros = []) {
+      const normalizados = normalizarListaCMV(registros);
+      const atual = normalizados[normalizados.length - 1] || normalizarRegistroCMV({ periodo: 'Atual', valor: 34.2, meta: 32, custoDia: 890, eficiencia: 94, desperdicio: 840 });
+      const anterior = normalizados[normalizados.length - 2] || atual;
+      const media = normalizados.length
+        ? normalizados.reduce((sum, item) => sum + item.valor, 0) / normalizados.length
+        : atual.valor;
+      const custoDia = atual.custoDia || Math.round((atual.valor / 100) * 2600);
+      const eficiencia = atual.eficiencia || Math.max(0, Math.min(100, Math.round(100 - Math.max(0, atual.valor - atual.meta) * 2)));
+      const desperdicio = atual.desperdicio || Math.round(custoDia * Math.max(0.04, Math.max(0, atual.valor - atual.meta) / 100));
+
+      return {
+        atual,
+        anterior,
+        media,
+        custoDia,
+        eficiencia,
+        desperdicio,
+        delta: atual.valor - anterior.valor,
+        acimaDaMeta: atual.valor > atual.meta,
+      };
+    }
+
+    const SAFE_PRODUCAO_STATUS = new Set(['pendente', 'preparo', 'finalizado']);
+
+    function normalizarStatusProducao(status) {
+      return validarEscolha(String(status || ''), SAFE_PRODUCAO_STATUS, 'pendente');
+    }
+
+    function normalizarProducao(item = {}, index = 0) {
+      const quantidade = Math.max(1, Math.round(normalizarNumero(item.quantidade, 1)));
+      return {
+        id: limparTextoSeguro(item.id || criarIdEstado('producao'), 80, criarIdEstado('producao')),
+        produto: limparTextoSeguro(item.produto ?? item.nome ?? item.prato, 100, `Produto ${index + 1}`),
+        quantidade,
+        turno: limparTextoSeguro(item.turno ?? item.dataTurno ?? item.data, 40, 'Hoje'),
+        status: normalizarStatusProducao(item.status),
+        ingredientes: Array.isArray(item.ingredientes) ? item.ingredientes : [],
+        custo: normalizarNumero(item.custo, 0),
+        alertas: Array.isArray(item.alertas) ? item.alertas : [],
+        createdAt: item.createdAt || new Date().toISOString(),
+        updatedAt: item.updatedAt || new Date().toISOString(),
+      };
+    }
+
+    function normalizarListaProducao(lista = []) {
+      return (Array.isArray(lista) ? lista : []).map(normalizarProducao);
+    }
+
+    function resumirProducao(lista = []) {
+      const producoes = normalizarListaProducao(lista);
+      return producoes.reduce((acc, item) => {
+        acc.total += 1;
+        acc.custo += normalizarNumero(item.custo, 0);
+        if (item.status === 'pendente') acc.pendente += 1;
+        if (item.status === 'preparo') acc.preparo += 1;
+        if (item.status === 'finalizado') acc.finalizado += 1;
+        return acc;
+      }, { total: 0, pendente: 0, preparo: 0, finalizado: 0, custo: 0 });
+    }
+
+    const CozinhaStore = (() => {
+      const listeners = new Map();
+      const persistencia = {
+        kanban: STORAGE_KEYS.kanban,
+        cmv: STORAGE_KEYS.cmv,
+        estoque: STORAGE_KEYS.estoque,
+        producao: STORAGE_KEYS.producao,
+      };
+      let state = {
+        pedidos: [],
+        produtos: [],
+        cardapio: [],
+        kanban: [],
+        cmv: [],
+        estoque: [],
+        producao: [],
+        updatedAt: null,
+      };
+
+      const getState = () => clonarEstadoSeguro(state);
+
+      const emitir = (evento, detalhe) => {
+        (listeners.get(evento) || new Set()).forEach(callback => {
+          try {
+            callback(detalhe);
+          } catch (error) {
+            logSeguro(`Erro em listener ${evento}`, error);
+          }
+        });
+      };
+
+      const notificar = (detalhe) => {
+        detalhe.changed.forEach(chave => emitir(`${chave}:changed`, detalhe));
+        emitir(detalhe.action, detalhe);
+        emitir('change', detalhe);
+        document.dispatchEvent(new CustomEvent('cozinha:state-change', { detail: detalhe }));
+      };
+
+      const setState = (partial, action = 'state:set', options = {}) => {
+        const changed = Object.keys(partial);
+        state = {
+          ...state,
+          ...partial,
+          updatedAt: new Date().toISOString(),
+        };
+
+        (options.persist || []).forEach(chave => {
+          if (persistencia[chave]) salvarJSONSeguroLocal(persistencia[chave], state[chave]);
+        });
+
+        const detalhe = {
+          action,
+          source: options.source || 'app',
+          changed,
+          payload: clonarEstadoSeguro(options.payload ?? partial),
+          state: getState(),
+        };
+
+        if (!options.silent) notificar(detalhe);
+        return detalhe.state;
+      };
+
+      const dispatch = (action, payload = {}, options = {}) => {
+        switch (action) {
+          case 'hydrate':
+            return setState(payload, action, { ...options, silent: options.silent ?? true });
+          case 'pedidos:set':
+            return setState({ pedidos: Array.isArray(payload) ? payload : payload.pedidos || [] }, action, options);
+          case 'produtos:set':
+            return setState({ produtos: Array.isArray(payload) ? payload : payload.produtos || [] }, action, options);
+          case 'cardapio:set':
+            return setState({ cardapio: Array.isArray(payload) ? payload : payload.cardapio || [] }, action, options);
+          case 'estoque:set':
+            return setState({ estoque: Array.isArray(payload) ? payload : payload.estoque || [] }, action, { ...options, persist: options.persist ? ['estoque'] : [] });
+          case 'producao:set':
+            return setState({ producao: normalizarListaProducao(Array.isArray(payload) ? payload : payload.producoes || []) }, action, { ...options, persist: ['producao'] });
+          case 'producao:add': {
+            const producao = normalizarProducao(payload, state.producao.length);
+            return setState({ producao: normalizarListaProducao([...state.producao, producao]) }, action, { ...options, persist: ['producao'], payload: producao });
+          }
+          case 'producao:update': {
+            const id = String(payload.id || '');
+            const atualizadas = state.producao.map(item => (
+              item.id === id
+                ? normalizarProducao({ ...item, ...payload, updatedAt: new Date().toISOString() })
+                : item
+            ));
+            return setState({ producao: normalizarListaProducao(atualizadas) }, action, { ...options, persist: ['producao'], payload });
+          }
+          case 'kanban:set':
+            return setState({ kanban: normalizarListaKanban(Array.isArray(payload) ? payload : payload.cards || []) }, action, { ...options, persist: ['kanban'] });
+          case 'kanban:add': {
+            const novoCard = normalizarCardKanban({
+              ...payload,
+              order: state.kanban.filter(card => card.col === normalizarColunaKanban(payload.col)).length,
+            }, state.kanban.length);
+            return setState({ kanban: normalizarListaKanban([...state.kanban, novoCard]) }, action, { ...options, persist: ['kanban'], payload: novoCard });
+          }
+          case 'kanban:move': {
+            const id = String(payload.id || '');
+            const destino = normalizarColunaKanban(payload.col);
+            const ordemDestino = state.kanban.filter(card => card.id !== id && card.col === destino).length;
+            const atualizados = state.kanban.map(card => (
+              card.id === id
+                ? { ...card, col: destino, order: ordemDestino, updatedAt: new Date().toISOString() }
+                : card
+            ));
+            return setState({ kanban: normalizarListaKanban(atualizados) }, action, { ...options, persist: ['kanban'], payload });
+          }
+          case 'cmv:set':
+            return setState({ cmv: normalizarListaCMV(Array.isArray(payload) ? payload : payload.registros || []) }, action, { ...options, persist: ['cmv'] });
+          case 'cmv:upsert': {
+            const registro = normalizarRegistroCMV(payload, state.cmv.length);
+            const semDuplicado = state.cmv.filter(item => item.id !== registro.id && item.periodo !== registro.periodo);
+            return setState({ cmv: normalizarListaCMV([...semDuplicado, registro]) }, action, { ...options, persist: ['cmv'], payload: registro });
+          }
+          case 'cmv:remove': {
+            const id = String(payload.id || payload.periodo || '');
+            return setState({ cmv: state.cmv.filter(item => item.id !== id && item.periodo !== id) }, action, { ...options, persist: ['cmv'], payload });
+          }
+          default:
+            logSeguro(`Acao de estado desconhecida: ${action}`, payload);
+            return getState();
+        }
+      };
+
+      const subscribe = (evento, callback) => {
+        if (!listeners.has(evento)) listeners.set(evento, new Set());
+        listeners.get(evento).add(callback);
+        return () => listeners.get(evento)?.delete(callback);
+      };
+
+      return { getState, dispatch, subscribe };
+    })();
+
+    window.CozinhaStore = CozinhaStore;
 
     const dashboardCountFrames = new Map();
 
@@ -8262,14 +8969,18 @@
     function obterProdutosDashboard() {
       const produtosSalvos = lerArrayLocalStorage(['cozinha-produtos', 'produtos', 'products']);
       const cardapioSalvo = lerArrayLocalStorage([STORAGE_KEYS.cardapio]);
+      const cardapioEstado = CozinhaStore.getState().cardapio;
+      const cardapioBase = Array.isArray(cardapioEstado) && cardapioEstado.length
+        ? cardapioEstado
+        : cardapioSalvo.data;
       const produtos = [];
 
       if (produtosSalvos.data.length) {
         produtos.push(...produtosSalvos.data.map(normalizarProdutoDashboard));
       }
 
-      if (cardapioSalvo.data.length) {
-        produtos.push(...cardapioSalvo.data.map((item, index) => normalizarProdutoDashboard({
+      if (cardapioBase.length) {
+        produtos.push(...cardapioBase.map((item, index) => normalizarProdutoDashboard({
           id: `cardapio-${index}`,
           nome: item.prato,
           vendidos: item.vendidos || 0,
@@ -8282,7 +8993,7 @@
       }
 
       return {
-        origem: produtosSalvos.data.length || cardapioSalvo.data.length ? 'localStorage' : 'demo',
+        origem: produtosSalvos.data.length || cardapioBase.length ? 'localStorage' : 'demo',
         produtos,
       };
     }
@@ -8324,19 +9035,31 @@
     function calcularDashboardNegocio() {
       const { origem: origemPedidos, pedidos } = obterPedidosDashboard();
       const { origem: origemProdutos, produtos } = obterProdutosDashboard();
+      const estadoGlobal = CozinhaStore.getState();
+      const resumoKanban = resumirKanban(estadoGlobal.kanban);
+      const cmvResumo = resumirCMV(estadoGlobal.cmv);
+      const resumoProducao = resumirProducao(estadoGlobal.producao);
       const hoje = new Date();
       const pedidosValidos = pedidos.filter(pedido => pedido.status !== 'cancelado');
       const pedidosHoje = pedidosValidos.filter(pedido => mesmoDia(pedido.data, hoje));
       const faturamentoTotal = pedidosValidos.reduce((sum, pedido) => sum + pedido.valor, 0);
       const faturamentoDia = pedidosHoje.reduce((sum, pedido) => sum + pedido.valor, 0);
-      const concluidos = pedidos.filter(pedido => pedido.status === 'concluido').length;
-      const pendentes = pedidos.filter(pedido => pedido.status === 'pendente').length;
+      const concluidosPedidos = pedidos.filter(pedido => pedido.status === 'concluido').length;
+      const pendentesPedidos = pedidos.filter(pedido => pedido.status === 'pendente').length;
       const cancelados = pedidos.filter(pedido => pedido.status === 'cancelado').length;
+      const concluidos = concluidosPedidos + resumoKanban.concluido;
+      const pendentes = pendentesPedidos + resumoKanban['a-fazer'] + resumoKanban['em-andamento'];
       const ticketMedio = pedidosValidos.length ? faturamentoTotal / pedidosValidos.length : 0;
       const topProdutos = obterTopProdutos(pedidos, produtos);
       const produtosVendidos = topProdutos.reduce((sum, produto) => sum + normalizarNumero(produto.vendidos, 0), 0);
+      const penalidadeCMV = cmvResumo.acimaDaMeta
+        ? Math.min(18, Math.round((cmvResumo.atual.valor - cmvResumo.atual.meta) * 3))
+        : 0;
+      const bonusFluxo = Math.min(10, resumoKanban.concluido * 2);
+      const bonusProducao = Math.min(8, resumoProducao.finalizado * 2);
+      const pressaoProducao = Math.min(12, resumoProducao.pendente + (resumoProducao.preparo * 2));
       const saude = Math.max(52, Math.min(98, Math.round(
-        72 + (concluidos * 4) - (pendentes * 3) - (cancelados * 5) + Math.min(12, pedidosHoje.length * 2)
+        72 + (concluidosPedidos * 4) + bonusFluxo + bonusProducao - pressaoProducao - (pendentes * 2) - (cancelados * 5) - penalidadeCMV + Math.min(12, pedidosHoje.length * 2)
       )));
 
       return {
@@ -8354,7 +9077,10 @@
         concluidos,
         pendentes,
         cancelados,
-        totalPedidos: pedidos.length,
+        totalPedidos: pedidos.length + resumoKanban.total,
+        resumoKanban,
+        cmvResumo,
+        resumoProducao,
         saude,
       };
     }
@@ -8820,6 +9546,30 @@
           texto: 'Revise os motivos para reduzir perdas operacionais.',
         });
       }
+      if (dados.resumoKanban?.['em-andamento'] > 0) {
+        alertas.push({
+          tipo: 'warning',
+          icone: 'bx-columns',
+          titulo: `${dados.resumoKanban['em-andamento']} card(s) em andamento`,
+          texto: 'O Kanban esta conectado ao painel operacional.',
+        });
+      }
+      if (dados.cmvResumo?.acimaDaMeta) {
+        alertas.push({
+          tipo: 'warning',
+          icone: 'bx-line-chart',
+          titulo: `CMV em ${formatarPercentualBR(dados.cmvResumo.atual.valor)}`,
+          texto: `Meta atual: ${formatarPercentualBR(dados.cmvResumo.atual.meta)}.`,
+        });
+      }
+      if (dados.resumoProducao?.preparo > 0 || dados.resumoProducao?.pendente > 0) {
+        alertas.push({
+          tipo: dados.resumoProducao.pendente > 2 ? 'warning' : 'success',
+          icone: 'bx-bowl-hot',
+          titulo: `${dados.resumoProducao.total} producao(oes) planejada(s)`,
+          texto: `${dados.resumoProducao.preparo} em preparo e ${dados.resumoProducao.finalizado} finalizada(s).`,
+        });
+      }
       if (dados.produtos.length < 6) {
         alertas.push({
           tipo: 'warning',
@@ -9026,7 +9776,7 @@
       setTextById('dash-orders-done', String(dados.concluidos));
       setTextById('dash-orders-cancelled', String(dados.cancelados));
       setTextById('dash-op-score', `${dados.saude}%`);
-      setTextById('dash-data-source', usandoDemo ? 'Base demonstrativa' : 'Dados do navegador');
+      setTextById('dash-data-source', usandoDemo ? 'Base demonstrativa + estado local' : 'Dados do navegador + estado local');
       setTextById('dash-revenue-total-note', `${dados.pedidosValidos.length} pedido(s) faturado(s)`);
       setTextById('dash-revenue-day-note', `${dados.pedidosHoje.length} pedido(s) hoje`);
 
@@ -9211,6 +9961,7 @@
       { label: 'Dashboard', section: 'Visão Geral', page: 'dashboard', icon: 'bx-grid-alt' },
       { label: 'Estoque', section: 'Módulo', page: 'estoque', icon: 'bx-box' },
       { label: 'Cardápio & PCP', section: 'Módulo', page: 'cardapio', icon: 'bx-book-content' },
+      { label: 'Producao', section: 'Modulo', page: 'producao', icon: 'bx-bowl-hot' },
       { label: 'Kanban', section: 'Módulo', page: 'kanban', icon: 'bx-columns' },
       { label: 'POPs & Fichas Técnicas', section: 'Módulo', page: 'pops', icon: 'bx-file-blank' },
       { label: 'Curva ABC', section: 'Análises', page: 'analises-abc', icon: 'bx-bar-chart-alt-2' },
@@ -9230,6 +9981,7 @@
 
     const SEARCH_ALIASES = {
       dashboard: ['painel', 'inicio', 'home', 'visao geral', 'indicadores', 'kpis'],
+      producao: ['producao', 'cozinha', 'preparo', 'planejamento', 'receita', 'ingredientes'],
       estoque: ['insumo', 'insumos', 'produtos', 'almoxarifado', 'alerta', 'critico'],
       cardapio: ['menu', 'pcp', 'planejamento', 'prato', 'semana', 'semanal'],
       kanban: ['processos', 'tarefas', 'cards', 'status', 'operacoes'],
@@ -9514,6 +10266,7 @@
 
       const navMap = {
         'dashboard': t.nav_dashboard,
+        'producao': t.nav_producao,
         'estoque': t.nav_estoque,
         'cardapio': t.nav_cardapio,
         'kanban': t.nav_kanban,
@@ -9552,6 +10305,7 @@
       setText('#notif-list .notif-item:nth-child(3) .notif-desc', u.notif_stock_desc_3);
 
       setIconText('#section-estoque .section-title', u.section_estoque);
+      setIconText('#section-producao .section-title', u.section_producao);
       setIconText('#section-cardapio .section-title', u.section_cardapio);
       setIconText('#section-kanban .section-title', u.section_kanban);
       setIconText('#section-pops .section-title', u.section_pops);
@@ -9673,6 +10427,7 @@
 
     const PAGE_CONFIG = {
       dashboard: true,
+      producao: true,
       estoque: true,
       cardapio: true,
       kanban: true,
@@ -9724,12 +10479,237 @@
     // ================================================================
 
     let draggedCard = null;
+    let kanbanPointerDrag = null;
+
+    function obterColunaCardKanban(card) {
+      return card?.closest('.kanban-col')?.dataset.col || 'a-fazer';
+    }
+
+    function capturarPosicoesKanban() {
+      return new Map(Array.from(document.querySelectorAll('#section-kanban .kanban-card[data-card-id]')).map(card => (
+        [card.dataset.cardId, card.getBoundingClientRect()]
+      )));
+    }
+
+    function animarCardsKanban(posicoesAnteriores) {
+      if (!posicoesAnteriores?.size) return;
+
+      requestAnimationFrame(() => {
+        document.querySelectorAll('#section-kanban .kanban-card[data-card-id]').forEach(card => {
+          const anterior = posicoesAnteriores.get(card.dataset.cardId);
+          const atual = card.getBoundingClientRect();
+
+          if (!anterior) {
+            card.animate([
+              { opacity: 0, transform: 'translateY(10px) scale(0.98)' },
+              { opacity: 1, transform: 'translateY(0) scale(1)' },
+            ], { duration: 220, easing: 'cubic-bezier(.2,.8,.2,1)' });
+            return;
+          }
+
+          const dx = anterior.left - atual.left;
+          const dy = anterior.top - atual.top;
+          if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+
+          card.animate([
+            { transform: `translate(${dx}px, ${dy}px) scale(0.98)`, opacity: 0.86 },
+            { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+          ], { duration: 320, easing: 'cubic-bezier(.18,.9,.22,1)' });
+        });
+      });
+    }
+
+    function obterColunaKanbanNoPonto(x, y) {
+      return document.elementFromPoint(x, y)?.closest('#section-kanban .kanban-col[data-col]') || null;
+    }
+
+    function destacarColunaKanban(colunaAtiva) {
+      document.querySelectorAll('#section-kanban .kanban-col[data-col]').forEach(coluna => {
+        coluna.classList.toggle('drag-over', coluna === colunaAtiva);
+      });
+    }
+
+    function moverKanbanParaColuna(id, origem, destino) {
+      if (!SAFE_COL.has(String(destino || ''))) return false;
+      const destinoSeguro = normalizarColunaKanban(destino);
+      if (!id || destinoSeguro === origem) return false;
+
+      CozinhaStore.dispatch('kanban:move', { id, col: destinoSeguro }, { source: 'kanban:drag' });
+      toast('Card movido com sucesso', 'success');
+      return true;
+    }
+
+    function criarFantasmaKanban(card) {
+      const rect = card.getBoundingClientRect();
+      const ghost = card.cloneNode(true);
+      ghost.classList.add('dragging');
+      Object.assign(ghost.style, {
+        position: 'fixed',
+        left: `${rect.left}px`,
+        top: `${rect.top}px`,
+        width: `${rect.width}px`,
+        height: `${rect.height}px`,
+        margin: '0',
+        pointerEvents: 'none',
+        zIndex: '9999',
+        opacity: '0.92',
+        transform: 'translate(0, 0) scale(1.02)',
+      });
+      document.body.appendChild(ghost);
+      card.classList.add('dragging');
+      return { ghost, rect };
+    }
+
+    function limparPointerDragKanban() {
+      if (!kanbanPointerDrag) return;
+      kanbanPointerDrag.card?.classList.remove('dragging');
+      kanbanPointerDrag.ghost?.remove();
+      document.removeEventListener('pointermove', onKanbanPointerMove);
+      document.removeEventListener('pointerup', onKanbanPointerUp);
+      document.removeEventListener('pointercancel', limparPointerDragKanban);
+      destacarColunaKanban(null);
+      kanbanPointerDrag = null;
+    }
+
+    function onKanbanPointerDown(event) {
+      if (event.button !== 0 || event.target.closest('button, a, input, select, textarea')) return;
+
+      const card = event.currentTarget;
+      kanbanPointerDrag = {
+        card,
+        id: card.dataset.cardId || '',
+        origem: obterColunaCardKanban(card),
+        startX: event.clientX,
+        startY: event.clientY,
+        active: false,
+        ghost: null,
+      };
+
+      document.addEventListener('pointermove', onKanbanPointerMove);
+      document.addEventListener('pointerup', onKanbanPointerUp);
+      document.addEventListener('pointercancel', limparPointerDragKanban);
+    }
+
+    function onKanbanPointerMove(event) {
+      const drag = kanbanPointerDrag;
+      if (!drag) return;
+
+      const dx = event.clientX - drag.startX;
+      const dy = event.clientY - drag.startY;
+      if (!drag.active && Math.hypot(dx, dy) < 6) return;
+
+      if (!drag.active) {
+        const fantasma = criarFantasmaKanban(drag.card);
+        drag.ghost = fantasma.ghost;
+        drag.active = true;
+      }
+
+      event.preventDefault();
+      drag.ghost.style.transform = `translate(${dx}px, ${dy}px) rotate(${Math.max(-3, Math.min(3, dx / 80))}deg) scale(1.02)`;
+      destacarColunaKanban(obterColunaKanbanNoPonto(event.clientX, event.clientY));
+    }
+
+    function onKanbanPointerUp(event) {
+      const drag = kanbanPointerDrag;
+      if (!drag) return;
+
+      if (drag.active) {
+        const colunaDestino = obterColunaKanbanNoPonto(event.clientX, event.clientY);
+        moverKanbanParaColuna(drag.id, drag.origem, colunaDestino?.dataset.col);
+      }
+
+      limparPointerDragKanban();
+    }
+
+    function serializarCardKanbanDOM(card, index = 0) {
+      const tagEl = card.querySelector('.kanban-tag');
+      const prioridade = Array.from(card.classList).find(classe => classe.startsWith('prio-')) || 'prio-media';
+      const tag = Array.from(tagEl?.classList || []).find(classe => SAFE_TAG.has(classe)) || 'info';
+      const id = card.dataset.cardId || criarIdEstado('kanban');
+      card.dataset.cardId = id;
+
+      return normalizarCardKanban({
+        id,
+        title: card.querySelector('.kanban-card-title')?.textContent || '',
+        col: obterColunaCardKanban(card),
+        prio: prioridade,
+        tag,
+        tagLabel: tagEl?.textContent || '',
+        date: card.querySelector('.kanban-card-date')?.textContent || '',
+        order: index,
+      }, index);
+    }
+
+    function serializarKanbanDOM() {
+      return Array.from(document.querySelectorAll('.kanban-col[data-col]')).flatMap(col => (
+        Array.from(col.children)
+          .filter(el => el.classList?.contains('kanban-card'))
+          .map((card, index) => serializarCardKanbanDOM(card, index))
+      ));
+    }
+
+    function criarCardKanbanDOM(cardData) {
+      const card = normalizarCardKanban(cardData);
+      const el = document.createElement('div');
+      el.className = `kanban-card ${card.prio}`;
+      el.dataset.cardId = card.id;
+      el.setAttribute('role', 'article');
+      el.setAttribute('draggable', 'true');
+      el.title = 'Arraste para mover este card entre as colunas';
+      el.addEventListener('dragstart', onDragStart);
+      el.addEventListener('pointerdown', onKanbanPointerDown);
+
+      const titleEl = document.createElement('div');
+      titleEl.className = 'kanban-card-title';
+      titleEl.textContent = card.title;
+
+      const meta = document.createElement('div');
+      meta.className = 'kanban-card-meta';
+
+      const tagEl = document.createElement('span');
+      tagEl.className = `kanban-tag ${card.tag}`;
+      tagEl.textContent = card.tagLabel;
+
+      const dateEl = document.createElement('span');
+      dateEl.className = 'kanban-card-date';
+      dateEl.textContent = card.date;
+
+      meta.append(tagEl, dateEl);
+      el.append(titleEl, meta);
+      return el;
+    }
+
+    function renderizarKanbanEstadoGlobal(cards = CozinhaStore.getState().kanban) {
+      const posicoesAnteriores = capturarPosicoesKanban();
+      const porColuna = normalizarListaKanban(cards).reduce((acc, card) => {
+        if (!acc[card.col]) acc[card.col] = [];
+        acc[card.col].push(card);
+        return acc;
+      }, {});
+
+      document.querySelectorAll('.kanban-col[data-col]').forEach(col => {
+        Array.from(col.children)
+          .filter(el => el.classList?.contains('kanban-card'))
+          .forEach(el => el.remove());
+
+        const addBtn = col.querySelector('.kanban-add-btn');
+        const cardsColuna = (porColuna[col.dataset.col] || []).sort((a, b) => a.order - b.order);
+        cardsColuna.forEach(card => col.insertBefore(criarCardKanbanDOM(card), addBtn));
+      });
+
+      animarCardsKanban(posicoesAnteriores);
+      atualizarContagensKanban();
+    }
+
+    function sincronizarKanbanDOMComEstado(source = 'kanban:dom-sync') {
+      CozinhaStore.dispatch('kanban:set', serializarKanbanDOM(), { source });
+    }
 
     function onDragStart(e) {
       draggedCard = e.currentTarget;
       draggedCard.classList.add('dragging');
       e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', '');
+      e.dataTransfer.setData('text/plain', draggedCard.dataset.cardId || '');
     }
 
     function onDragOver(e) {
@@ -9748,15 +10728,12 @@
       col.classList.remove('drag-over');
       if (!draggedCard) return;
 
+      const id = e.dataTransfer.getData('text/plain') || draggedCard.dataset.cardId;
+      const origem = obterColunaCardKanban(draggedCard);
+      const destino = normalizarColunaKanban(col.dataset.col);
+      moverKanbanParaColuna(id, origem, destino);
       draggedCard.classList.remove('dragging');
-
-      // Insert before the add button
-      const addBtn = col.querySelector('.kanban-add-btn');
-      col.insertBefore(draggedCard, addBtn);
       draggedCard = null;
-
-      atualizarContagensKanban();
-      toast('Card movido com sucesso', 'success');
     }
 
     document.addEventListener('dragend', () => {
@@ -9765,11 +10742,13 @@
         draggedCard = null;
       }
       document.querySelectorAll('.kanban-col').forEach(c => c.classList.remove('drag-over'));
+      limparPointerDragKanban();
+      encerrarArrasteProducao();
     });
 
     function atualizarContagensKanban() {
       ['a-fazer', 'em-andamento', 'concluido'].forEach(col => {
-        const colEl = document.querySelector(`.kanban-col.${col}`);
+        const colEl = document.querySelector(`#section-kanban .kanban-col.${col}`);
         const countEl = document.getElementById(`count-${col}`);
         if (colEl && countEl) {
           const cards = colEl.querySelectorAll('.kanban-card');
@@ -9781,7 +10760,7 @@
     function adicionarCardKanban() {
       const title = limparTextoSeguro(document.getElementById('kanban-card-title')?.value, 80);
       const col = validarEscolha(document.getElementById('kanban-card-col')?.value, SAFE_COL, 'a-fazer');
-      const prio = validarEscolha(document.getElementById('kanban-card-prio')?.value, SAFE_PRIORITY, 'medium');
+      const prio = normalizarPrioridadeKanban(validarEscolha(document.getElementById('kanban-card-prio')?.value, SAFE_PRIORITY, 'prio-media'));
       const tag = validarEscolha(document.getElementById('kanban-card-tag')?.value, SAFE_TAG, 'info');
       const date = limparTextoSeguro(document.getElementById('kanban-card-date')?.value, 24, 'Sem data');
 
@@ -9789,32 +10768,7 @@
 
       const tagLabels = { info: 'Operações', tec: 'Técnico', amb: 'Ambiente' };
 
-      const card = document.createElement('div');
-      card.className = `kanban-card ${prio}`;
-      card.setAttribute('role', 'article');
-      card.setAttribute('draggable', 'true');
-      card.addEventListener('dragstart', onDragStart);
-
-      const titleEl = document.createElement('div');
-      titleEl.className = 'kanban-card-title';
-      titleEl.textContent = title;
-
-      const meta = document.createElement('div');
-      meta.className = 'kanban-card-meta';
-      const tagEl = document.createElement('span');
-      tagEl.className = `kanban-tag ${tag}`;
-      tagEl.textContent = tagLabels[tag];
-      const dateEl = document.createElement('span');
-      dateEl.className = 'kanban-card-date';
-      dateEl.textContent = date;
-      meta.append(tagEl, dateEl);
-      card.append(titleEl, meta);
-
-      const colEl = document.querySelector(`.kanban-col.${col}`);
-      const addBtn = colEl?.querySelector('.kanban-add-btn');
-      if (colEl && addBtn) colEl.insertBefore(card, addBtn);
-
-      atualizarContagensKanban();
+      CozinhaStore.dispatch('kanban:add', { title, col, prio, tag, tagLabel: tagLabels[tag], date }, { source: 'kanban:modal' });
       fecharModal('modal-kanban');
 
       // Reset fields
@@ -9829,6 +10783,509 @@
     // ================================================================
     // FICHAS TÉCNICAS
     // ================================================================
+
+    // ================================================================
+    // PRODUCAO
+    // ================================================================
+
+    function normalizarNomeBuscaProduto(valor) {
+      return normalizarBusca(valor).replace(/[^a-z0-9 ]/g, '').trim();
+    }
+
+    function obterProdutosParaProducao() {
+      const { produtos } = obterProdutosDashboard();
+      const base = produtos.length ? produtos : DASHBOARD_DEMO_DATA.produtos.map(normalizarProdutoDashboard);
+      const unicos = new Map();
+
+      base.forEach((produto, index) => {
+        const normalizado = normalizarProdutoDashboard(produto, index);
+        const chave = normalizarNomeBuscaProduto(normalizado.nome);
+        if (!chave || unicos.has(chave)) return;
+        unicos.set(chave, normalizado);
+      });
+
+      return Array.from(unicos.values());
+    }
+
+    function obterEstoqueParaProducao() {
+      const estoqueEstado = CozinhaStore.getState().estoque;
+      return estoqueEstado.length ? estoqueEstado.map(normalizarItemEstoqueVisual) : ESTOQUE_DEMO.map(normalizarItemEstoqueVisual);
+    }
+
+    function obterReceitaProducao(produto) {
+      const nomeProduto = String(produto || '');
+      const chave = Object.keys(PRODUCAO_RECEITAS_DEMO).find(nome => (
+        normalizarNomeBuscaProduto(nomeProduto).includes(normalizarNomeBuscaProduto(nome))
+        || normalizarNomeBuscaProduto(nome).includes(normalizarNomeBuscaProduto(nomeProduto))
+      ));
+
+      if (chave) return PRODUCAO_RECEITAS_DEMO[chave];
+
+      return [
+        { insumo: 'Arroz Parboilizado', quantidade: 0.08, unidade: 'kg', custoUnitario: 5.6 },
+        { insumo: 'Verduras Frescas', quantidade: 0.3, unidade: 'un', custoUnitario: 1.8 },
+        { insumo: 'Azeite Extra Virgem', quantidade: 0.01, unidade: 'L', custoUnitario: 28 },
+      ];
+    }
+
+    function calcularResumoProducao(produto, quantidade) {
+      const qtd = Math.max(1, Math.round(normalizarNumero(quantidade, 1)));
+      const estoque = obterEstoqueParaProducao();
+      const receita = obterReceitaProducao(produto);
+      const ingredientes = receita.map(item => {
+        const necessario = normalizarNumero(item.quantidade, 0) * qtd;
+        const estoqueItem = estoque.find(estoqueAtual => (
+          normalizarNomeBuscaProduto(estoqueAtual.nome).includes(normalizarNomeBuscaProduto(item.insumo))
+          || normalizarNomeBuscaProduto(item.insumo).includes(normalizarNomeBuscaProduto(estoqueAtual.nome))
+        ));
+        const disponivel = normalizarNumero(estoqueItem?.quantidade, 0);
+        const custo = necessario * normalizarNumero(item.custoUnitario, 0);
+
+        return {
+          insumo: item.insumo,
+          necessario,
+          disponivel,
+          unidade: item.unidade,
+          custo,
+          suficiente: disponivel >= necessario,
+        };
+      });
+
+      return {
+        produto,
+        quantidade: qtd,
+        ingredientes,
+        custo: ingredientes.reduce((sum, item) => sum + item.custo, 0),
+        alertas: ingredientes.filter(item => !item.suficiente),
+      };
+    }
+
+    function popularProdutosProducao(options = {}) {
+      const select = document.getElementById('producao-produto');
+      if (!select) return;
+
+      const produtoPreferencial = limparTextoSeguro(options.produtoPreferencial, 100);
+      const atual = produtoPreferencial || select.value;
+      const produtos = obterProdutosParaProducao();
+      select.replaceChildren();
+
+      produtos.forEach(produto => {
+        const option = document.createElement('option');
+        option.value = produto.nome;
+        option.textContent = produto.nome;
+        select.appendChild(option);
+      });
+
+      if (atual && Array.from(select.options).some(option => option.value === atual)) {
+        select.value = atual;
+      }
+    }
+
+    function sincronizarProdutosProducaoComCardapio(produtoPreferencial = '') {
+      popularProdutosProducao({ produtoPreferencial });
+      renderizarResumoProducaoAtual();
+    }
+
+    function renderizarResumoProducaoAtual() {
+      const produto = document.getElementById('producao-produto')?.value || obterProdutosParaProducao()[0]?.nome || '';
+      const quantidade = document.getElementById('producao-quantidade')?.value || 1;
+      const resumo = calcularResumoProducao(produto, quantidade);
+      const lista = document.getElementById('producao-resumo-ingredientes');
+      const alertas = document.getElementById('producao-alertas');
+
+      if (lista) {
+        lista.replaceChildren();
+        resumo.ingredientes.forEach(item => {
+          const row = document.createElement('div');
+          row.className = 'abc-item';
+          row.setAttribute('role', 'listitem');
+
+          const tag = document.createElement('div');
+          tag.className = item.suficiente ? 'abc-tag C' : 'abc-tag A';
+          tag.textContent = item.suficiente ? 'OK' : '!';
+
+          const nome = document.createElement('div');
+          nome.className = 'abc-name';
+          nome.textContent = item.insumo;
+
+          const qtd = document.createElement('div');
+          qtd.className = 'abc-qty';
+          qtd.textContent = `${item.necessario.toFixed(2).replace('.', ',')} ${item.unidade}`;
+
+          const status = document.createElement('span');
+          status.className = `abc-status ${item.suficiente ? 'ok' : 'critico'}`;
+          status.appendChild(criarIconeBox(item.suficiente ? 'bx-check' : 'bx-error'));
+          status.append(` ${item.suficiente ? 'Disponivel' : 'Falta estoque'}`);
+
+          row.append(tag, nome, qtd, status);
+          lista.appendChild(row);
+        });
+      }
+
+      if (alertas) {
+        alertas.replaceChildren();
+        if (!resumo.alertas.length) {
+          const ok = document.createElement('div');
+          ok.className = 'admin-alert success';
+          ok.append(criarIconeBox('bx-check-shield'));
+          const content = document.createElement('div');
+          const title = document.createElement('strong');
+          title.textContent = 'Estoque suficiente';
+          const text = document.createElement('span');
+          text.textContent = 'Todos os insumos estao disponiveis para esta producao.';
+          content.append(title, text);
+          ok.appendChild(content);
+          alertas.appendChild(ok);
+        } else {
+          resumo.alertas.forEach(item => {
+            const alerta = document.createElement('div');
+            alerta.className = 'admin-alert danger';
+            alerta.append(criarIconeBox('bx-error'));
+            const content = document.createElement('div');
+            const title = document.createElement('strong');
+            title.textContent = `${item.insumo} insuficiente`;
+            const text = document.createElement('span');
+            text.textContent = `Necessario: ${item.necessario.toFixed(2).replace('.', ',')} ${item.unidade}. Disponivel: ${item.disponivel.toFixed(2).replace('.', ',')} ${item.unidade}.`;
+            content.append(title, text);
+            alerta.appendChild(content);
+            alertas.appendChild(alerta);
+          });
+        }
+      }
+
+      setTextById('producao-custo-estimado', formatarMoedaBR(resumo.custo));
+      setTextById('producao-estoque-status', resumo.alertas.length ? 'Ha insumos insuficientes. Gere reabastecimento antes de iniciar.' : 'Producao liberada pelo estoque atual.');
+      return resumo;
+    }
+
+    function criarProducao() {
+      const produto = limparTextoSeguro(document.getElementById('producao-produto')?.value, 100);
+      const quantidade = validarNumeroSeguro(document.getElementById('producao-quantidade')?.value, 1, 100000, null);
+      const turno = limparTextoSeguro(document.getElementById('producao-turno')?.value, 40, 'Hoje');
+      if (!produto || quantidade === null) {
+        toast('Informe produto e quantidade validos para criar a producao.', 'warning');
+        return;
+      }
+
+      const resumo = calcularResumoProducao(produto, quantidade);
+      CozinhaStore.dispatch('producao:add', {
+        produto,
+        quantidade,
+        turno,
+        status: 'pendente',
+        ingredientes: resumo.ingredientes,
+        custo: resumo.custo,
+        alertas: resumo.alertas,
+      }, { source: 'producao:create' });
+
+      toast(resumo.alertas.length ? 'Producao criada com alerta de estoque' : 'Producao criada', resumo.alertas.length ? 'warning' : 'success');
+    }
+
+    function alterarStatusProducao(id, status) {
+      CozinhaStore.dispatch('producao:update', { id, status: normalizarStatusProducao(status) }, { source: 'producao:status' });
+    }
+
+    let producaoCardArrastado = null;
+    let producaoPointerDrag = null;
+
+    function obterStatusProducaoCard(card) {
+      return normalizarStatusProducao(card?.closest('.kanban-col[data-producao-status]')?.dataset.producaoStatus);
+    }
+
+    function capturarPosicoesProducao() {
+      return new Map(Array.from(document.querySelectorAll('#section-producao .kanban-card[data-producao-id]')).map(card => (
+        [card.dataset.producaoId, card.getBoundingClientRect()]
+      )));
+    }
+
+    function animarCardsProducao(posicoesAnteriores) {
+      if (!posicoesAnteriores?.size) return;
+
+      requestAnimationFrame(() => {
+        document.querySelectorAll('#section-producao .kanban-card[data-producao-id]').forEach(card => {
+          const anterior = posicoesAnteriores.get(card.dataset.producaoId);
+          const atual = card.getBoundingClientRect();
+
+          if (!anterior) {
+            card.animate([
+              { opacity: 0, transform: 'translateY(10px) scale(0.98)' },
+              { opacity: 1, transform: 'translateY(0) scale(1)' },
+            ], { duration: 220, easing: 'cubic-bezier(.2,.8,.2,1)' });
+            return;
+          }
+
+          const dx = anterior.left - atual.left;
+          const dy = anterior.top - atual.top;
+          if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+
+          card.animate([
+            { transform: `translate(${dx}px, ${dy}px) scale(0.98)`, opacity: 0.86 },
+            { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+          ], { duration: 320, easing: 'cubic-bezier(.18,.9,.22,1)' });
+        });
+      });
+    }
+
+    function encerrarArrasteProducao() {
+      if (producaoCardArrastado) {
+        producaoCardArrastado.classList.remove('dragging');
+        producaoCardArrastado = null;
+      }
+      document.querySelectorAll('#section-producao .kanban-col.drag-over').forEach(col => col.classList.remove('drag-over'));
+    }
+
+    function obterColunaProducaoNoPonto(x, y) {
+      return document.elementFromPoint(x, y)?.closest('#section-producao .kanban-col[data-producao-status]') || null;
+    }
+
+    function destacarColunaProducao(colunaAtiva) {
+      document.querySelectorAll('#section-producao .kanban-col[data-producao-status]').forEach(coluna => {
+        coluna.classList.toggle('drag-over', coluna === colunaAtiva);
+      });
+    }
+
+    function moverProducaoParaStatus(id, origem, destino) {
+      if (!SAFE_PRODUCAO_STATUS.has(String(destino || ''))) return false;
+      const destinoSeguro = normalizarStatusProducao(destino);
+      if (!id || destinoSeguro === origem) return false;
+
+      alterarStatusProducao(id, destinoSeguro);
+
+      const labels = {
+        pendente: 'Pendente',
+        preparo: 'Em Preparo',
+        finalizado: 'Finalizado',
+      };
+      toast(`Producao movida para ${labels[destinoSeguro]}`, 'success');
+      return true;
+    }
+
+    function limparPointerDragProducao() {
+      if (!producaoPointerDrag) return;
+      producaoPointerDrag.card?.classList.remove('dragging');
+      producaoPointerDrag.ghost?.remove();
+      document.removeEventListener('pointermove', onProducaoPointerMove);
+      document.removeEventListener('pointerup', onProducaoPointerUp);
+      document.removeEventListener('pointercancel', limparPointerDragProducao);
+      destacarColunaProducao(null);
+      producaoPointerDrag = null;
+    }
+
+    function criarFantasmaProducao(card) {
+      const rect = card.getBoundingClientRect();
+      const ghost = card.cloneNode(true);
+      ghost.classList.add('dragging');
+      Object.assign(ghost.style, {
+        position: 'fixed',
+        left: `${rect.left}px`,
+        top: `${rect.top}px`,
+        width: `${rect.width}px`,
+        height: `${rect.height}px`,
+        margin: '0',
+        pointerEvents: 'none',
+        zIndex: '9999',
+        opacity: '0.92',
+        transform: 'translate(0, 0) scale(1.02)',
+      });
+      document.body.appendChild(ghost);
+      card.classList.add('dragging');
+      return { ghost, rect };
+    }
+
+    function onProducaoPointerDown(event) {
+      if (event.button !== 0 || event.target.closest('button, a, input, select, textarea')) return;
+
+      const card = event.currentTarget;
+      producaoPointerDrag = {
+        card,
+        id: card.dataset.producaoId || '',
+        origem: obterStatusProducaoCard(card),
+        startX: event.clientX,
+        startY: event.clientY,
+        active: false,
+        ghost: null,
+        rect: null,
+      };
+
+      document.addEventListener('pointermove', onProducaoPointerMove);
+      document.addEventListener('pointerup', onProducaoPointerUp);
+      document.addEventListener('pointercancel', limparPointerDragProducao);
+    }
+
+    function onProducaoPointerMove(event) {
+      const drag = producaoPointerDrag;
+      if (!drag) return;
+
+      const dx = event.clientX - drag.startX;
+      const dy = event.clientY - drag.startY;
+      if (!drag.active && Math.hypot(dx, dy) < 6) return;
+
+      if (!drag.active) {
+        const fantasma = criarFantasmaProducao(drag.card);
+        drag.ghost = fantasma.ghost;
+        drag.rect = fantasma.rect;
+        drag.active = true;
+      }
+
+      event.preventDefault();
+      drag.ghost.style.transform = `translate(${dx}px, ${dy}px) rotate(${Math.max(-3, Math.min(3, dx / 80))}deg) scale(1.02)`;
+      destacarColunaProducao(obterColunaProducaoNoPonto(event.clientX, event.clientY));
+    }
+
+    function onProducaoPointerUp(event) {
+      const drag = producaoPointerDrag;
+      if (!drag) return;
+
+      if (drag.active) {
+        const colunaDestino = obterColunaProducaoNoPonto(event.clientX, event.clientY);
+        moverProducaoParaStatus(drag.id, drag.origem, colunaDestino?.dataset.producaoStatus);
+      }
+
+      limparPointerDragProducao();
+    }
+
+    function onProducaoDragStart(event) {
+      producaoCardArrastado = event.currentTarget;
+      producaoCardArrastado.classList.add('dragging');
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text/plain', producaoCardArrastado.dataset.producaoId || '');
+    }
+
+    function onProducaoDragOver(event) {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = 'move';
+      event.currentTarget.classList.add('drag-over');
+    }
+
+    function onProducaoDragLeave(event) {
+      if (!event.currentTarget.contains(event.relatedTarget)) {
+        event.currentTarget.classList.remove('drag-over');
+      }
+    }
+
+    function onProducaoDrop(event) {
+      event.preventDefault();
+
+      const colunaDestino = event.currentTarget;
+      colunaDestino.classList.remove('drag-over');
+
+      const id = event.dataTransfer.getData('text/plain') || producaoCardArrastado?.dataset.producaoId;
+      const destino = normalizarStatusProducao(colunaDestino.dataset.producaoStatus);
+      const origem = obterStatusProducaoCard(producaoCardArrastado);
+      if (!id) {
+        encerrarArrasteProducao();
+        return;
+      }
+
+      moverProducaoParaStatus(id, origem, destino);
+      encerrarArrasteProducao();
+    }
+
+    function configurarArrasteProducao() {
+      document.querySelectorAll('#section-producao .kanban-col[data-producao-status]').forEach(coluna => {
+        if (coluna.dataset.producaoDropReady === 'true') return;
+        coluna.dataset.producaoDropReady = 'true';
+        coluna.addEventListener('dragover', onProducaoDragOver);
+        coluna.addEventListener('dragleave', onProducaoDragLeave);
+        coluna.addEventListener('drop', onProducaoDrop);
+      });
+    }
+
+    function criarCardProducao(item) {
+      const producao = normalizarProducao(item);
+      const card = document.createElement('div');
+      card.className = `kanban-card ${producao.status === 'finalizado' ? 'prio-baixa' : producao.status === 'preparo' ? 'prio-alta' : 'prio-media'}`;
+      card.dataset.producaoId = producao.id;
+      card.dataset.producaoStatus = producao.status;
+      card.setAttribute('role', 'article');
+      card.setAttribute('draggable', 'true');
+      card.setAttribute('aria-label', `${producao.produto}, ${producao.quantidade} unidades, ${producao.turno}`);
+      card.title = 'Arraste para mover esta producao entre as etapas';
+      card.addEventListener('dragstart', onProducaoDragStart);
+      card.addEventListener('pointerdown', onProducaoPointerDown);
+
+      const title = document.createElement('div');
+      title.className = 'kanban-card-title';
+      title.textContent = producao.produto;
+
+      const meta = document.createElement('div');
+      meta.className = 'kanban-card-meta';
+      const tag = document.createElement('span');
+      tag.className = 'kanban-tag info';
+      tag.textContent = `${producao.quantidade} un`;
+      const date = document.createElement('span');
+      date.className = 'kanban-card-date';
+      date.textContent = producao.turno;
+      meta.append(tag, date);
+
+      card.append(title, meta);
+      return card;
+    }
+
+    function renderizarProducaoEstadoGlobal(lista = CozinhaStore.getState().producao) {
+      const posicoesAnteriores = capturarPosicoesProducao();
+      const producoes = normalizarListaProducao(lista);
+      const porStatus = {
+        pendente: document.getElementById('producao-col-pendente'),
+        preparo: document.getElementById('producao-col-preparo'),
+        finalizado: document.getElementById('producao-col-finalizado'),
+      };
+
+      Object.values(porStatus).forEach(container => container?.replaceChildren());
+      producoes.forEach(item => {
+        porStatus[item.status]?.appendChild(criarCardProducao(item));
+      });
+      animarCardsProducao(posicoesAnteriores);
+
+      const resumo = resumirProducao(producoes);
+      setTextById('producao-count-pendente', String(resumo.pendente));
+      setTextById('producao-count-preparo', String(resumo.preparo));
+      setTextById('producao-count-finalizado', String(resumo.finalizado));
+      setTextById('producao-dia-planejadas', String(resumo.total));
+      setTextById('producao-dia-andamento', String(resumo.preparo));
+      setTextById('producao-dia-concluidas', String(resumo.finalizado));
+      setTextById('producao-dia-custo', formatarMoedaBR(resumo.custo));
+
+      const historico = document.getElementById('producao-historico');
+      if (historico) {
+        historico.replaceChildren();
+        const finalizados = producoes.filter(item => item.status === 'finalizado').slice(-6).reverse();
+        if (!finalizados.length) {
+          const empty = document.createElement('div');
+          empty.className = 'dashboard-empty';
+          empty.textContent = 'Nenhuma producao finalizada ainda.';
+          historico.appendChild(empty);
+        } else {
+          finalizados.forEach(item => {
+            const row = document.createElement('div');
+            row.className = 'order-row';
+            const code = document.createElement('div');
+            code.className = 'order-code';
+            code.textContent = `${item.quantidade} un`;
+            const details = document.createElement('div');
+            const client = document.createElement('div');
+            client.className = 'order-client';
+            client.textContent = item.produto;
+            const meta = document.createElement('div');
+            meta.className = 'order-meta';
+            meta.textContent = item.turno;
+            details.append(client, meta);
+            const value = document.createElement('div');
+            value.className = 'order-value';
+            value.textContent = formatarMoedaBR(item.custo);
+            row.append(code, details, value);
+            historico.appendChild(row);
+          });
+        }
+      }
+    }
+
+    function inicializarProducao() {
+      popularProdutosProducao();
+      renderizarResumoProducaoAtual();
+      configurarArrasteProducao();
+      renderizarProducaoEstadoGlobal();
+    }
 
     function adicionarFicha() {
       const nome = limparTextoSeguro(document.getElementById('ficha-nome')?.value, 80);
@@ -10026,8 +11483,10 @@
       const linhas = Array.from(document.querySelectorAll('#cardapio-tbody tr')).map(serializarLinhaCardapio);
       try {
         localStorage.setItem(STORAGE_KEYS.cardapio, JSON.stringify(linhas));
+        CozinhaStore.dispatch('cardapio:set', linhas, { source: 'cardapio:save' });
       } catch (error) {
         logSeguro('Nao foi possivel salvar as imagens no navegador', error);
+        CozinhaStore.dispatch('cardapio:set', linhas, { source: 'cardapio:memory' });
         toast('Imagem grande demais para salvar localmente. O item foi mantido na tela.', 'warning', 5000);
       }
     }
@@ -10216,6 +11675,7 @@
       }
 
       salvarCardapioLocal();
+      sincronizarProdutosProducaoComCardapio(prato);
       aplicarRotulosTabelasResponsivas();
       atualizarDashboardNegocio();
       fecharModal('modal-cardapio');
@@ -10480,6 +11940,129 @@
       }
     }
 
+    function serializarCMVDOM() {
+      return Array.from(document.querySelectorAll('#section-analises-cmv .bar-chart .bar-group')).map((grupo, index) => {
+        const bar = grupo.querySelector('.bar');
+        const label = grupo.querySelector('.bar-label');
+        return normalizarRegistroCMV({
+          id: label?.textContent || `cmv-${index + 1}`,
+          periodo: label?.textContent || `Periodo ${index + 1}`,
+          valor: bar?.dataset.val || 0,
+          meta: 32,
+        }, index);
+      });
+    }
+
+    function formatarPercentualBR(valor) {
+      return `${normalizarNumero(valor, 0).toFixed(1).replace('.', ',')}%`;
+    }
+
+    function renderizarCMVEstadoGlobal(registros = CozinhaStore.getState().cmv) {
+      const dados = normalizarListaCMV(registros);
+      if (!dados.length) return;
+
+      const resumo = resumirCMV(dados);
+      const deltaTexto = `${resumo.delta >= 0 ? '+' : ''}${resumo.delta.toFixed(1).replace('.', ',')} p.p. vs periodo anterior`;
+
+      setText('#section-analises-cmv .kpi-grid .kpi-card:nth-child(1) .kpi-value', formatarPercentualBR(resumo.atual.valor));
+      setIconText('#section-analises-cmv .kpi-grid .kpi-card:nth-child(1) .kpi-delta', `Meta: ${formatarPercentualBR(resumo.atual.meta)}`);
+      setText('#section-analises-cmv .kpi-grid .kpi-card:nth-child(2) .kpi-value', formatarMoedaBR(resumo.custoDia).replace(',00', ''));
+      setText('#section-analises-cmv .kpi-grid .kpi-card:nth-child(3) .kpi-value', `${Math.round(resumo.eficiencia)}%`);
+      setIconText('#section-analises-cmv .kpi-grid .kpi-card:nth-child(3) .kpi-delta', deltaTexto);
+      setText('#section-analises-cmv .kpi-grid .kpi-card:nth-child(4) .kpi-value', formatarMoedaBR(resumo.desperdicio).replace(',00', ''));
+
+      const grupos = document.querySelectorAll('#section-analises-cmv .bar-chart .bar-group');
+      const ultimos = dados.slice(-grupos.length);
+      grupos.forEach((grupo, index) => {
+        const registro = ultimos[index];
+        if (!registro) return;
+
+        const bar = grupo.querySelector('.bar');
+        const label = grupo.querySelector('.bar-label');
+        const status = obterStatusCMV(registro.valor, registro.meta);
+        if (bar) {
+          bar.classList.remove('terra', 'amber', 'green');
+          bar.classList.add(status.classe);
+          bar.style.height = `${Math.max(8, Math.min(96, registro.valor * 2))}%`;
+          bar.dataset.val = formatarPercentualBR(registro.valor);
+        }
+        if (label) label.textContent = registro.periodo;
+      });
+    }
+
+    const atualizarDashboardPeloEstadoGlobal = debounce(() => {
+      atualizarDashboardNegocio();
+    }, 60);
+
+    function hidratarEstadoGlobalInicial() {
+      const { pedidos } = obterPedidosDashboard();
+      const { produtos } = obterProdutosDashboard();
+      const cardapio = Array.isArray(lerJSONSeguroLocal(STORAGE_KEYS.cardapio, []))
+        ? lerJSONSeguroLocal(STORAGE_KEYS.cardapio, [])
+        : [];
+      const kanbanSalvo = normalizarListaKanban(lerJSONSeguroLocal(STORAGE_KEYS.kanban, []));
+      const cmvSalvo = normalizarListaCMV(lerJSONSeguroLocal(STORAGE_KEYS.cmv, []));
+      const producaoSalva = normalizarListaProducao(lerJSONSeguroLocal(STORAGE_KEYS.producao, []));
+      const kanban = kanbanSalvo.length ? kanbanSalvo : serializarKanbanDOM();
+      const cmv = cmvSalvo.length ? cmvSalvo : serializarCMVDOM();
+
+      CozinhaStore.dispatch('hydrate', { pedidos, produtos, cardapio, kanban, cmv, producao: producaoSalva }, { source: 'init', silent: true });
+      renderizarKanbanEstadoGlobal(kanban);
+      renderizarCMVEstadoGlobal(cmv);
+      renderizarProducaoEstadoGlobal(producaoSalva);
+    }
+
+    function conectarEstadoGlobal() {
+      if (AppState.estadoGlobalConectado) return;
+      AppState.estadoGlobalConectado = true;
+
+      CozinhaStore.subscribe('kanban:changed', detalhe => {
+        renderizarKanbanEstadoGlobal(detalhe.state.kanban);
+      });
+
+      CozinhaStore.subscribe('cmv:changed', detalhe => {
+        renderizarCMVEstadoGlobal(detalhe.state.cmv);
+      });
+
+      CozinhaStore.subscribe('producao:changed', detalhe => {
+        renderizarProducaoEstadoGlobal(detalhe.state.producao);
+      });
+
+      CozinhaStore.subscribe('cardapio:changed', () => {
+        sincronizarProdutosProducaoComCardapio();
+      });
+
+      CozinhaStore.subscribe('change', detalhe => {
+        const impactaDashboard = detalhe.changed.some(chave => (
+          ['pedidos', 'produtos', 'cardapio', 'kanban', 'cmv', 'producao'].includes(chave)
+        ));
+        if (impactaDashboard) atualizarDashboardPeloEstadoGlobal();
+      });
+
+      window.addEventListener('storage', event => {
+        if (event.key === STORAGE_KEYS.kanban) {
+          CozinhaStore.dispatch('kanban:set', lerJSONSeguroLocal(STORAGE_KEYS.kanban, []), { source: 'storage' });
+          return;
+        }
+
+        if (event.key === STORAGE_KEYS.cmv) {
+          CozinhaStore.dispatch('cmv:set', lerJSONSeguroLocal(STORAGE_KEYS.cmv, []), { source: 'storage' });
+          return;
+        }
+
+        if (event.key === STORAGE_KEYS.producao) {
+          CozinhaStore.dispatch('producao:set', lerJSONSeguroLocal(STORAGE_KEYS.producao, []), { source: 'storage' });
+          return;
+        }
+
+        if ([STORAGE_KEYS.cardapio, 'cozinha-pedidos', 'pedidos', 'orders', 'cozinha-orders', 'cozinha-produtos', 'produtos', 'products'].includes(event.key)) {
+          hidratarEstadoGlobalInicial();
+          if (event.key === STORAGE_KEYS.cardapio) sincronizarProdutosProducaoComCardapio();
+          atualizarDashboardPeloEstadoGlobal();
+        }
+      });
+    }
+
     async function fetchUserData() {
       try {
         return {
@@ -10576,6 +12159,8 @@
 
       document.getElementById('card-foto')?.addEventListener('change', handleImagemCardapioChange);
       document.getElementById('card-foto-clear')?.addEventListener('click', limparImagemCardapio);
+      document.getElementById('producao-produto')?.addEventListener('change', renderizarResumoProducaoAtual);
+      document.getElementById('producao-quantidade')?.addEventListener('input', renderizarResumoProducaoAtual);
 
       // Avatar
       const topbarAvatar = document.querySelector('.topbar-avatar');
@@ -10608,6 +12193,11 @@
 
       const kpis = await fetchKPIs();
       if (kpis) logSeguro('KPIs carregados', kpis);
+
+      if (!CozinhaStore.getState().cmv.length) {
+        const cmv = await fetchCMVSemanal();
+        if (cmv.length) CozinhaStore.dispatch('cmv:set', cmv, { source: 'fetch:cmv' });
+      }
     }
 
     function restaurarPreferencias() {
@@ -10640,6 +12230,9 @@
       setupBusca();
       inicializarCardapioResponsivo();
       aplicarRotulosTabelasResponsivas();
+      hidratarEstadoGlobalInicial();
+      conectarEstadoGlobal();
+      inicializarProducao();
       atualizarDashboardNegocio();
 
       if (DOM.welcomeDate) {
@@ -10670,6 +12263,9 @@
     window.DashboardApp = {
       navegarPara, toggleDarkMode, logout,
       fetchKPIs, fetchCMVSemanal, fetchAlertas,
+      store: CozinhaStore,
+      atualizarDashboardNegocio,
+      criarProducao, alterarStatusProducao,
       toast, abrirModal, fecharModal,
     };
 
@@ -10874,6 +12470,7 @@ function renderizarEstoquePagina(itens = []) {
     });
     aplicarRotulosTabelasResponsivas();
     atualizarKpisEstoquePagina(normalizados);
+    CozinhaStore.dispatch('estoque:set', normalizados, { source: 'estoque:render' });
 }
 
 // Sobrescreve a versao antiga de carregamento para preservar a tela mesmo sem API:
