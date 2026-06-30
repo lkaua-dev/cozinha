@@ -1,16 +1,16 @@
 # Guia de Manutenção
 
-Este guia orienta alterações futuras sem quebrar as funcionalidades atuais.
+Este guia orienta alterações futuras sem quebrar funcionalidades existentes.
 
-## Regras gerais
+## Regra de ouro
 
-- Mantenha o projeto com HTML, CSS e JavaScript puro.
-- Evite adicionar frameworks sem decisao explicita.
-- Antes de alterar uma função, procure onde ela e chamada.
-- Preserve os IDs usados por JavaScript.
-- Preserve classes usadas por CSS e seletores.
-- Em `dashboard.html`, prefira alterações pequenas e localizadas.
-- Depois de editar JavaScript, rode validação de sintaxe.
+Antes de mudar algo, descubra:
+
+- Qual arquivo controla a tela.
+- Quais IDs o JavaScript usa.
+- Quais classes o CSS usa.
+- Se existe persistência em `localStorage`.
+- Se existe rota backend relacionada.
 
 ## Arquivos mais importantes
 
@@ -20,12 +20,12 @@ Este guia orienta alterações futuras sem quebrar as funcionalidades atuais.
 - CSS: `cozinha/frontend/css/index.css`
 - JS: `cozinha/frontend/js/index.js`
 
-Use esses arquivos para alterar a página inicial, metas, equipe, menu publico e animações da home.
+Use esses arquivos para alterar home, metas, equipe, menu publico e animações.
 
 ### Login e recuperação
 
 - Login: `cozinha/frontend/login.html`
-- Recuperacao: `cozinha/frontend/recuperar.html`
+- Recuperação: `cozinha/frontend/recuperar.html`
 - CSS compartilhado: `cozinha/frontend/css/style_geral.css`
 - JS do login: `cozinha/frontend/js/login_geral.js`
 
@@ -35,16 +35,15 @@ Use esses arquivos para alterar layout, validação, toasts e fluxo de entrada.
 
 - Arquivo principal: `cozinha/frontend/dashboard.html`
 
-Este arquivo concentra dashboard, estoque, cardápio, kanban, fichas, análises, relatórios e configurações.
+Esse arquivo concentra dashboard, produção, estoque, cardápio, kanban, fichas, análises, relatórios e configurações.
 
 ## Cuidado com IDs
 
-O JavaScript depende de muitos IDs do HTML. Exemplos importantes:
+O JavaScript depende de muitos IDs. Exemplos importantes:
 
 - `app`
 - `sidebar`
 - `btn-sidebar-toggle`
-- `kpi-grid`
 - `section-dashboard`
 - `section-estoque`
 - `section-cardapio`
@@ -55,11 +54,11 @@ O JavaScript depende de muitos IDs do HTML. Exemplos importantes:
 - `modal-cardapio`
 - `modal-estoque`
 
-Se renomear um ID no HTML, atualize também todas as referências no JavaScript.
+Se renomear um ID no HTML, atualize todas as referencias no JavaScript.
 
 ## Como alterar estilos
 
-### Página pública
+### Home
 
 Edite:
 
@@ -67,12 +66,12 @@ Edite:
 cozinha/frontend/css/index.css
 ```
 
-Organizacao recomendada:
+Organização recomendada:
 
-1. Variáveis globais.
-2. Reset/base.
-3. Header/menu.
-4. Secoes.
+1. Variaveis.
+2. Base/reset.
+3. Header.
+4. Seções.
 5. Cards.
 6. Responsividade.
 
@@ -84,40 +83,53 @@ Edite:
 cozinha/frontend/css/style_geral.css
 ```
 
-Esse arquivo contém a base compartilhada. Cada página também possui um bloco `<style>` proprio para seu layout especifico.
+Cada página também pode ter um bloco `<style>` próprio.
 
 ### Dashboard
 
-O CSS do dashboard está dentro de `dashboard.html`. Ao alterar:
+O CSS do dashboard fica dentro de `dashboard.html`.
 
-- Procure primeiro o bloco da seção desejada.
-- Mantenha variaveis existentes quando possível.
-- Evite duplicar regras.
-- Verifique media queries para celular.
-- Teste no mínimo desktop e mobile.
+Ao alterar:
+
+- Procure primeiro uma regra existente.
+- Evite duplicar seletor sem necessidade.
+- Confira se ha média query para mobile.
+- Teste desktop e mobile.
+- Verifique sidebar aberta e recolhida.
+
+## Como alterar JavaScript
+
+Depois de editar scripts externos:
+
+```powershell
+node --check cozinha/frontend/js/index.js
+node --check cozinha/frontend/js/login_geral.js
+```
+
+Para `dashboard.html`, o script e inline. Se mexer bastante nele, extraia o bloco `<script>` para validar em ambiente de teste ou abra a tela e confira o console do navegador.
 
 ## Como alterar o dashboard
 
-Funcoes importantes:
+Funções importantes:
 
-- `calcularDashboardNegocio`: calcula os indicadores.
-- `atualizarDashboardNegocio`: escreve os valores na tela.
-- `renderizarPedidosRecentes`: monta a lista de pedidos recentes.
-- `renderizarProdutosMaisVendidos`: monta a lista de produtos mais vendidos.
-- `renderizarAlertasDashboard`: monta alertas administrativos.
-- `navegarPara`: troca a seção visível do dashboard.
+- `calcularDashboardNegocio`
+- `atualizarDashboardNegocio`
+- `renderizarPedidosRecentes`
+- `renderizarProdutosMaisVendidos`
+- `renderizarAlertasDashboard`
+- `navegarPara`
 
 Ao criar um novo card:
 
-1. Adicione o HTML na area do dashboard.
-2. Crie um ID para o valor dinamico.
+1. Adicione o HTML na área certa.
+2. Crie um ID claro para valor dinamico.
 3. Atualize `atualizarDashboardNegocio`.
 4. Se precisar de calculo novo, adicione em `calcularDashboardNegocio`.
-5. Documente o novo calculo em `docs/DASHBOARD.md`.
+5. Documente em `docs/DASHBOARD.md`.
 
-## Como alterar o cardápio
+## Como alterar cardápio
 
-Funcoes importantes:
+Funções importantes:
 
 - `criarLinhaCardapio`
 - `serializarLinhaCardapio`
@@ -127,18 +139,18 @@ Funcoes importantes:
 - `editarLinhaCardapio`
 - `removerLinhaCardapio`
 
-Ao adicionar um novo campo no cardápio:
+Ao adicionar campo:
 
 1. Adicione o campo no modal.
-2. Inclua o campo em `criarLinhaCardapio`.
-3. Inclua o campo em `serializarLinhaCardapio`.
-4. Garanta que `salvarCardapioLocal` salve o dado.
-5. Garanta que `restaurarCardapioLocal` restaure o dado.
+2. Inclua em `criarLinhaCardapio`.
+3. Inclua em `serializarLinhaCardapio`.
+4. Garanta persistência em `salvarCardapioLocal`.
+5. Garanta restauracao em `restaurarCardapioLocal`.
 6. Atualize a documentação.
 
 ## Como alterar upload de imagens
 
-Funcoes importantes:
+Funções importantes:
 
 - `compactarImagemProduto`
 - `handleImagemCardapioChange`
@@ -150,11 +162,11 @@ Recomendacoes:
 - Mantenha validação `image/*`.
 - Mantenha compactacao via `canvas`.
 - Evite salvar imagens muito grandes em `localStorage`.
-- Use `object-fit: cover` nas miniaturas.
+- Use `object-fit: cover` em miniaturas.
 
 ## Como alterar estoque
 
-Funcoes importantes:
+Frontend:
 
 - `adicionarItemEstoque`
 - `renderizarEstoquePagina`
@@ -163,12 +175,20 @@ Funcoes importantes:
 - `normalizarItemEstoqueVisual`
 - `atualizarKpisEstoquePagina`
 
+Backend:
+
+- `GET /estoque`
+- `GET /estoque/<id>`
+- `POST /estoque`
+- `PUT /estoque/<id>`
+- `DELETE /estoque/<id>`
+
 Fluxo atual:
 
-1. Renderiza dados demonstrativos imediatamente.
-2. Tenta buscar dados em `http://localhost:5000/estoque`.
+1. Frontend renderiza dados demonstrativos.
+2. Tenta buscar `http://localhost:5000/estoque`.
 3. Se a API retornar itens, troca a listagem.
-4. Se a API falhar, mantém dados demonstrativos.
+4. Se falhar, mantem dados demonstrativos.
 
 ## Como alterar login
 
@@ -180,18 +200,16 @@ cozinha/frontend/js/login_geral.js
 
 Fluxo:
 
-1. Verifica campos.
+1. Valida campos.
 2. Testa credenciais demo.
 3. Se não forem demo, chama `http://localhost:5000/login`.
 4. Salva token e usuário no `localStorage`.
 5. Redireciona para `dashboard.html`.
 
-Para mudar credenciais demo, altere:
+Para mudar credenciais demo, procure:
 
-```text
-validDemoUsers
-demoPassword
-```
+- `validDemoUsers`
+- `demoPassword`
 
 ## Como alterar backend
 
@@ -200,58 +218,68 @@ Arquivos:
 - `cozinha/backend/main.py`
 - `cozinha/backend/app/database.py`
 
-Rotas atuais:
+Dependências:
 
-- `POST /login`
-- `POST /logout`
-- `GET /estoque`
-- `POST /estoque`
-- `DELETE /estoque/<id>`
+- `cozinha/backend/requirements.txt`
+- `requirements.txt` na raiz, enquanto existir duplicado.
+
+Configuracao:
+
+- `cozinha/backend/.env.example`
+- `.env` local criado a partir dele.
 
 Se criar uma rota nova:
 
 1. Adicione no Flask.
 2. Teste com backend rodando.
-3. Atualize a chamada no frontend.
-4. Atualize a documentação.
+3. Atualize chamada no frontend, se houver.
+4. Atualize documentação.
 
-## Validacao recomendada
+Se mudar tabela ou coluna:
 
-JavaScript externo:
+1. Atualize `banco.sql`.
+2. Atualize `database.py` ou consultas afetadas.
+3. Atualize `docs/INSTALACAO.md`, se o setup mudar.
 
-```bash
+## Validação recomendada
+
+Frontend:
+
+```powershell
 node --check cozinha/frontend/js/index.js
 node --check cozinha/frontend/js/login_geral.js
 ```
 
-HTML/CSS:
-
-- Abra `index.html`, `login.html`, `recuperar.html` e `dashboard.html`.
-- Teste em largura de celular, tablet e desktop.
-- Verifique se modais abrem e fecham.
-- Teste cadastro/edição/remoção de item do cardápio.
-- Teste upload e remoção de imagem.
-- Teste navegação entre seções.
-
 Backend:
 
-```bash
+```powershell
 cd cozinha/backend
+python -m py_compile main.py app\database.py
 python main.py
 ```
 
-Depois teste:
+Teste:
 
-- `POST http://localhost:5000/login`
-- `GET http://localhost:5000/estoque`
+- `GET http://127.0.0.1:5000/health`
+- `GET http://127.0.0.1:5000/estoque`
+- `GET http://127.0.0.1:5000/dashboard/resumo`
 
-## Melhorias técnicas recomendadas
+Visual:
+
+- Abra `index.html`.
+- Entre pelo login.
+- Navegue no dashboard.
+- Teste modais.
+- Teste upload/remoção de imagem.
+- Teste sidebar aberta e recolhida.
+- Teste em mobile.
+
+## Melhorias futuras sugeridas
 
 - Separar `dashboard.html` em arquivos menores.
 - Mover CSS inline para `css/dashboard.css`.
-- Mover JS inline para `js/dashboard.js`.
-- Padronizar encoding UTF-8 em todos os arquivos.
-- Completar `banco.sql`.
-- Criar schema documentado para pedidos, produtos e estoque.
-- Adicionar testes para cálculos do dashboard.
-- Evitar salvar imagens grandes em `localStorage` no longo prazo.
+- Mover JavaScript inline para `js/dashboard.js`.
+- Centralizar dados em backend/banco em vez de depender tanto de `localStorage`.
+- Criar testes automatizados para cálculos do dashboard.
+- Melhorar autenticação antes de usar em ambiente real.
+- Padronizar um único `requirements.txt`.

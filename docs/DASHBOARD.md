@@ -1,10 +1,8 @@
 # Dashboard
 
-Este documento explica de onde vem os dados do dashboard e como os principais indicadores são calculados.
+Este documento explica de onde vem os dados do dashboard, como eles sao normalizados e como os indicadores principais sao calculados.
 
 ## Arquivo principal
-
-O dashboard fica em:
 
 ```text
 cozinha/frontend/dashboard.html
@@ -12,13 +10,19 @@ cozinha/frontend/dashboard.html
 
 Esse arquivo contém:
 
-- HTML das seções do painel.
-- CSS inline do painel e das telas internas.
-- JavaScript de navegação, modais, dashboard, estoque, cardápio e configurações.
+- HTML das seções internas.
+- CSS do painel.
+- JavaScript de navegação.
+- Modais.
+- Cálculos do dashboard.
+- Estoque.
+- Cardápio.
+- Kanban.
+- Configurações.
 
 ## Fontes de dados
 
-O dashboard tenta usar dados existentes no navegador antes de usar dados demonstrativos.
+O dashboard tenta usar dados reais salvos no navegador antes de usar dados demonstrativos.
 
 ### Pedidos
 
@@ -29,7 +33,11 @@ Chaves lidas no `localStorage`:
 - `orders`
 - `cozinha-orders`
 
-Se nenhuma chave tiver uma lista valida, o dashboard usa `DASHBOARD_DEMO_DATA.pedidos`.
+Se nenhuma chave tiver lista valida, usa:
+
+```text
+DASHBOARD_DEMO_DATA.pedidos
+```
 
 ### Produtos
 
@@ -39,167 +47,152 @@ Chaves lidas no `localStorage`:
 - `produtos`
 - `products`
 
-O dashboard também usa os itens salvos do cardápio:
-
-- `cozinha-cardapio-itens`
-
-Se não houver produtos nem cardápio salvo, usa `DASHBOARD_DEMO_DATA.produtos`.
-
-### Cardápio
-
-O cardápio e salvo em:
+Também usa os itens do cardápio:
 
 ```text
 cozinha-cardapio-itens
 ```
 
-Cada item pode conter:
+Se não houver produtos nem cardápio salvo, usa:
 
-- Dia da semana.
-- Prato principal.
-- Acompanhamento.
-- Status.
-- Imagem em base64.
+```text
+DASHBOARD_DEMO_DATA.produtos
+```
 
-## Normalizacao de dados
+### Estoque
 
-Como o projeto pode receber dados com nomes diferentes, o dashboard normaliza pedidos e produtos.
+A seção de estoque tenta consultar:
 
-### Pedido normalizado
+```text
+http://localhost:5000/estoque
+```
+
+Se o backend não responder, a tela mantem dados demonstrativos.
+
+## Normalização
+
+Como o projeto pode receber dados com nomes diferentes, o dashboard tenta reconhecer campos equivalentes.
+
+### Pedido
 
 A função `normalizarPedidoDashboard` tenta encontrar:
 
-- `id`, `codigo` ou `numero`.
-- `cliente`, `nomeCliente`, `mesa` ou `origem`.
-- `status`, `situacao` ou `estado`.
-- `valor`, `total` ou `valorTotal`.
-- `itens`, `items` ou `produtos`.
-- `data`, `createdAt`, `criadoEm` ou `updatedAt`.
+- Identificador: `id`, `codigo` ou `numero`.
+- Cliente/origem: `cliente`, `nomeCliente`, `mesa` ou `origem`.
+- Status: `status`, `situacao` ou `estado`.
+- Valor: `valor`, `total` ou `valorTotal`.
+- Itens: `itens`, `items` ou `produtos`.
+- Data: `data`, `createdAt`, `criadoEm` ou `updatedAt`.
 
-### Produto normalizado
+### Produto
 
 A função `normalizarProdutoDashboard` tenta encontrar:
 
-- `id` ou `codigo`.
-- `nome`, `prato`, `name` ou `titulo`.
-- `vendidos`, `quantidadeVendida`, `sold` ou `qtdVendida`.
-- `valor`, `preco` ou `price`.
+- Identificador: `id` ou `codigo`.
+- Nome: `nome`, `prato`, `name` ou `titulo`.
+- Vendidos: `vendidos`, `quantidadeVendida`, `sold` ou `qtdVendida`.
+- Valor: `valor`, `preco` ou `price`.
 
 ## Status de pedidos
 
-A função `normalizarStatusPedido` converte textos diferentes para três estados principais:
+A função `normalizarStatusPedido` reduz textos variados para tres grupos:
 
-- `cancelado`: quando o status contém `cancel`.
-- `concluido`: quando contém `concl`, `entreg`, `final` ou `pago`.
+- `cancelado`: contém `cancel`.
+- `concluido`: contém `concl`, `entreg`, `final` ou `pago`.
 - `pendente`: qualquer outro caso.
 
-## Calculos principais
+## Cálculos principais
 
-Funcao central:
+Função central:
 
 ```text
 calcularDashboardNegocio()
 ```
 
-Ela retorna todos os números usados nos cards e painéis do dashboard.
+Ela retorna os numeros usados nos cards e painéis.
 
 ### Faturamento total
 
-Soma o valor de todos os pedidos que não estão cancelados.
+Soma o valor de pedidos que não estao cancelados.
 
 ```text
-faturamentoTotal = soma(pedidos com status diferente de cancelado)
+faturamentoTotal = soma(pedidos validos)
 ```
 
 ### Faturamento do dia
 
-Filtra os pedidos válidos pela data atual e soma seus valores.
+Soma pedidos válidos com data igual ao dia atual.
 
 ```text
-faturamentoDia = soma(pedidos válidos cuja data é hoje)
+faturamentoDia = soma(pedidos validos de hoje)
 ```
 
 ### Total de pedidos
 
-Conta todos os pedidos encontrados, incluindo cancelados.
+Conta todos os pedidos encontrados, inclusive cancelados.
 
-```text
-totalPedidos = quantidade total de pedidos
-```
+### Pedidos por status
 
-### Pedidos concluídos
+Conta pedidos normalizados como:
 
-Conta pedidos com status normalizado igual a `concluido`.
-
-### Pedidos pendentes
-
-Conta pedidos com status normalizado igual a `pendente`.
-
-### Pedidos cancelados
-
-Conta pedidos com status normalizado igual a `cancelado`.
+- `pendente`
+- `concluido`
+- `cancelado`
 
 ### Ticket médio
 
-Divide o faturamento total pela quantidade de pedidos válidos.
+Divide o faturamento total pela quantidade de pedidos não cancelados.
 
 ```text
-ticketMedio = faturamentoTotal / quantidade de pedidos não cancelados
+ticketMedio = faturamentoTotal / pedidosValidos
 ```
 
 Se não houver pedido válido, o valor fica `0`.
 
 ### Produtos mais vendidos
 
-Funcao:
+Função:
 
 ```text
 obterTopProdutos(pedidos, produtos)
 ```
 
-O calculo:
+Fluxo:
 
 1. Ignora pedidos cancelados.
-2. Le os itens de cada pedido.
-3. Agrupa os itens por nome.
+2. Le itens dos pedidos.
+3. Agrupa por nome.
 4. Soma quantidade vendida.
 5. Soma valor vendido.
-6. Complementa com produtos cadastrados que ainda não aparecem nos pedidos.
+6. Complementa com produtos cadastrados que não aparecem em pedidos.
 7. Ordena por quantidade vendida.
-8. Retorna os 5 primeiros.
-
-### Produtos vendidos
-
-Soma as quantidades dos produtos retornados em `topProdutos`.
+8. Retorna os cinco primeiros.
 
 ### Saúde operacional
 
-Indicador visual calculado por uma formula simples:
+Indicador visual calculado a partir de:
 
-```text
-saude = 72
-  + pontos por pedidos concluídos
-  - pontos por pedidos pendentes
-  - pontos por pedidos cancelados
-  + pontos por pedidos do dia
-```
+- Pedidos concluídos.
+- Pedidos pendentes.
+- Pedidos cancelados.
+- Pedidos do dia.
 
-O resultado e limitado entre `52` e `98` para manter o indicador em uma faixa visual adequada.
+O resultado e limitado para manter uma faixa visual estavel.
 
 ## Formatacao monetaria
 
-Funcao:
+Função:
 
 ```text
 formatarMoedaBR(valor)
 ```
 
-Usa `Intl.NumberFormat` com:
+Usa:
 
 - Localidade: `pt-BR`
 - Moeda: `BRL`
 
-Exemplo de saida:
+Exemplo:
 
 ```text
 R$ 120,00
@@ -207,7 +200,7 @@ R$ 120,00
 
 ## Atualizacao da tela
 
-Funcao:
+Função:
 
 ```text
 atualizarDashboardNegocio()
@@ -216,28 +209,30 @@ atualizarDashboardNegocio()
 Responsabilidades:
 
 - Chamar `calcularDashboardNegocio`.
-- Atualizar os textos dos cards.
-- Atualizar grafico de faturamento.
+- Atualizar cards.
+- Atualizar gráficos.
 - Renderizar pedidos recentes.
 - Renderizar produtos mais vendidos.
 - Renderizar alertas.
-- Indicar quando os dados são demonstrativos.
+- Indicar quando os dados sao demonstrativos.
 
-Essa função também e chamada depois de mudanças no cardápio para refletir novos dados.
+Essa função também e chamada depois de mudanças no cardápio.
 
-## Quando os dados são demonstrativos
+## Dados demonstrativos
 
 O dashboard usa dados demonstrativos quando:
 
-- Nao existem pedidos salvos no `localStorage`.
-- Nao existem produtos nem itens de cardápio salvos no `localStorage`.
+- Não existem pedidos salvos.
+- Não existem produtos salvos.
+- Não existem itens de cardápio salvos.
+- O backend de estoque não responde.
 
-Esse comportamento evita uma tela vazia e ajuda a demonstrar a interface.
+Isso evita uma interface vazia e facilita demonstracoes.
 
-## Pontos de atenção
+## Pontos de atencao
 
-- `localStorage` e salvo apenas no navegador atual.
-- Imagens em base64 aumentam o tamanho do item salvo.
-- O navegador tem limite de armazenamento local.
-- Se uma imagem for muito grande, o sistema tenta compactar antes de salvar.
-- Se o limite do `localStorage` for atingido, o sistema mantém o item na tela e mostra aviso.
+- `localStorage` é local do navegador atual.
+- Dados salvos em um navegador não aparecem automaticamente em outro.
+- Imagens em base64 ocupam bastante espaco.
+- O navegador pode recusar salvar imagens grandes.
+- Se o limite do `localStorage` for atingido, o sistema tenta manter a tela utilizavel e mostrar aviso.

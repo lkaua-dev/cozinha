@@ -1,23 +1,28 @@
 # Funcionalidades
 
-Este documento descreve as principais funcionalidades existentes no sistema.
+Este documento lista o que o sistema faz hoje e quais partes ainda sao demonstrativas.
 
 ## Página pública
 
-Arquivo principal: `cozinha/frontend/index.html`
+Arquivo principal:
+
+```text
+cozinha/frontend/index.html
+```
 
 Recursos:
 
 - Apresentacao do sistema.
-- Navegacao entre seções sem trocar de arquivo.
 - Menu responsivo.
-- Área de metas com barras de progresso.
-- Área de colaboradores/equipe.
-- Animacoes leves de entrada.
+- Navegação entre seções da página.
+- Área de metas.
+- Área de equipe.
+- Animações leves.
 
-Script relacionado: `cozinha/frontend/js/index.js`
+Arquivos relacionados:
 
-Estilo relacionado: `cozinha/frontend/css/index.css`
+- `cozinha/frontend/css/index.css`
+- `cozinha/frontend/js/index.js`
 
 ## Login
 
@@ -29,13 +34,13 @@ Arquivos principais:
 
 Recursos:
 
-- Validacao de usuário/e-mail e senha.
-- Mensagens de erro nos campos.
-- Toast de sucesso ou erro.
-- Botão para mostrar/ocultar senha.
+- Validação de usuário/e-mail e senha.
+- Mensagens de erro.
+- Toasts de sucesso/erro.
+- Botão para mostrar ou ocultar senha.
 - Credenciais demonstrativas.
 - Tentativa de login via backend Flask.
-- Salvamento de token e usuário no `localStorage`.
+- Salvamento do token e usuário no `localStorage`.
 - Redirecionamento para o dashboard.
 
 Credenciais demo:
@@ -43,23 +48,31 @@ Credenciais demo:
 - `admin` / `123456`
 - `cozinha@teste.com` / `123456`
 
-## Recuperacao de acesso
+## Recuperação de acesso
 
-Arquivo principal: `cozinha/frontend/recuperar.html`
+Arquivo principal:
+
+```text
+cozinha/frontend/recuperar.html
+```
 
 Recursos:
 
-- Tela informativa para recuperação manual de acesso.
+- Tela informativa.
 - Orientacao para contato com administrador.
-- Visual alinhado às telas de autenticação.
+- Visual alinhado com login.
 
 ## Dashboard
 
-Arquivo principal: `cozinha/frontend/dashboard.html`
+Arquivo principal:
+
+```text
+cozinha/frontend/dashboard.html
+```
 
 Recursos:
 
-- Indicadores de faturamento.
+- Faturamento total.
 - Faturamento do dia.
 - Total de pedidos.
 - Pedidos pendentes, concluídos e cancelados.
@@ -68,50 +81,77 @@ Recursos:
 - Pedidos recentes.
 - Produtos mais vendidos.
 - Alertas administrativos.
-- Atalhos para areas importantes.
-- Navegacao lateral.
-- Busca interna.
-- Notificacoes.
+- Atalhos para áreas importantes.
+- Navegação lateral recolhivel.
+- Busca interna visual.
+- Notificacoes visuais.
 - Preferencias de tema e idioma.
 
-Os cálculos são explicados em `docs/DASHBOARD.md`.
+Os cálculos estao detalhados em [DASHBOARD.md](DASHBOARD.md).
+
+## Produção
+
+Arquivo principal:
+
+```text
+cozinha/frontend/dashboard.html
+```
+
+Recursos:
+
+- Paineis de acompanhamento operacional.
+- Indicadores visuais de produção.
+- Áreas demonstrativas para leitura de rotina.
 
 ## Estoque
 
-Arquivo principal: `cozinha/frontend/dashboard.html`
+Arquivo principal:
+
+```text
+cozinha/frontend/dashboard.html
+```
 
 Recursos:
 
 - Listagem de insumos.
-- Quantidade minima, atual e maxima.
-- Barra de progresso de estoque.
-- Status visual: OK, alerta e crítico.
-- Cadastro de item pelo modal de estoque.
-- Exclusao de item com confirmacao.
-- Busca dados do backend Flask quando a rota `GET /estoque` está disponível.
-- Usa dados demonstrativos quando o backend não responde ou não retorna itens.
+- Quantidade atual, mínima e máxima.
+- Unidade de medida.
+- Validade.
+- Barra de progresso.
+- Status: normal, alerta ou crítico.
+- Cadastro de item.
+- Edicao via backend, quando disponível.
+- Exclusao de item.
+- Fallback para dados demonstrativos.
 
-Rotas backend relacionadas:
+Rotas relacionadas:
 
 - `GET /estoque`
+- `GET /estoque/<id>`
 - `POST /estoque`
+- `PUT /estoque/<id>`
 - `DELETE /estoque/<id>`
 
-## Cardápio
+## Cardápio / PCP
 
-Arquivo principal: `cozinha/frontend/dashboard.html`
+Arquivo principal:
+
+```text
+cozinha/frontend/dashboard.html
+```
 
 Recursos:
 
-- Listagem do cardápio semanal.
-- Cadastro de item.
-- Edicao de item existente.
-- Remocao de item com confirmacao.
-- Status do item: OK, pendente ou crítico.
+- Cadastro de item do cardápio.
+- Dia da semana.
+- Prato principal.
+- Acompanhamento.
+- Status.
 - Upload de foto.
-- Previa da imagem antes de salvar.
-- Imagem exibida na listagem.
-- Persistencia no `localStorage`.
+- Previa antes de salvar.
+- Edicao.
+- Remoção.
+- Persistência no `localStorage`.
 
 Chave usada:
 
@@ -121,97 +161,69 @@ cozinha-cardapio-itens
 
 ## Upload de imagens
 
-O upload de imagem está ligado ao modal de cardápio.
-
 Fluxo:
 
 1. O usuário escolhe uma imagem.
-2. O JavaScript valida o tipo do arquivo.
+2. O JavaScript valida o tipo.
 3. A imagem é carregada no navegador.
-4. Um `canvas` redimensiona a imagem para reduzir peso.
-5. O resultado e salvo como base64.
-6. A prévia aparece no modal.
-7. Ao salvar, a imagem e exibida como miniatura no cardápio.
+4. Um `canvas` redimensiona e compacta.
+5. O resultado é salvo como base64.
+6. A miniatura aparece na listagem.
 
-Funcoes principais:
+Ponto de atencao: imagens grandes demais podem atingir o limite do `localStorage`.
 
-- `compactarImagemProduto`
-- `handleImagemCardapioChange`
-- `renderizarPreviewCardapio`
-- `salvarCardapioLocal`
-- `restaurarCardapioLocal`
-
-## Kanban de processos
-
-Arquivo principal: `cozinha/frontend/dashboard.html`
+## Kanban
 
 Recursos:
 
+- Criação de cards.
 - Colunas de processo.
-- Cards com prioridade e status.
-- Criacao de novos cards.
-- Arrastar e soltar entre colunas.
+- Prioridade.
+- Tag.
+- Data.
+- Arrastar e soltar.
 - Atualizacao de contadores.
 
-Funcoes principais:
-
-- `adicionarCardKanban`
-- `onDragStart`
-- `onDrop`
-- `atualizarContagensKanban`
-
-## POPs e fichas técnicas
-
-Arquivo principal: `cozinha/frontend/dashboard.html`
+## POPs e Fichas
 
 Recursos:
 
-- Listagem de fichas.
-- Criacao de nova ficha técnica.
-- Remocao com confirmacao.
-- Informacoes de prato, tipo, versão e observações.
+- Criação de ficha técnica.
+- Nome do prato.
+- Ícone.
+- Tipo.
+- Versao.
+- Observações.
+- Remoção.
 
-Funcoes principais:
-
-- `adicionarFicha`
-- `removerFicha`
-
-## Análises ABC
-
-Arquivo principal: `cozinha/frontend/dashboard.html`
+## Curva ABC
 
 Recursos:
 
-- Visualizacao de insumos classificados por impacto.
-- Status de criticidade.
-- Cards e listas de apoio visual.
+- Cards de apoio visual.
+- Classificacao de itens por impacto.
+- Indicadores demonstrativos.
 
-## Análises CMV
-
-Arquivo principal: `cozinha/frontend/dashboard.html`
+## CMV e Custos
 
 Recursos:
 
-- Graficos visuais de CMV.
-- Relacao de custos.
-- Estoque por impacto.
-- Indicadores estáticos/demonstrativos.
+- Gráficos visuais.
+- Indicadores de custo.
+- Paineis de leitura operacional.
+- Dados majoritariamente demonstrativos.
 
-## Relatorios
-
-Arquivo principal: `cozinha/frontend/dashboard.html`
+## Relatórios
 
 Recursos:
 
-- Lista visual de relatórios.
-- Cards de resumo.
+- Cards de relatório.
+- Resumos visuais.
 - Botões/áreas de download visual.
 
-Observação: atualmente os arquivos de relatório são demonstrativos; não há geração real de PDF/Excel implementada.
+Status atual: a geração real de PDF ou Excel ainda não está implementada.
 
-## Configuracoes
-
-Arquivo principal: `cozinha/frontend/dashboard.html`
+## Configurações
 
 Recursos:
 
@@ -220,9 +232,21 @@ Recursos:
 - Preferencias de notificacao.
 - Logout.
 
-Preferencias salvas no navegador:
+Chaves relacionadas:
 
 - `dark-mode`
 - `lang`
 - `sidebar-collapsed`
 - `current-page`
+
+## Backend Flask
+
+Recursos:
+
+- Health check.
+- Login via tabela `usuarios`.
+- CRUD de estoque.
+- Resumo de dashboard baseado no estoque.
+- Alertas de validade e estoque.
+
+O backend é opcional para usar a interface, mas necessário para testar rotas reais de estoque e login via banco.

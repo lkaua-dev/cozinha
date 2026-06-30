@@ -2,7 +2,10 @@ import os
 from contextlib import contextmanager
 
 import mysql.connector
+from dotenv import load_dotenv
 
+
+load_dotenv()
 
 DB_CONFIG = {
     "host": os.getenv("DB_HOST", "localhost"),

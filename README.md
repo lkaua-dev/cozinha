@@ -1,202 +1,156 @@
 # Cozinha
 
-Sistema web para apoio a gestão de cozinha, cardápio, estoque, pedidos, indicadores operacionais e autenticação simples.
+Sistema web para apoio a gestão de cozinha, cardápio, estoque, pedidos, indicadores e rotinas administrativas.
 
-O projeto foi desenvolvido principalmente com HTML, CSS e JavaScript puro no frontend. Também existe um backend Flask simples para login e estoque, mas a maior parte da interface funciona como páginas estáticas no navegador.
+O projeto funciona principalmente como frontend estático com HTML, CSS e JavaScript puro. Também existe um backend Flask opcional para login, estoque e endpoints de dashboard usando MySQL.
 
-## Objetivo
+## Status do projeto
 
-O Cozinha organiza informações importantes de uma operação de restaurante ou cozinha profissional em uma interface administrativa. O sistema centraliza:
+- Frontend: pronto para abrir no navegador ou servir com `python -m http.server`.
+- Login: possui credenciais demonstrativas e tentativa de login via backend.
+- Dashboard: usa dados salvos no navegador e cai para dados demonstrativos quando não encontra dados reais.
+- Backend: opcional, em Flask, com rotas de login, estoque e resumo.
+- Banco: MySQL opcional, com schema inicial em `banco.sql`.
 
-- Dashboard com indicadores de faturamento, pedidos, produtos e alertas.
-- Estoque com itens, quantidades, status e alertas de nível crítico.
-- Cardápio semanal com cadastro, edição, status e foto dos itens.
-- Kanban de processos para acompanhamento de tarefas.
-- POPs e fichas técnicas.
-- Análises ABC, CMV, relatórios e configurações.
-- Login com usuário demonstrativo e tentativa de autenticação via backend Flask.
+## Começo rápido
 
-## Como abrir o projeto
+Para testar apenas a interface:
 
-### Modo frontend estático
-
-1. Abra a pasta `cozinha/frontend`.
-2. Abra o arquivo `index.html` no navegador.
-3. Para entrar no painel, use a tela `login.html`.
-
-Credenciais de demonstração:
-
-- Usuário: `admin`
-- Senha: `123456`
-
-Também funciona com:
-
-- Usuário: `cozinha@teste.com`
-- Senha: `123456`
-
-Depois do login, o navegador salva o token em `localStorage` e redireciona para `dashboard.html`.
-
-### Modo com servidor local
-
-Na pasta `cozinha/frontend`, rode um servidor estático simples:
-
-```bash
+```powershell
+cd C:\Users\kaual\Desktop\cozinha\cozinha\frontend
 python -m http.server 8026
 ```
 
-Depois acesse:
+Depois abra:
 
 ```text
 http://localhost:8026
 ```
 
-Esse modo evita alguns problemas comuns de navegador ao abrir arquivos direto pelo sistema de arquivos.
-
-### Backend Flask opcional
-
-O backend fica em `cozinha/backend` e expõe rotas para login e estoque.
-
-Para usar:
-
-```bash
-pip install -r requirements.txt
-cd cozinha/backend
-python main.py
-```
-
-Atenção: o backend importa `flask_cors` e `mysql.connector`. Se o ambiente estiver limpo, talvez seja necessário instalar também:
-
-```bash
-pip install flask-cors mysql-connector-python
-```
-
-O banco configurado no arquivo `cozinha/backend/app/database.py` usa:
-
-- Host: `localhost`
-- Usuário: `root`
-- Senha: `root`
-- Banco: `cozinha`
-
-## Estrutura principal
+Credenciais demo:
 
 ```text
-.
-├── README.md
-├── requirements.txt
-├── banco.sql
-├── docs/
-│   ├── COMO-USAR.md
-│   ├── DASHBOARD.md
-│   ├── ESTRUTURA.md
-│   ├── FUNCIONALIDADES.md
-│   ├── GUIA-DE-MANUTENCAO.md
-│   └── CHANGELOG.md
-└── cozinha/
-    ├── backend/
-    │   ├── main.py
-    │   └── app/
-    │       └── database.py
-    └── frontend/
-        ├── index.html
-        ├── login.html
-        ├── recuperar.html
-        ├── dashboard.html
-        ├── css/
-        │   ├── index.css
-        │   └── style_geral.css
-        ├── js/
-        │   ├── index.js
-        │   └── login_geral.js
-        └── assets/
-            └── img/
+Usuario: admin
+Senha: 123456
 ```
 
-Documentação detalhada:
+Também funciona:
 
-- [Estrutura do projeto](docs/ESTRUTURA.md)
-- [Funcionalidades](docs/FUNCIONALIDADES.md)
-- [Dashboard e cálculos](docs/DASHBOARD.md)
-- [Como usar](docs/COMO-USAR.md)
-- [Guia de manutenção](docs/GUIA-DE-MANUTENCAO.md)
-- [Changelog](docs/CHANGELOG.md)
+```text
+Usuario: cozinha@teste.com
+Senha: 123456
+```
 
-## Arquivos do frontend
+## Instalação completa
 
-- `cozinha/frontend/index.html`: página pública com apresentação, metas e equipe.
-- `cozinha/frontend/login.html`: tela de login.
-- `cozinha/frontend/recuperar.html`: tela de orientação para recuperação de acesso.
-- `cozinha/frontend/dashboard.html`: painel administrativo completo, incluindo HTML, CSS inline e JavaScript principal do sistema.
-- `cozinha/frontend/css/index.css`: estilos da página pública.
-- `cozinha/frontend/css/style_geral.css`: base visual compartilhada pelas telas de login e recuperação.
-- `cozinha/frontend/js/index.js`: navegação da página pública, menu mobile, animações e interações.
-- `cozinha/frontend/js/login_geral.js`: validação do login, autenticação demo/API, toasts e persistência do usuário.
+O passo a passo completo está em:
 
-## Como os dados são salvos
+- [docs/INSTALACAO.md](docs/INSTALACAO.md)
 
-O projeto usa `localStorage` para persistir dados no navegador. As principais chaves são:
+Esse guia mostra como:
 
-- `cozinha-auth-token`: token usado para manter o login ativo.
-- `cozinha-user`: dados básicos do usuário logado.
-- `cozinha-cardapio-itens`: itens cadastrados no cardápio, incluindo imagem em base64 quando enviada.
-- `cozinha-pedidos`, `pedidos`, `orders`, `cozinha-orders`: chaves lidas pelo dashboard para tentar encontrar pedidos existentes.
-- `cozinha-produtos`, `produtos`, `products`: chaves lidas pelo dashboard para tentar encontrar produtos existentes.
-- `sidebar-collapsed`, `dark-mode`, `lang`, `current-page`: preferências de interface.
+- Baixar ou abrir o projeto.
+- Criar ambiente virtual Python.
+- Instalar dependências.
+- Criar o `.env`.
+- Preparar o MySQL.
+- Rodar frontend e backend.
+- Testar se tudo está respondendo.
 
-Quando não encontra dados reais, o dashboard usa uma base demonstrativa interna para manter os cards preenchidos.
+## Documentação
 
-## Dashboard e cálculos
+- [Como usar](docs/COMO-USAR.md): fluxo de uso da interface.
+- [Instalação](docs/INSTALACAO.md): ambiente virtual, dependências, `.env`, banco e execução.
+- [Estrutura](docs/ESTRUTURA.md): organização de pastas e arquivos.
+- [Funcionalidades](docs/FUNCIONALIDADES.md): recursos disponíveis por área.
+- [Dashboard](docs/DASHBOARD.md): fontes de dados, normalização e cálculos.
+- [Guia de manutenção](docs/GUIA-DE-MANUTENCAO.md): como alterar sem quebrar o projeto.
+- [Changelog](docs/CHANGELOG.md): histórico de mudanças.
+- [Agradecimentos](docs/AGRADECIMENTOS.md): contexto do Saga SENAI, demanda real e equipe TecnoByte.
 
-O dashboard calcula os principais indicadores a partir de pedidos e produtos encontrados no `localStorage`. Se não houver dados, usa dados demonstrativos.
+## Agradecimentos
 
-Os cálculos principais são:
+Este projeto faz parte do Saga SENAI, nasceu de uma demanda real da Kantine Gastronomia e foi desenvolvido pela equipe TecnoByte como TCC do curso técnico em Desenvolvimento de Sistemas.
 
-- Faturamento total: soma dos valores dos pedidos que não estão cancelados.
-- Faturamento do dia: soma dos pedidos válidos com data igual ao dia atual.
-- Total de pedidos: quantidade total de pedidos encontrados.
-- Pedidos pendentes, concluídos e cancelados: contagem por status normalizado.
-- Ticket médio: faturamento total dividido pela quantidade de pedidos válidos.
-- Produtos vendidos: soma dos produtos mais vendidos calculados a partir dos itens dos pedidos ou do cadastro de produtos.
-- Saúde operacional: indicador visual calculado com base em concluídos, pendentes, cancelados e pedidos do dia.
+O código é aberto para estudo, melhorias, sugestões e novas contribuições. Mais detalhes em [docs/AGRADECIMENTOS.md](docs/AGRADECIMENTOS.md).
 
-Mais detalhes em [docs/DASHBOARD.md](docs/DASHBOARD.md).
+## Como funciona
 
-## Imagens dos produtos e cardápio
+### Frontend
 
-O cadastro de itens do cardápio aceita upload de imagem no modal de item. O fluxo é:
+O frontend fica em `cozinha/frontend` e concentra:
 
-1. Usuário escolhe uma imagem.
-2. O JavaScript valida se o arquivo e imagem.
-3. A imagem é carregada em um `canvas`.
-4. O sistema reduz o tamanho maximo e converte para JPEG em base64.
-5. A prévia aparece antes de salvar.
-6. Ao salvar, a imagem fica no item do cardápio e é persistida em `localStorage`.
+- `index.html`: página pública.
+- `login.html`: entrada do sistema.
+- `recuperar.html`: recuperação de acesso.
+- `dashboard.html`: painel administrativo completo.
+- `css/`: estilos externos da home, login e recuperação.
+- `js/`: scripts externos da home e login.
 
-As miniaturas usam proporção fixa e `object-fit: cover` para evitar distorção.
+O `dashboard.html` ainda concentra bastante coisa em um arquivo só: HTML, CSS inline e JavaScript inline. Por isso, alterações nele devem ser pequenas e testadas em desktop e mobile.
 
-## Manutenção rápida
+### Dados no navegador
 
-- Para alterar textos da página pública, edite `cozinha/frontend/index.html`.
-- Para alterar estilos da página pública, edite `cozinha/frontend/css/index.css`.
-- Para alterar login e recuperação, use `login.html`, `recuperar.html` e `css/style_geral.css`.
-- Para alterar dashboard, estoque, cardápio, kanban, fichas, análises ou relatórios, edite `cozinha/frontend/dashboard.html`.
-- Para alterar rotas do backend, edite `cozinha/backend/main.py`.
-- Para alterar conexão MySQL, edite `cozinha/backend/app/database.py`.
+Boa parte do sistema usa `localStorage`. Principais chaves:
 
-Antes de entregar mudanças, valide JavaScript com:
+- `cozinha-auth-token`
+- `cozinha-user`
+- `cozinha-cardapio-itens`
+- `cozinha-pedidos`
+- `cozinha-produtos`
+- `sidebar-collapsed`
+- `dark-mode`
+- `lang`
+- `current-page`
 
-```bash
+Se não houver dados salvos, o dashboard mostra dados demonstrativos para evitar uma tela vazia.
+
+### Backend
+
+O backend fica em `cozinha/backend`.
+
+Rotas principais:
+
+- `GET /health`
+- `POST /login`
+- `GET /estoque`
+- `GET /estoque/<id>`
+- `POST /estoque`
+- `PUT /estoque/<id>`
+- `DELETE /estoque/<id>`
+- `GET /dashboard/resumo`
+- `GET /dashboard/itens`
+- `GET /dashboard/alertas`
+- `GET /dashboard/progresso`
+
+As configurações do banco ficam em `.env`, criado a partir de:
+
+```text
+cozinha/backend/.env.example
+```
+
+## Manutenção rapida
+
+Antes de entregar mudanças, valide o que foi alterado:
+
+```powershell
 node --check cozinha/frontend/js/index.js
 node --check cozinha/frontend/js/login_geral.js
+python -m py_compile cozinha/backend/main.py cozinha/backend/app/database.py
 ```
 
-Para o `dashboard.html`, como o script é inline, valide extraindo ou executando o conteúdo do bloco `<script>` em ambiente de teste.
+Para testar visualmente:
 
-## Melhorias futuras sugeridas
+- Abra `index.html`.
+- Teste login.
+- Abra `dashboard.html`.
+- Confira sidebar aberta/fechada.
+- Confira mobile.
+- Teste cadastro, edicao e remoção no cardápio/estoque.
 
-- Separar o JavaScript inline do `dashboard.html` em arquivos menores.
-- Separar o CSS inline do dashboard em uma folha própria.
-- Criar um modelo único de dados para pedidos, produtos e cardápio.
-- Persistir produtos, pedidos e imagens em backend/banco em vez de apenas `localStorage`.
-- Completar o arquivo `banco.sql` com a estrutura de tabelas.
-- Adicionar testes automatizados para cálculos do dashboard e fluxos de cadastro.
-- Ajustar o `requirements.txt` para listar todas as dependências reais do backend.
+## Observações importantes
+
+- O backend usa senha simples apenas para ambiente local/demonstrativo.
+- O arquivo `.env` real não deve ser enviado para o Git.
+- Imagens do cardápio sao salvas em base64 no `localStorage`; imagens muito grandes podem estourar o limite do navegador.
+- `banco.sql` contém um schema inicial para desenvolvimento local.

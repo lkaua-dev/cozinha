@@ -1,18 +1,15 @@
 # Como Usar
 
-Este guia explica o uso basico do sistema Cozinha.
+Este guia explica o uso diário do sistema Cozinha depois que ele já está rodando.
+
+Para preparar o ambiente do zero, leia primeiro [INSTALACAO.md](INSTALACAO.md).
 
 ## Abrir o sistema
 
-Modo simples:
+Modo recomendado:
 
-1. Abra a pasta `cozinha/frontend`.
-2. Abra `index.html` no navegador.
-
-Modo recomendado com servidor local:
-
-```bash
-cd cozinha/frontend
+```powershell
+cd C:\Users\kaual\Desktop\cozinha\cozinha\frontend
 python -m http.server 8026
 ```
 
@@ -22,149 +19,147 @@ Acesse:
 http://localhost:8026
 ```
 
-## Entrar no sistema
+Também e possível abrir `index.html` direto no navegador, mas o servidor local evita bloqueios e comportamentos diferentes entre navegadores.
+
+## Entrar
 
 Na página inicial, clique em `Entrar`.
 
-Use as credenciais demo:
+Credenciais demo:
 
 ```text
-Usuário: admin
+Usuario: admin
 Senha: 123456
 ```
 
 ou:
 
 ```text
-Usuário: cozinha@teste.com
+Usuario: cozinha@teste.com
 Senha: 123456
 ```
 
 Depois do login, o sistema abre `dashboard.html`.
 
-## Usar o dashboard
-
-O dashboard mostra uma visão geral do negócio:
-
-- Faturamento total.
-- Faturamento do dia.
-- Pedidos.
-- Status dos pedidos.
-- Ticket médio.
-- Produtos.
-- Alertas.
-- Pedidos recentes.
-- Produtos mais vendidos.
-
-Os valores podem vir de dados salvos no navegador ou de dados demonstrativos.
-
-## Navegar pelas seções
+## Navegar no dashboard
 
 Use o menu lateral para acessar:
 
 - Dashboard.
+- Produção.
 - Estoque.
-- Cardápio.
+- Cardápio / PCP.
 - Kanban.
-- POPs e fichas.
-- Analise ABC.
-- CMV e custos.
-- Relatorios.
-- Configuracoes.
+- POPs e Fichas.
+- Curva ABC.
+- CMV e Custos.
+- Relatórios.
+- Configurações.
 
-Em celular, use o botão de menu para abrir/fechar a navegação.
+No desktop, o botão do topo abre e recolhe a sidebar. No celular, ele abre e fecha o menu lateral por cima da tela.
 
-## Cadastrar item no cardápio
+## Dashboard
 
-1. Abra a seção `Cardápio`.
-2. Clique em `Novo item`.
-3. Escolha o dia da semana.
-4. Informe o prato principal.
-5. Informe o acompanhamento.
-6. Escolha o status.
-7. Se quiser, selecione uma foto.
-8. Confira a prévia da imagem.
-9. Clique em `Adicionar`.
+O dashboard mostra uma visão geral da operação:
 
-O item será exibido na tabela/listagem do cardápio.
+- Faturamento total.
+- Faturamento do dia.
+- Total de pedidos.
+- Pedidos pendentes, concluídos e cancelados.
+- Ticket médio.
+- Produtos cadastrados e vendidos.
+- Pedidos recentes.
+- Produtos mais vendidos.
+- Alertas administrativos.
 
-## Editar item do cardápio
+Os valores podem vir de dados salvos no navegador ou de uma base demonstrativa interna.
 
-1. Na linha do item, clique no botão de editar.
-2. Altere os dados desejados.
-3. Troque ou remova a foto, se necessário.
-4. Clique em `Salvar`.
+## Estoque
 
-## Remover item do cardápio
+Na seção `Estoque`, voce pode:
 
-1. Clique no botão de remover.
-2. Confirme a remoção no modal.
+- Ver itens cadastrados.
+- Conferir quantidade atual, mínima e máxima.
+- Ver status visual: OK, alerta ou crítico.
+- Cadastrar item.
+- Remover item.
 
-## Usar imagem no cardápio
+Quando o backend está ligado, o frontend tenta buscar dados em:
 
-Ao selecionar uma imagem:
+```text
+http://localhost:5000/estoque
+```
 
-- O sistema mostra uma prévia.
-- A imagem e compactada no navegador.
-- A imagem e salva junto com o item no `localStorage`.
-- A miniatura aparece na listagem.
+Se a API não responder, a tela continua funcionando com dados demonstrativos.
 
-Se a imagem for muito grande, o navegador pode recusar o salvamento. Nesse caso, tente uma imagem menor.
+## Cardápio / PCP
 
-## Usar estoque
+Na seção `Cardapio / PCP`, voce pode:
 
-1. Abra a seção `Estoque`.
-2. Veja os itens cadastrados e seus status.
-3. Clique em `Novo item` para cadastrar.
-4. Informe nome, quantidade minima, quantidade atual e quantidade maxima.
-5. Salve.
+- Cadastrar item do cardápio.
+- Escolher dia da semana.
+- Informar prato principal e acompanhamento.
+- Definir status.
+- Enviar foto.
+- Editar item existente.
+- Remover item.
 
-Status visual:
+As imagens sao compactadas no navegador antes de salvar. O item fica no `localStorage`, na chave:
 
-- OK: estoque adequado.
-- Alerta: estoque próximo do mínimo.
-- Critico: estoque abaixo ou muito próximo do mínimo.
+```text
+cozinha-cardapio-itens
+```
 
-Se o backend estiver ligado, o estoque tenta usar a API. Se não estiver, o sistema mantém uma base demonstrativa.
+## Kanban
 
-## Usar Kanban
+Na seção `Kanban`, voce pode:
 
-1. Abra a seção `Kanban`.
-2. Clique em `Novo card`.
-3. Preencha titulo, coluna, prioridade, tag e data.
-4. Salve.
-5. Arraste cards entre colunas para atualizar o fluxo.
+- Criar cards de tarefas.
+- Definir coluna, prioridade, tag e data.
+- Arrastar cards entre colunas.
+- Acompanhar os contadores por etapa.
 
-## Usar POPs e fichas técnicas
+## POPs e fichas
 
-1. Abra `POPs e Fichas`.
-2. Clique em `Nova ficha`.
-3. Informe nome do prato, ícone, tipo, versão e observações.
-4. Salve.
+Na seção `POPs e Fichas`, voce pode:
 
-## Alterar tema e idioma
+- Criar ficha técnica.
+- Informar prato, ícone, tipo, versão e observações.
+- Remover fichas.
 
-1. Abra `Configuracoes`.
-2. Escolha tema claro ou escuro.
-3. Escolha idioma.
+## Análises
 
-As preferências ficam salvas no navegador.
+As seções `Curva ABC` e `CMV e Custos` exibem indicadores e painéis visuais para apoiar leitura operacional.
 
-## Sair do sistema
+Parte desses dados ainda e demonstrativa.
 
-1. Abra `Configuracoes`.
-2. Clique em sair/logout.
-3. Confirme.
+## Relatórios
 
-O token é removido do `localStorage` e o usuário volta para a tela de login.
+A seção `Relatorios` mostra cards e botões visuais de relatório. A geração real de PDF ou Excel ainda não está implementada.
+
+## Configurações
+
+Na seção `Configuracoes`, voce pode:
+
+- Alternar tema claro/escuro.
+- Alterar idioma.
+- Ajustar preferencias visuais.
+- Sair do sistema.
+
+Preferencias salvas no navegador:
+
+- `dark-mode`
+- `lang`
+- `sidebar-collapsed`
+- `current-page`
 
 ## Limpar dados locais
 
-Se quiser apagar os dados salvos apenas no navegador:
+Para zerar os dados salvos no navegador:
 
 1. Abra as ferramentas do desenvolvedor.
-2. Vá em Application/Aplicacao.
-3. Abra Local Storage.
+2. Va em `Application` ou `Aplicacao`.
+3. Abra `Local Storage`.
 4. Remova as chaves do projeto.
 
 Principais chaves:
@@ -172,6 +167,15 @@ Principais chaves:
 - `cozinha-auth-token`
 - `cozinha-user`
 - `cozinha-cardapio-itens`
+- `cozinha-pedidos`
+- `cozinha-produtos`
 - `dark-mode`
 - `lang`
+- `sidebar-collapsed`
 - `current-page`
+
+## Sair
+
+Use a opção de logout em `Configuracoes`.
+
+O token e removido do navegador e o usuário volta para a tela de login.
