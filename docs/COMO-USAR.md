@@ -9,7 +9,7 @@ Para preparar o ambiente do zero, leia primeiro [INSTALACAO.md](INSTALACAO.md).
 Modo recomendado:
 
 ```powershell
-cd C:\Users\kaual\Desktop\cozinha\cozinha\frontend
+cd C:\Users\SEU_USUARIO\Desktop\cozinha\cozinha\frontend
 python -m http.server 8026
 ```
 

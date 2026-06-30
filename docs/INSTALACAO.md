@@ -17,7 +17,7 @@ Instale ou tenha disponível:
 Se voce recebeu a pasta pronta, abra:
 
 ```text
-C:\Users\kaual\Desktop\cozinha
+C:\Users\SEU_USUARIO\Desktop\cozinha
 ```
 
 Se for baixar por Git:
@@ -30,7 +30,7 @@ cd cozinha
 Se for baixar por ZIP:
 
 1. Baixe o arquivo ZIP.
-2. Extraia para uma pasta simples, por exemplo `C:\Users\kaual\Desktop\cozinha`.
+2. Extraia para uma pasta simples, por exemplo `C:\Users\SEU_USUARIO\Desktop\cozinha`.
 3. Abra um terminal nessa pasta.
 
 ## Rodar apenas o frontend
@@ -38,7 +38,7 @@ Se for baixar por ZIP:
 Esse é o modo mais simples. Ele não exige MySQL nem backend.
 
 ```powershell
-cd C:\Users\kaual\Desktop\cozinha\cozinha\frontend
+cd C:\Users\SEU_USUARIO\Desktop\cozinha\cozinha\frontend
 python -m http.server 8026
 ```
 
@@ -67,7 +67,7 @@ Senha: 123456
 Entre na pasta do backend:
 
 ```powershell
-cd C:\Users\kaual\Desktop\cozinha\cozinha\backend
+cd C:\Users\SEU_USUARIO\Desktop\cozinha\cozinha\backend
 ```
 
 Crie o ambiente virtual:
@@ -151,7 +151,7 @@ Ele cria:
 Exemplo via linha de comando:
 
 ```powershell
-mysql -u root -p < C:\Users\kaual\Desktop\cozinha\banco.sql
+mysql -u root -p < C:\Users\SEU_USUARIO\Desktop\cozinha\banco.sql
 ```
 
 ## Rodar o backend
@@ -159,7 +159,7 @@ mysql -u root -p < C:\Users\kaual\Desktop\cozinha\banco.sql
 Com o `.venv` ativado:
 
 ```powershell
-cd C:\Users\kaual\Desktop\cozinha\cozinha\backend
+cd C:\Users\SEU_USUARIO\Desktop\cozinha\cozinha\backend
 python main.py
 ```
 
@@ -188,7 +188,7 @@ Use dois terminais.
 Terminal 1:
 
 ```powershell
-cd C:\Users\kaual\Desktop\cozinha\cozinha\backend
+cd C:\Users\SEU_USUARIO\Desktop\cozinha\cozinha\backend
 .\.venv\Scripts\Activate.ps1
 python main.py
 ```
@@ -196,7 +196,7 @@ python main.py
 Terminal 2:
 
 ```powershell
-cd C:\Users\kaual\Desktop\cozinha\cozinha\frontend
+cd C:\Users\SEU_USUARIO\Desktop\cozinha\cozinha\frontend
 python -m http.server 8026
 ```
 
@@ -234,8 +234,8 @@ GET http://127.0.0.1:5000/dashboard/resumo
 JavaScript externo:
 
 ```powershell
-node --check C:\Users\kaual\Desktop\cozinha\cozinha\frontend\js\index.js
-node --check C:\Users\kaual\Desktop\cozinha\cozinha\frontend\js\login_geral.js
+node --check C:\Users\SEU_USUARIO\Desktop\cozinha\cozinha\frontend\js\index.js
+node --check C:\Users\SEU_USUARIO\Desktop\cozinha\cozinha\frontend\js\login_geral.js
 ```
 
 ## Problemas comuns

@@ -17,7 +17,7 @@ O projeto funciona principalmente como frontend estático com HTML, CSS e JavaSc
 Para testar apenas a interface:
 
 ```powershell
-cd C:\Users\kaual\Desktop\cozinha\cozinha\frontend
+cd C:\Users\SEU_USUARIO\Desktop\cozinha\cozinha\frontend
 python -m http.server 8026
 ```
 

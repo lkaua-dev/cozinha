@@ -878,7 +878,7 @@ main {
 /* ── Team grid — compacto ──────────────────────────────────── */
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 16px;
   width: 100%;
   max-width: 100%;
@@ -936,6 +936,17 @@ main {
   object-fit: cover;
   border: 3px solid var(--cream-deep);
   transition: border-color var(--transition), transform var(--transition-spring);
+}
+
+.member-avatar-initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--terracotta), var(--brown));
+  color: var(--white);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
 }
 
 .team-member:hover .member-avatar {
